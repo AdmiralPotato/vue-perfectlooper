@@ -1,10 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    text-align: inherit;
+    text-decoration: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+
+*:focus {
+    outline: none;
+}
+
 html{
     font-size: 16px;
+    -webkit-text-size-adjust: 100%;
 }
 body{
-    background-color: #333;
+    background-color: #2d0033;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 400;
+    font-style: normal;
+    vertical-align: top;
+    font-family: 'Exo 2', sans-serif;
+    text-align: left;
+    text-decoration: none;
     color: #ccc;
 }
+
+h1, h2, h3, h4{
+    padding: 0;
+    margin: 0;
+}
+
+a, a:link, a:visited, h1 em{
+    color: #9f0;
+}
+header h1{
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    float: left;
+}
+header h4{
+    font-size: 0.75rem;
+    color: #666;
+    line-height: 0.75rem;
+    padding-top: 1.125rem;
+    padding-left: 0.25rem;
+    float: left;
+}
+header .snake {
+    text-align: center;
+    line-height: 2.5rem;
+}
+
 .box{
     padding: 1rem;
     /*border: 1px solid #ccc;*/
