@@ -6,9 +6,13 @@ Vue.component(
             image: String
         },
         template: `
-            <div class="box col-xs-6 col-sm-4 col-md-3">
-                <span class="thumb"><img :src="image" /></span>
-                <span class="title">{{title}}</span>
+            <div class="col-xs-6 col-sm-4 col-md-3">
+                <div class="box">
+                    <a :href="image">
+                        <span class="thumb"></span>
+                        <span class="titleHolder hidden-xs-down"><span class="title">{{title}}</span>
+                    </a>
+                </div>
             </div>
         `
     }
