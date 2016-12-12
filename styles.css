@@ -1,105 +1,157 @@
 * {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    vertical-align: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    font-weight: inherit;
-    font-style: inherit;
-    font-family: inherit;
-    text-align: inherit;
-    text-decoration: inherit;
-    color: inherit;
-    background-color: transparent;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	vertical-align: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	font-weight: inherit;
+	font-style: inherit;
+	font-family: inherit;
+	text-align: inherit;
+	text-decoration: inherit;
+	color: inherit;
+	background-color: transparent;
 }
 
-*:focus {
-    outline: none;
+body *:focus,
+body *:active {
+	outline: none;
+	text-decoration: none;
 }
 
-html{
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-}
-body{
-    background-color: #2d0033;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-weight: 400;
-    font-style: normal;
-    vertical-align: top;
-    font-family: 'Exo 2', sans-serif;
-    text-align: left;
-    text-decoration: none;
-    color: #ccc;
+html {
+	font-size: 16px;
+	-webkit-text-size-adjust: 100%;
 }
 
-h1, h2, h3, h4{
-    padding: 0;
-    margin: 0;
+body {
+	background-color: #2d0033;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 400;
+	font-style: normal;
+	vertical-align: top;
+	font-family: 'Exo 2', sans-serif;
+	text-align: left;
+	text-decoration: none;
+	color: #ccc;
 }
 
-a, a:link, a:visited, h1 em{
-    color: #9f0;
+h1, h2, h3, h4 {
+	padding: 0;
+	margin: 0;
+	font-size: 1.5rem;
+	line-height: 1.0em;
 }
-header h1{
-    font-size: 1.5rem;
-    line-height: 2.5rem;
-    float: left;
+
+body a,
+body a:link,
+body a:focus,
+body a:visited,
+h1 em {
+	color: #9f0;
 }
-header h4{
-    font-size: 0.75rem;
-    color: #666;
-    line-height: 0.75rem;
-    padding-top: 1.125rem;
-    padding-left: 0.25rem;
-    float: left;
+body a:hover{
+	color: #cf0;
+	text-decoration: none;
 }
+body a,
+body a:link,
+body a:focus,
+body a:visited{
+	cursor: pointer;
+}
+
+header h1 {
+	line-height: 2.5rem;
+	float: left;
+}
+
+header h4 {
+	font-size: 0.75rem;
+	color: #666;
+	line-height: 0.75rem;
+	padding-top: 1.125rem;
+	padding-left: 0.25rem;
+	float: left;
+}
+
 header .nav {
-    text-align: center;
-    line-height: 2.5rem;
+	text-align: center;
+	line-height: 2.5rem;
 }
 
-.box{
-    padding: 1rem;
-    /*border: 1px solid #ccc;*/
-    margin: 1rem 0;
-    background-image:
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
+.box {
+	display: block;
+	position: relative;
+	padding: 1rem;
+	margin: 1rem 0;
 }
-.box{
-    background-repeat: no-repeat;
-    background-position: top left, top right, bottom right, bottom left;
+.box:before{
+	content: ' ';
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 0.25;
+	background-image:
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
 }
-.box a{
-    display: block;
+.box:before {
+	background-repeat: no-repeat;
+	background-position: top left, top right, bottom right, bottom left;
 }
-.box .thumb{
-    position: relative;
-    display: block;
-    line-height: 0;
-    padding-bottom: 56.25%;
-    border: 1px solid #999;
-    background-color: #666;
+
+.box:hover:before{
+	opacity: 0.35;
 }
-.box .thumb img{
-    position: absolute;
-    display: block;
+.box:active:before,
+.box:focus:before{
+	opacity: 0.5;
 }
-.box .titleHolder{
-    display: table;
-    height: 4rem;
-    width: 100%;
+
+.video,
+.thumb {
+	display: block;
+	position: relative;
+	line-height: 0;
+	padding-bottom: 56.25%;
+	border: 1px solid #999;
+	background-color: #666;
 }
-.box .title{
-    display: table-cell;
-    padding-top: 0.5rem;
-    line-height: 1.5rem;
-    vertical-align: middle;
-    text-align: center;
+.videoport{
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.box .thumb img {
+	position: absolute;
+	display: block;
+}
+
+.box .titleHolder {
+	display: table;
+	height: 4rem;
+	width: 100%;
+}
+
+.box .title {
+	display: table-cell;
+	padding-top: 0.5rem;
+	line-height: 1.5rem;
+	vertical-align: middle;
+	text-align: center;
 }

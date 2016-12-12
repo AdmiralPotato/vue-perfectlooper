@@ -15,14 +15,15 @@
 			<h1><em>Video</em>.NuclearPixel.com</h1>
 			<h4>v0.0.1</h4>
 		</div>
-		<div class="nav col-xs-4 col-md-1"><a onclick="app.navigate('videos');">Videos</a></div>
-		<div class="nav col-xs-4 col-md-1"><a onclick="app.navigate('about');">About</a></div>
-		<div class="nav col-xs-4 col-md-1"><a onclick="app.navigate('contact');">Contact</a></div>
+		<div class="nav col-xs-4 col-md-1"><a tabindex="0" onclick="app.navigate('videos');">Videos</a></div>
+		<div class="nav col-xs-4 col-md-1"><a tabindex="0" onclick="app.navigate('about');">About</a></div>
+		<div class="nav col-xs-4 col-md-1"><a tabindex="0" onclick="app.navigate('contact');">Contact</a></div>
 	</header>
 	<div id="app"></div>
 </div>
 <script type="text/javascript" src="https://unpkg.com/vue@2.1.4/dist/vue.js"></script>
 <script type="text/javascript" src="./data.js"></script>
+<script type="text/javascript" src="./videoport.js"></script>
 <script type="text/javascript" src="./app.js"></script>
 </body>
 </html>

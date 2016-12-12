@@ -8,7 +8,9 @@ Vue.component(
 	{
 		template: `
 		<div class="row">
-			<div class="box col-xs-12 col-lg-offset-2 col-lg-8"><h1>contact</h1></div>
+			<div class="col-xs-12 offset-lg-2 col-lg-8">
+				<div class="box"><h1>Contact</h1></div>
+			</div>
 		</div>
 		`
 	}
@@ -19,7 +21,9 @@ Vue.component(
 	{
 		template: `
 		<div class="row">
-			<div class="box col-xs-12 col-lg-offset-2 col-lg-8"><h1>about</h1></div>
+			<div class="col-xs-12 offset-lg-2 col-lg-8">
+				<div class="box"><h1>About</h1></div>
+			</div>
 		</div>
 		`
 	}
@@ -46,9 +50,15 @@ Vue.component(
 		},
 		template: `
 			<div class="row">
-				<div class="box col-xs-12 col-lg-offset-2 col-lg-8 video">wat up video goes here</div>
-				<div class="box col-xs-12 col-lg-offset-2 col-lg-8"><h1>{{video.title}}</h1></div>
-				<div class="box col-xs-12 col-lg-offset-2 col-lg-8" v-html="video.description" />
+				<div class="col-xs-12 offset-lg-1 col-lg-10">
+					<div class="box">
+						<div class="video">
+							<videoport :video="video" />
+						</div>
+					</div>
+					<div class="box"><h1>{{video.title}}</h1></div>
+					<div class="box" v-html="video.description"></div>
+				</div>
 			</div>
 		`
 	}
@@ -79,18 +89,17 @@ Vue.component(
 			video: Object
 		},
 		methods: {
-			changeImage: function(){
-				state.activeVideo = this.video
+			navigateToVideo: function(){
+				state.activeVideo = this.video;
+				window.scrollTo(0, 0);
 			}
 		},
 		template: `
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<div class="box">
-					<a @click="changeImage">
-						<span class="thumb"></span>
-						<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span>
-					</a>
-				</div>
+				<a class="box" @click="navigateToVideo" tabindex="0">
+					<span class="thumb"></span>
+					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span>
+				</a>
 			</div>
 		`
 	}
