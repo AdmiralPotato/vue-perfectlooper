@@ -34,8 +34,18 @@ let videoList = [
 		description: ipsum
 	},
 	{
-		title: 'Candy Links',
-		name: 'candy_links-48-jpg',
+		title: 'Candy Links - Peppermint',
+		name: 'candy_links_peppermint-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Candy Links - Wintermint',
+		name: 'candy_links_wintermint-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Doubly Pyramidal',
+		name: 'doubly_pyramidal-48-jpg',
 		description: ipsum
 	},
 	{
@@ -45,7 +55,7 @@ let videoList = [
 	},
 	{
 		title: 'Hella Hearts',
-		name: 'hella_hearts-48-jpg',
+		name: 'hella_hearts_d-48-jpg',
 		description: ipsum
 	},
 	{
@@ -54,7 +64,32 @@ let videoList = [
 		description: ipsum
 	},
 	{
-		title: 'Honey Swarm',
+		title: 'Hexagonal Hard Candy Revisited - Planar',
+		name: 'hexagonal_hard_candy_revisited_planar-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Hexagonal Hard Candy Revisited - Sphere',
+		name: 'hexagonal_hard_candy_revisited_sphere-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Honey Swarm - A',
+		name: 'honey_swarm_a-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Honey Swarm - B',
+		name: 'honey_swarm_b-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Honey Swarm - C',
+		name: 'honey_swarm_c-48-jpg',
+		description: ipsum
+	},
+	{
+		title: 'Honey Swarm - A',
 		name: 'honey_swarm_d-48-jpg',
 		description: ipsum
 	},

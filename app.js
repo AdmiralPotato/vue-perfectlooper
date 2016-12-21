@@ -7,9 +7,9 @@ Vue.component(
 	'contact',
 	{
 		template: `
-		<div class="row">
+		<div class="row" v-once>
 			<div class="col-xs-12 offset-lg-2 col-lg-8">
-				<div class="box"><h1>Contact</h1></div>
+				<div class="box forText"><h1>Contact</h1></div>
 			</div>
 		</div>
 		`
@@ -20,9 +20,15 @@ Vue.component(
 	'about',
 	{
 		template: `
-		<div class="row">
+		<div class="row" v-once>
 			<div class="col-xs-12 offset-lg-2 col-lg-8">
-				<div class="box"><h1>About</h1></div>
+				<div class="box forText">
+					<h1>About</h1>
+					<p>Hi. My name is <a href="http://nuclearpixel.com/">Admiral Potato</a>. Welcome to my perfectly-looping Video Portfolio. I put a lot of work into making online experience looks as good as it does, so let's make it sound impressive with some buzzwords. This is a first-of-its-kind Marble Friendly Intersite Webbernet Wapp with Lazor Synthesized Virtual Shadow Dog Crumpitulation.</p>
+					<p>I made this because I wanted a place to post my perfectly looping animations in a fullscreen format with a minimum of visually offensive compression artifacts - and most importantly, I wanted my animations to loop perfectly. No existing video hosting service met my standards.</p>
+					<h2>License - How you may use this site and the content</h2>
+					<p>The content on this site is licensed under the <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</a>.</p>
+				</div>
 			</div>
 		</div>
 		`
@@ -56,8 +62,8 @@ Vue.component(
 							<videoport :video="video" />
 						</div>
 					</div>
-					<div class="box"><h1>{{video.title}}</h1></div>
-					<div class="box" v-html="video.description"></div>
+					<div class="box forText"><h1>{{video.title}}</h1></div>
+					<div class="box forText" v-html="video.description"></div>
 				</div>
 			</div>
 		`
@@ -97,7 +103,7 @@ Vue.component(
 		template: `
 			<div class="col-xs-6 col-sm-4 col-md-3">
 				<a class="box" @click="navigateToVideo" tabindex="0">
-					<span class="thumb"></span>
+					<span class="thumb"><img :src="'http://root.nuclearpixel.com/video_portfolio_content/' + video.name.replace('-jpg','.jpg')" /></span>
 					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span>
 				</a>
 			</div>
