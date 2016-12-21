@@ -37,6 +37,9 @@ body {
 	text-align: left;
 	text-decoration: none;
 	color: #ccc;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><ellipse fill="rgba(255,255,255,0.075)" cx="12" cy="12" rx="1.5" ry="1.5" /></svg>');
+	background-repeat: repeat;
+	background-position: top center;
 }
 
 h1, h2, h3, h4, p{
