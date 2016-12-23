@@ -58,8 +58,10 @@ Vue.component(
 			<div class="row">
 				<div class="col-xs-12 offset-lg-1 col-lg-10">
 					<div class="box">
-						<div class="video">
-							<videoport :video="video" />
+						<div class="videoHolder">
+							<div class="video">
+								<videoport :video="video" />
+							</div>
 						</div>
 					</div>
 					<div class="box forText"><h1>{{video.title}}</h1></div>
@@ -103,7 +105,7 @@ Vue.component(
 		template: `
 			<div class="col-xs-6 col-sm-4 col-md-3">
 				<a class="box" @click="navigateToVideo" tabindex="0">
-					<span class="thumb"><img :src="'http://root.nuclearpixel.com/video_portfolio_content/' + video.name.replace('-jpg','.jpg')" /></span>
+					<span class="thumbHolder"><span class="thumb"><img :src="'http://root.nuclearpixel.com/video_portfolio_content/' + video.name.replace('-jpg','.jpg')" /></span></span>
 					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span>
 				</a>
 			</div>
@@ -123,6 +125,28 @@ let app = new Vue({
 		}
 	},
 	template: `
-		<component :is="state.activePage" :state="state"></component>
+		<div class="root">
+			<div class="backgroundImage"></div>
+			<div class="dots"></div>
+			<div class="container">
+				<header class="row">
+					<div class="col-xs-12 col-md-9">
+						<h1 tabindex="0" @click="navigate('videos');"><em>Video</em>.NuclearPixel.com</h1>
+						<h4>v0.0.1</h4>
+					</div>
+					<div class="nav col-xs-4 col-md-1"><a tabindex="0" @click="navigate('videos');">Videos</a></div>
+					<div class="nav col-xs-4 col-md-1"><a tabindex="0" @click="navigate('about');">About</a></div>
+					<div class="nav col-xs-4 col-md-1"><a tabindex="0" @click="navigate('contact');">Contact</a></div>
+				</header>
+				<transition
+					name="fadeOutRight"
+					mode="out-in"
+					enter-active-class="animated fadeInRight"
+					leave-active-class="animated fadeOutLeft"
+					>
+					<component :is="state.activePage" :state="state"></component>
+				</transition>
+			</div>
+		</div>
 	`
 });

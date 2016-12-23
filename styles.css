@@ -15,6 +15,11 @@
 	background-color: transparent;
 }
 
+.animated {
+	-webkit-animation-duration: 500ms;
+	animation-duration: 500ms;
+}
+
 body *:focus,
 body *:active {
 	outline: none;
@@ -27,7 +32,7 @@ html {
 }
 
 body {
-	background-color: #2d0033;
+	background-color: #000;
 	font-size: 1rem;
 	line-height: 1.5rem;
 	font-weight: 400;
@@ -37,6 +42,25 @@ body {
 	text-align: left;
 	text-decoration: none;
 	color: #ccc;
+}
+.backgroundImage,
+.dots{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.backgroundImage{
+	background-image: url('http://root.nuclearpixel.com/video_portfolio_content/hexagonal_hard_candy-96.jpg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: 180vmax;
+	background-position: top center;
+	opacity: 0.5;
+	filter: blur(4px);
+}
+.dots{
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><ellipse fill="rgba(255,255,255,0.075)" cx="12" cy="12" rx="1.5" ry="1.5" /></svg>');
 	background-repeat: repeat;
 	background-position: top center;
@@ -129,26 +153,25 @@ header .nav {
 	opacity: 0.5;
 }
 
-.video,
-.thumb {
+.videoHolder,
+.thumbHolder {
 	display: block;
 	position: relative;
 	line-height: 0;
-	padding-bottom: 56.25%;
 	border: 1px solid #999;
 	background-color: #666;
 }
+.thumb,
+.video{
+	display: block;
+	padding-bottom: 56.25%;
+}
+.thumb img,
 .videoport{
 	display: block;
 	position: absolute;
 	width: 100%;
 	height: 100%;
-}
-
-.box .thumb img {
-	position: absolute;
-	display: block;
-	width: 100%;
 }
 
 .box .titleHolder {
