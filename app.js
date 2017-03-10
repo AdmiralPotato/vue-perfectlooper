@@ -1,3 +1,5 @@
+"use strict";
+
 let state = {
 	activePage: 'videos',
 	activeVideo: undefined
@@ -106,7 +108,7 @@ Vue.component(
 			<div class="col-xs-6 col-sm-4 col-md-3">
 				<a class="box" @click="navigateToVideo" tabindex="0">
 					<span class="thumbHolder"><span class="thumb"><img :src="'http://root.nuclearpixel.com/video_portfolio_content/' + video.name.replace('-jpg','.jpg')" /></span></span>
-					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span>
+					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span></span>
 				</a>
 			</div>
 		`
@@ -114,7 +116,7 @@ Vue.component(
 );
 
 let app = new Vue({
-	el: '#app',
+	el: '#appHolder',
 	data: {
 		state: state
 	},

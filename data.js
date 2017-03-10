@@ -1,3 +1,5 @@
+"use strict";
+
 let ipsum = `
 <h1>HTML Ipsum Presents</h1>
 
