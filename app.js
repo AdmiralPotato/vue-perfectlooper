@@ -86,7 +86,8 @@ Vue.component(
 			<div class="row">
 				<list-item
 					v-for="video in videoList"
-					:video="video" />
+					:video="video"
+					:key="video.name" />
 			</div>
 		`
 	}
@@ -95,6 +96,7 @@ Vue.component(
 Vue.component(
 	'list-item',
 	{
+		mixins: [mixinAddresses],
 		props: {
 			video: Object
 		},
@@ -105,9 +107,9 @@ Vue.component(
 			}
 		},
 		template: `
-			<div class="col-xs-6 col-sm-4 col-md-3">
+			<div class="col-xs-6 col-sm-4 col-md-3 noSelect">
 				<a class="box" @click="navigateToVideo" tabindex="0">
-					<span class="thumbHolder"><span class="thumb"><img :src="'http://root.nuclearpixel.com/video_portfolio_content/' + video.name.replace('-jpg','.jpg')" /></span></span>
+					<span class="thumbHolder"><span class="thumb"><img :src="thumbUrl(video)" /></span></span>
 					<span class="titleHolder hidden-xs-down"><span class="title">{{video.title}}</span></span>
 				</a>
 			</div>

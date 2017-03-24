@@ -32,77 +32,77 @@ let ipsum = `
 let videoList = [
 	{
 		title: 'Candy Links - Rainbow',
-		name: 'candy_links_rainbow-48-jpg',
+		name: 'candy_links_rainbow-48',
 		description: ipsum
 	},
 	{
 		title: 'Candy Links - Peppermint',
-		name: 'candy_links_peppermint-48-jpg',
+		name: 'candy_links_peppermint-48',
 		description: ipsum
 	},
 	{
 		title: 'Candy Links - Wintermint',
-		name: 'candy_links_wintermint-48-jpg',
+		name: 'candy_links_wintermint-48',
 		description: ipsum
 	},
 	{
 		title: 'Doubly Pyramidal',
-		name: 'doubly_pyramidal-48-jpg',
+		name: 'doubly_pyramidal-48',
 		description: ipsum
 	},
 	{
 		title: 'Chocolate Hearts',
-		name: 'chocolate_hearts-48-jpg',
+		name: 'chocolate_hearts-48',
 		description: ipsum
 	},
 	{
 		title: 'Hella Hearts',
-		name: 'hella_hearts_d-48-jpg',
+		name: 'hella_hearts_d-48',
 		description: ipsum
 	},
 	{
 		title: 'Hexagonal Hard Candy',
-		name: 'hexagonal_hard_candy-96-jpg',
+		name: 'hexagonal_hard_candy-96',
 		description: ipsum
 	},
 	{
 		title: 'Hexagonal Hard Candy Revisited - Planar',
-		name: 'hexagonal_hard_candy_revisited_planar-48-jpg',
+		name: 'hexagonal_hard_candy_revisited_planar-48',
 		description: ipsum
 	},
 	{
 		title: 'Hexagonal Hard Candy Revisited - Sphere',
-		name: 'hexagonal_hard_candy_revisited_sphere-48-jpg',
+		name: 'hexagonal_hard_candy_revisited_sphere-48',
 		description: ipsum
 	},
 	{
 		title: 'Honey Swarm - A',
-		name: 'honey_swarm_a-48-jpg',
+		name: 'honey_swarm_a-48',
 		description: ipsum
 	},
 	{
 		title: 'Honey Swarm - B',
-		name: 'honey_swarm_b-48-jpg',
+		name: 'honey_swarm_b-48',
 		description: ipsum
 	},
 	{
 		title: 'Honey Swarm - C',
-		name: 'honey_swarm_c-48-jpg',
+		name: 'honey_swarm_c-48',
 		description: ipsum
 	},
 	{
 		title: 'Honey Swarm - A',
-		name: 'honey_swarm_d-48-jpg',
+		name: 'honey_swarm_d-48',
 		description: ipsum
 	},
 	{
 		title: 'Metal Eyes',
-		name: 'metal_eyes-24-jpg',
+		name: 'metal_eyes-24',
 		description: ipsum
 	},
 	{
 		title: 'Networking',
-		name: 'networking-48-jpg',
+		name: 'networking-48',
 		description: ipsum
 	}
 ];
