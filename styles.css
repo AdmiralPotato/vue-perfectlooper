@@ -184,7 +184,8 @@ header .nav {
 .thumb img,
 .videoport,
 .videoport canvas,
-.videoport img{
+.videoport img,
+.videoport .overlay{
 	display: block;
 	position: absolute;
 	width: 100%;
@@ -196,7 +197,7 @@ header .nav {
 	left: 0;
 	padding: 1rem;
 }
-.videoport .video-status-icon{
+.videoport .overlay .video-status-icon{
 	display: block;
 	position: absolute;
 	top: 0;
@@ -207,6 +208,13 @@ header .nav {
 	width: auto;
 	margin: auto;
 }
+.videoport .fullscreen{
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	height: 10%;
+}
+
 .fade-enter-active, .fade-leave-active {
 	transition: opacity .5s
 }

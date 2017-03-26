@@ -21,6 +21,7 @@ Vue.component(
 				height: 0,
 				started: false,
 				playing: false,
+				isFullscreen: false,
 				loaded: 0,
 				decoded: 0,
 				ready: false,
@@ -36,57 +37,84 @@ Vue.component(
 		},
 		beforeMount: function () {
 			document.addEventListener('resize', resizeWindowEventHandler);
+			document.addEventListener('fullscreenchange', resizeWindowEventHandler);
 			window.addEventListener('resize', resizeWindowEventHandler);
 		},
 		beforeDestroy: function () {
 			this.videoport.die();
 			document.removeEventListener('resize', resizeWindowEventHandler);
+			document.removeEventListener('fullscreenchange', resizeWindowEventHandler);
 			window.removeEventListener('resize', resizeWindowEventHandler);
 		},
 		methods: {
-			toggle: function(event){
+			playToggle: function(event){
 				let v = this;
 				v.started = true;
 				v.playing = !v.playing;
 				v.videoport.setPlay(v.playing);
+			},
+			fullscreenToggle: function(){
+				console.log(this.isFullscreen);
+				if (!document.fullscreenElement) {
+					this.isFullscreen = true;
+					this.$el.requestFullscreen();
+				} else {
+					if (document.exitFullscreen) {
+						this.isFullscreen = false;
+						document.exitFullscreen();
+					}
+				}
 			}
 		},
 		template: `
-			<div class="videoport noSelect" @click="toggle">
+			<div class="videoport noSelect">
 				<canvas
 					ref="canvas"
 					:width="width"
 					:height="height"
 					/>
+				<div class="overlay" @click="playToggle">
 					<transition-group name="fade">
-						<div key="a" v-if="!ready" class="overlay transition">
-							<img v-if="!decoded" :src="thumbUrl(video)" />
-							<div class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
-						</div>
-						<video-status-icon key="b" v-if="!ready && started" type="loading" class="rotating" />
-						<video-status-icon key="c" v-if="!started || !playing && ready" type="play" />
+						<img key="a" v-if="!decoded" :src="thumbUrl(video)" />
+						<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
+						<video-status-icon key="c" v-if="!ready && started" type="loading" class="rotating" />
+						<video-status-icon key="d" v-if="!started || !playing && ready" type="play" />
 					</transition-group>
+				</div>
+				<div @click="fullscreenToggle">
+					<video-status-icon class="fullscreen" key="off" v-if="!isFullscreen" type="fullscreen" />
+					<video-status-icon class="fullscreen" key="on"  v-if="isFullscreen" type="fullscreenExit" />
+				</div>
 			</div>
 		`
 	}
 );
 
+let statusShapes = {
+	play: "M112,64A48,48,0,1,1,64,16,48,48,0,0,1,112,64ZM48,43.21539V84.78461a4,4,0,0,0,6,3.4641L90,67.4641a4,4,0,0,0,0-6.9282L54,39.75129A4,4,0,0,0,48,43.21539Z",
+	pause: "M52,112H28a4,4,0,0,1-4-4V20a4,4,0,0,1,4-4H52a4,4,0,0,1,4,4v88A4,4,0,0,1,52,112Zm48-96H76a4,4,0,0,0-4,4v88a4,4,0,0,0,4,4h24a4,4,0,0,0,4-4V20A4,4,0,0,0,100,16Z",
+	loading: "M100,64A36.00074,36.00074,0,1,0,63.793,99.99942a4.12438,4.12438,0,0,0,4.19154-3.6437A4.00059,4.00059,0,0,0,64,92,28.00073,28.00073,0,1,1,92,64H84.82843a2,2,0,0,0-1.41421,3.41421L94.58579,78.58579a2,2,0,0,0,2.82843,0l11.17157-11.17157A2,2,0,0,0,107.17157,64Z",
+	fullscreen: "M108,16H20a4,4,0,0,0-4,4v88a4,4,0,0,0,4,4h88a4,4,0,0,0,4-4V20A4,4,0,0,0,108,16ZM57.31372,76.34314,42.82843,90.82843l5.75739,5.75732A2,2,0,0,1,47.17157,100H30a2,2,0,0,1-2-2V80.82843a2,2,0,0,1,3.41418-1.41425l5.75739,5.75739L51.65686,70.68628a4,4,0,1,1,5.65686,5.65686Zm0-19.02948v.00006a4.00005,4.00005,0,0,1-5.65686,0L37.17157,42.82843l-5.75739,5.75732A2,2,0,0,1,28,47.17157V30a2,2,0,0,1,2-2H47.17157a2,2,0,0,1,1.41425,3.41418l-5.75739,5.75739L57.31372,51.65686A4,4,0,0,1,57.31372,57.31366ZM100,98a2,2,0,0,1-2,2H80.82843a2,2,0,0,1-1.41425-3.41425l5.75739-5.75732L70.68628,76.34314a4,4,0,1,1,5.65686-5.65686L90.82843,85.17157l5.75739-5.75739A2,2,0,0,1,100,80.82843Zm0-50.82843a2,2,0,0,1-3.41418,1.41418l-5.75739-5.75732L76.34314,57.31372a4.00005,4.00005,0,0,1-5.65686,0v-.00006a4,4,0,0,1,0-5.6568L85.17157,37.17157l-5.75739-5.75739A2,2,0,0,1,80.82843,28H98a2,2,0,0,1,2,2Z",
+	fullscreenExit: "M108,16H20a4,4,0,0,0-4,4v88a4,4,0,0,0,4,4h88a4,4,0,0,0,4-4V20A4,4,0,0,0,108,16ZM60,87.17157a2,2,0,0,1-3.41418,1.41418l-5.75739-5.75732L40.34314,93.31372a4.00005,4.00005,0,0,1-5.65686,0v-.00006a4,4,0,0,1,0-5.6568L45.17157,77.17157l-5.75739-5.75739A2,2,0,0,1,40.82843,68H58a2,2,0,0,1,2,2ZM60,58a2,2,0,0,1-2,2H40.82843a2,2,0,0,1-1.41425-3.41425l5.75739-5.75732L34.68628,40.34314a4,4,0,0,1,5.65686-5.65686L50.82843,45.17157l5.75739-5.75739A2,2,0,0,1,60,40.82843ZM93.31372,93.31372a4.00005,4.00005,0,0,1-5.65686,0L77.17157,82.82843l-5.75739,5.75732A2,2,0,0,1,68,87.17157V70a2,2,0,0,1,2-2H87.17157a2,2,0,0,1,1.41425,3.41418l-5.75739,5.75739L93.31372,87.65686A4.00005,4.00005,0,0,1,93.31372,93.31372Zm0-52.97058L82.82843,50.82843l5.75739,5.75732A2,2,0,0,1,87.17157,60H70a2,2,0,0,1-2-2V40.82843a2,2,0,0,1,3.41418-1.41425l5.75739,5.75739L87.65686,34.68628a4,4,0,1,1,5.65686,5.65686Z"
+};
 Vue.component(
 	'video-status-icon',
 	{
 		props: {
 			type: String
 		},
-		created: function () {
-			this.shapes = {
-				play: "M112,64A48,48,0,1,1,64,16,48,48,0,0,1,112,64ZM48,43.21539V84.78461a4,4,0,0,0,6,3.4641L90,67.4641a4,4,0,0,0,0-6.9282L54,39.75129A4,4,0,0,0,48,43.21539Z",
-				pause: "M52,112H28a4,4,0,0,1-4-4V20a4,4,0,0,1,4-4H52a4,4,0,0,1,4,4v88A4,4,0,0,1,52,112Zm48-96H76a4,4,0,0,0-4,4v88a4,4,0,0,0,4,4h24a4,4,0,0,0,4-4V20A4,4,0,0,0,100,16Z",
-				loading: "M100,64A36.00074,36.00074,0,1,0,63.793,99.99942a4.12438,4.12438,0,0,0,4.19154-3.6437A4.00059,4.00059,0,0,0,64,92,28.00073,28.00073,0,1,1,92,64H84.82843a2,2,0,0,0-1.41421,3.41421L94.58579,78.58579a2,2,0,0,0,2.82843,0l11.17157-11.17157A2,2,0,0,0,107.17157,64Z"
-			};
+		methods: {
+			getShape: function(){
+				let result = statusShapes[this.type];
+				if(!result){
+					console.error('Bad shape: ' + this.type);
+				}
+				return result;
+			}
 		},
 		template: `
-			<svg class="video-status-icon transition" viewBox="0 0 128 128">
-				<path :d="shapes[type]" />
+			<svg class="video-status-icon" viewBox="0 0 128 128">
+				<path :d="getShape(type)" />
 			</svg>
 		`
 	}
