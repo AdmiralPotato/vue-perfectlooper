@@ -94,6 +94,12 @@ body a:visited{
 	cursor: pointer;
 }
 
+.transition{
+	transition-duration: 250ms;
+	transition-property: all;
+	transition-timing-function: ease;
+}
+
 header h1 {
 	line-height: 2.5rem;
 	float: left;
@@ -200,6 +206,35 @@ header .nav {
 	height: 50%;
 	width: auto;
 	margin: auto;
+}
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+	opacity: 0
+}
+
+@-webkit-keyframes rotating {
+	from{
+		-webkit-transform: rotate(0deg);
+	}
+	to{
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes rotating {
+	from{
+		transform: rotate(0deg);
+	}
+	to{
+		transform: rotate(360deg);
+	}
+}
+
+.rotating {
+	-webkit-animation: rotating 2s linear infinite;
+	animation: rotating 2s linear infinite;
 }
 svg.video-status-icon path{
 	fill: #000;
