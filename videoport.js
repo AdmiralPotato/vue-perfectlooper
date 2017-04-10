@@ -1,12 +1,16 @@
 "use strict";
 
+let videoAddressPrefix = 'http://root.nuclearpixel.com/video_portfolio_content/';
 let mixinAddresses = {
 	methods: {
 		thumbUrl: function(video){
-			return `http://root.nuclearpixel.com/video_portfolio_content/${video.name}.jpg`;
+			return `${videoAddressPrefix}${video.name}.jpg`;
 		},
 		videoUrl: function(video){
-			return `http://root.nuclearpixel.com/video_portfolio_content/${video.name}-1920x1080-yuv420p-20000.hevc`;
+			return `${videoAddressPrefix}${video.name}-1920x1080-yuv420p-20000.hevc`;
+		},
+		sizeUrl: function(video){
+			return `${videoAddressPrefix}size?name=${video.name}-1920x1080-yuv420p-20000.hevc`;
 		},
 	}
 };
@@ -207,9 +211,11 @@ let decodedFrameBufferMap = {};
 
 let DecodedFrameBuffer = function(video){
 	let b = this;
-	b.url = mixinAddresses.methods.videoUrl(video);
+	b.videoAddress = mixinAddresses.methods.videoUrl(video);
+	b.sizeAddress = mixinAddresses.methods.sizeUrl(video);
 	b.frameCount = parseInt(video.name.split('-').pop(), 10);
 	b.started = false;
+	b.totalSize = 0;
 	b.loaded = 0;
 	b.decoded = 0;
 	b.ready = false;
@@ -218,6 +224,7 @@ let DecodedFrameBuffer = function(video){
 	b.videoportList = [];
 	b.decoder = new libde265.RawPlayer(document.createElement('canvas'));
 	b.decoder.addFrameBuffer(b);
+	b.getTotalSize();
 	decodedFrameBufferMap[video.name] = b;
 };
 
@@ -235,22 +242,38 @@ DecodedFrameBuffer.prototype = {
 			p.handleBufferUpdate();
 		});
 	},
+	getTotalSize: function(){
+		let b = this;
+		let sizeRequest = new XMLHttpRequest();
+		sizeRequest.open("get", b.sizeAddress, true);
+		sizeRequest.onload = function(event){
+			b.totalSize = parseInt(event.target.response, 10);
+		};
+		sizeRequest.send();
+	},
 	load: function () {
 		let b = this;
 		if(!b.started){
 			b.status = 'Loading';
 			b.started = true;
-			b.decoder.playback(b.url);
+			b.decoder.startLoad(b.videoAddress);
 			this.updateVideoports();
 		}
 	},
-	handleDecoderLoadComplete: function(){
-		this.status = 'Loading complete';
-		this.loaded = 1;
+	handleDecoderLoadStart: function(){
+		this.status = 'Loading started';
+		this.updateVideoports();
+	},
+	handleDecoderLoadProgress: function(loadingProgressEvent){
+		let loaded = Math.floor(loadingProgressEvent.loaded / 1024);
+		let total = Math.floor(this.totalSize / 1024);
+		this.status = `Loading ${loaded} / ${total || '??'} KB`;
+		this.loaded = loaded / total;
 		this.updateVideoports();
 	},
 	handleDecoderDecodeStart: function(){
 		this.status = 'Decoding started';
+		this.loaded = 1;
 		this.updateVideoports();
 	},
 	handleDecoderFrame: function(frameCanvas){
@@ -259,15 +282,13 @@ DecodedFrameBuffer.prototype = {
 		b.decoded = framesLoaded / b.frameCount;
 		b.lastStoredFrame = frameCanvas;
 		b.status = `Decoded ${framesLoaded} / ${b.frameCount} frames`;
+		if(b.decoded === 1){
+			this.status = `Ready; Loaded & Decoded`;
+			this.ready = true;
+			this.decoder = null;
+		}
 		this.updateVideoports();
 	},
-	handleDecoderFinish: function(){
-		this.status = `Ready; Loaded & Decoded`;
-		this.ready = true;
-		this.decoder = null;
-		this.decoded = 1;
-		this.updateVideoports();
-	}
 };
 
 let resizeWindowEventHandler = function () {
@@ -299,7 +320,7 @@ let render = function (time){
 
 start();
 
-let hevcImageInterceptor = function(libde265Image){
+libde265.RawPlayer.prototype._display_image = function(libde265Image){
 	let decoder = this;
 	let decodedFrameBuffer = decoder.decodedFrameBuffer;
 	let bufferCanvas = document.createElement('canvas');
@@ -314,24 +335,39 @@ let hevcImageInterceptor = function(libde265Image){
 	libde265Image.display(decoder.image_data, function(display_image_data) {
 		bufferContext.putImageData(display_image_data, 0, 0);
 		decodedFrameBuffer.handleDecoderFrame(bufferCanvas);
-		if(!decoder.running){
-			decoder.decodedFrameBuffer.handleDecoderFinish();
-		}
 	});
 };
 
 libde265.RawPlayer.prototype.handlerMap = {
-	loading: 'LoadComplete',
+	loading: 'LoadStart',
+	loadProgress: 'LoadProgress',
 	initializing: 'DecodeStart'
 };
+
 libde265.RawPlayer.prototype.addFrameBuffer = function(decodedFrameBuffer){
 	let decoder = this;
 	decoder.decodedFrameBuffer = decodedFrameBuffer;
-	decoder.set_status_callback(function(msg) {
+	decoder.set_status_callback(function(msg, extra) {
 		let handler = decoder.handlerMap[msg];
 		if (handler) {
-			decodedFrameBuffer['handleDecoder' + handler]();
+			decodedFrameBuffer['handleDecoder' + handler](extra);
 		}
 	});
 };
-libde265.RawPlayer.prototype._display_image = hevcImageInterceptor;
+
+libde265.RawPlayer.prototype.startLoad = function(url) {
+	let decoder = this;
+	let request = new XMLHttpRequest();
+	decoder._reset();
+	request.open("get", url, true);
+	request.responseType = "arraybuffer";
+	request.onprogress = function(event) {
+		decoder._set_status("loadProgress", event);
+	};
+	request.onload = function(event) {
+		decoder._handle_onload(request, event);
+	};
+	decoder._set_status("loading");
+	decoder.running = true;
+	request.send();
+};
