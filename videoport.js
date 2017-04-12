@@ -1,6 +1,6 @@
 "use strict";
 
-let videoAddressPrefix = 'http://root.nuclearpixel.com/video_portfolio_content/';
+let videoAddressPrefix = 'https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/';
 let mixinAddresses = {
 	methods: {
 		thumbUrl: function(video){
@@ -8,10 +8,7 @@ let mixinAddresses = {
 		},
 		videoUrl: function(video){
 			return `${videoAddressPrefix}${video.name}-1920x1080-yuv420p-20000.hevc`;
-		},
-		sizeUrl: function(video){
-			return `${videoAddressPrefix}size?name=${video.name}-1920x1080-yuv420p-20000.hevc`;
-		},
+		}
 	}
 };
 
@@ -212,7 +209,6 @@ let decodedFrameBufferMap = {};
 let DecodedFrameBuffer = function(video){
 	let b = this;
 	b.videoAddress = mixinAddresses.methods.videoUrl(video);
-	b.sizeAddress = mixinAddresses.methods.sizeUrl(video);
 	b.frameCount = parseInt(video.name.split('-').pop(), 10);
 	b.started = false;
 	b.totalSize = 0;
@@ -245,9 +241,9 @@ DecodedFrameBuffer.prototype = {
 	getTotalSize: function(){
 		let b = this;
 		let sizeRequest = new XMLHttpRequest();
-		sizeRequest.open("get", b.sizeAddress, true);
+		sizeRequest.open("head", b.videoAddress, true);
 		sizeRequest.onload = function(event){
-			b.totalSize = parseInt(event.target.response, 10);
+			b.totalSize = parseInt(event.total, 10);
 		};
 		sizeRequest.send();
 	},
