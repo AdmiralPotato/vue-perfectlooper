@@ -23,6 +23,7 @@ Vue.component(
 				started: false,
 				playing: false,
 				isFullscreen: false,
+				activityHalted: true,
 				loaded: 0,
 				decoded: 0,
 				ready: false,
@@ -48,6 +49,17 @@ Vue.component(
 			window.removeEventListener('resize', resizeWindowEventHandler);
 		},
 		methods: {
+			activity: function(){
+				let v = this;
+				v.activityHalted = false;
+				if(v.activityTimeoutId){
+					clearTimeout(v.activityTimeoutId);
+				}
+				v.activityTimeoutId = setTimeout(function(){
+					v.activityHalted = true;
+					v.activityTimeoutId = null;
+				}, 3000);
+			},
 			playToggle: function(event){
 				let v = this;
 				v.started = true;
@@ -56,6 +68,7 @@ Vue.component(
 			},
 			fullscreenToggle: function(){
 				console.log(this.isFullscreen);
+				this.activity();
 				if (!document.fullscreenElement) {
 					this.isFullscreen = true;
 					this.$el.requestFullscreen();
@@ -68,7 +81,15 @@ Vue.component(
 			}
 		},
 		template: `
-			<div class="videoport noSelect" :class="{fullscreen: isFullscreen}">
+			<div class="videoport noSelect"
+				:class="{
+					fullscreen: isFullscreen,
+					hideCursor: playing && activityHalted
+				}"
+				v-on:mousemove="activity"
+				v-on:touchmove="activity"
+				v-on:touchstart="activity"
+			>
 				<div class="aspectEnforcer">
 					<canvas
 						ref="canvas"
@@ -79,14 +100,20 @@ Vue.component(
 						<transition-group name="fade">
 							<img key="a" v-if="!decoded" :src="thumbUrl(video)" />
 							<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
-							<video-status-icon key="c" v-if="!ready && started" type="loading" class="rotating" />
-							<video-status-icon key="d" v-if="!started || !playing && ready" type="play" />
+							<video-status-icon key="c" class="large rotating" v-if="!ready && started" type="loading" />
+							<video-status-icon key="d" class="large" v-if="!started || !playing && ready" type="play" />
 						</transition-group>
 					</div>
-					<div @click="fullscreenToggle">
-						<video-status-icon class="fullscreen" key="off" v-if="!isFullscreen" type="fullscreen" />
-						<video-status-icon class="fullscreen" key="on"  v-if="isFullscreen" type="fullscreenExit" />
-					</div>
+					<transition-group key="fullscreen" name="fade">
+						<div
+							key="a"
+							v-if="!playing || !activityHalted"
+							@click="fullscreenToggle"
+						>
+							<video-status-icon class="fullscreen" key="off" v-if="!isFullscreen" type="fullscreen" />
+							<video-status-icon class="fullscreen" key="on"  v-if="isFullscreen" type="fullscreenExit" />
+						</div>
+					</transition-group>
 				</div>
 			</div>
 		`
@@ -117,7 +144,10 @@ Vue.component(
 		},
 		template: `
 			<svg class="video-status-icon" viewBox="0 0 128 128">
-				<path :d="getShape(type)" />
+				<g class="fade">
+					<path :d="getShape(type)" class="stroke" />
+					<path :d="getShape(type)" class="fill" />
+				</g>
 			</svg>
 		`
 	}

@@ -199,6 +199,9 @@ header .nav {
 .videoport.fullscreen{
 	max-width: 177.77777777777777vmin;
 }
+.videoport.hideCursor{
+	cursor: none;
+}
 .videoport .aspectEnforcer{
 	position: relative;
 	height: 0;
@@ -211,6 +214,8 @@ header .nav {
 	bottom: 0;
 	left: 0;
 	padding: 1rem;
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 0 1rem 0 0;
 }
 .videoport .overlay .video-status-icon{
 	display: block;
@@ -220,21 +225,23 @@ header .nav {
 	left: 0;
 	right: 0;
 	height: 50%;
+	min-height: 6rem;
 	width: auto;
 	margin: auto;
+	border-radius: 100%;
 }
 .videoport .fullscreen{
 	position: absolute;
-	bottom: 1rem;
-	right: 1rem;
-	height: 10%;
+	bottom: 0.25rem;
+	right: 0.25rem;
+	height: 3rem;
 }
 
 .fade-enter-active, .fade-leave-active {
-	transition: opacity .5s
+	transition: opacity .5s;
 }
 .fade-enter, .fade-leave-to {
-	opacity: 0
+	opacity: 0;
 }
 
 @-webkit-keyframes rotating {
@@ -259,9 +266,19 @@ header .nav {
 	-webkit-animation: rotating 2s linear infinite;
 	animation: rotating 2s linear infinite;
 }
-svg.video-status-icon path{
-	fill: #000;
-	opacity: 0.4;
+
+svg.video-status-icon .fill{
+	fill: #9f0;
+	stroke: none;
+}
+svg.video-status-icon .stroke{
+	fill: none;
+	stroke: rgba(0,0,0,0.5);
+	stroke-width: 2px;
+	vector-effect: non-scaling-stroke;
+}
+svg.video-status-icon .fade{
+	opacity: 0.5;
 }
 
 .box .titleHolder {
