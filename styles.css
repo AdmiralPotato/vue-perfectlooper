@@ -64,16 +64,22 @@ body {
 	background-position: top center;
 }
 
-h1, h2, h3, h4, p{
+h1, h2, h3, h4, p, pre{
 	padding: 0;
 	margin: 0.75rem 0;
 	font-size: 1.5rem;
 	line-height: 1.0em;
 }
 
-p{
+p, pre{
 	font-size: 1rem;
 	line-height: 1.5em;
+}
+pre{
+	font-family: monospace;
+	background-color: rgba(0,0,0,0.5);
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
 }
 
 body a,
@@ -100,23 +106,50 @@ body a:visited{
 	transition-timing-function: ease;
 }
 
-header h1 {
-	line-height: 2.5rem;
-	float: left;
+.container{
+	position: relative;
+	padding-bottom: 1rem;
 }
 
-header h4 {
+header{
+	padding: 0 1rem;
+	overflow: hidden;
+}
+header .brand{
+	padding-top: 0.75rem;
+	overflow: hidden;
+}
+header .brand h1 {
+	line-height: 2.5rem;
+	float: left;
+	margin: 0;
+}
+header .brand h4 {
+	display: none;
 	font-size: 0.75rem;
 	color: #666;
 	line-height: 0.75rem;
 	padding-top: 1.125rem;
 	padding-left: 0.25rem;
+	margin: 0;
 	float: left;
 }
 
-header .nav {
+header nav {
 	text-align: center;
 	line-height: 2.5rem;
+	padding-bottom: 0.5rem;
+}
+header nav ul{
+	display: flex;
+	padding: 0;
+}
+header nav li{
+	display: block;
+	flex-grow: 1;
+}
+header nav li a{
+	display: block;
 }
 
 .noSelect,
@@ -133,26 +166,11 @@ header .nav {
 	display: block;
 	position: relative;
 	padding: 1rem;
-	margin: 1rem 0;
 }
-.box:before{
-	content: ' ';
-	position: absolute;
-	display: block;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	opacity: 0.25;
-	background-image:
-		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-		url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
-}
-.box:before {
-	background-repeat: no-repeat;
-	background-position: top left, top right, bottom right, bottom left;
+
+.box.forVideo {
+	padding: 0;
+	margin: -1px;
 }
 
 .box.forText {
@@ -160,12 +178,38 @@ header .nav {
 }
 
 .box:hover:before{
-	opacity: 0.35;
+	opacity: 0.5;
 }
 .box:active:before,
 .box:focus:before{
-	opacity: 0.5;
+	opacity: 0.75;
 }
+
+.video-list{
+	display: flex;
+	flex-flow: row wrap;
+	margin: -0.5rem 0.75rem 0 0.75rem;
+}
+.video-list-item{
+	flex: 1 50%;
+	max-width: 50%;
+}
+.video-list-item a{
+	display: block;
+	padding: 0.5rem;
+}
+.video-list-item .box{
+	padding: 0;
+}
+.video-list-item .box .titleHolder {
+	display: none;
+	height: 4rem;
+	width: 100%;
+}
+.video-list-item .box .titleHolder .title {
+	padding: 0;
+}
+
 
 .videoHolder,
 .thumbHolder {
@@ -281,12 +325,6 @@ svg.video-status-icon .fade{
 	opacity: 0.5;
 }
 
-.box .titleHolder {
-	display: table;
-	height: 4rem;
-	width: 100%;
-}
-
 .box .title {
 	display: table-cell;
 	padding-top: 0.5rem;
@@ -297,4 +335,93 @@ svg.video-status-icon .fade{
 
 ul, ol{
 	padding-left: 1.5rem;
+}
+
+/* small */
+@media (min-width: 480px) {
+	header .brand h4 {
+		display: block;
+	}
+}
+/* medium */
+@media (min-width: 628px) {
+	.container {
+		padding: 0 1rem;
+	}
+	header{
+		display: flex;
+		padding: 0 0 0.75rem 0;
+	}
+	header .brand,
+	header nav{
+		padding-top: 0.875rem;
+		flex-grow: 1;
+	}
+	.box:before{
+		content: ' ';
+		position: absolute;
+		display: block;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity: 0.25;
+		background-image:
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
+	}
+	.box:before {
+		background-repeat: no-repeat;
+		background-position: top left, top right, bottom right, bottom left;
+	}
+	.box.forVideo {
+		padding: 1rem;
+		margin: 0;
+	}
+	.box.forText,
+	.box.forVideo{
+		margin-bottom: 1rem;
+	}
+	.video-list{
+		margin: -0.5rem;
+	}
+	.video-list-item .box{
+		padding: 1rem 1rem 0 1rem;
+	}
+	.video-list-item .box .thumbHolder {
+		margin: 0 0.0625rem;
+	}
+	.video-list-item .box .titleHolder {
+		display: table;
+	}
+}
+/* medium */
+@media (min-width: 720px) {
+	.container{
+		width: 640px;
+		padding: 0 0 1rem 0;
+		margin: 0 auto;
+	}
+	.video-list-item{
+		flex: 1 33.3333333%;
+		max-width: 33.3333333%;
+	}
+}
+/* large */
+@media (min-width: 920px) {
+	.container{
+		width: 800px;
+	}
+	.video-list-item{
+		flex: 1 25%;
+		max-width: 25%;
+	}
+}
+/* xlarge */
+@media (min-width: 1020px) {
+	.container{
+		width: 960px;
+	}
 }
