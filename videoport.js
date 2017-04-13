@@ -68,23 +68,25 @@ Vue.component(
 			}
 		},
 		template: `
-			<div class="videoport noSelect">
-				<canvas
-					ref="canvas"
-					:width="width"
-					:height="height"
-					/>
-				<div class="overlay" @click="playToggle">
-					<transition-group name="fade">
-						<img key="a" v-if="!decoded" :src="thumbUrl(video)" />
-						<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
-						<video-status-icon key="c" v-if="!ready && started" type="loading" class="rotating" />
-						<video-status-icon key="d" v-if="!started || !playing && ready" type="play" />
-					</transition-group>
-				</div>
-				<div @click="fullscreenToggle">
-					<video-status-icon class="fullscreen" key="off" v-if="!isFullscreen" type="fullscreen" />
-					<video-status-icon class="fullscreen" key="on"  v-if="isFullscreen" type="fullscreenExit" />
+			<div class="videoport noSelect" :class="{fullscreen: isFullscreen}">
+				<div class="aspectEnforcer">
+					<canvas
+						ref="canvas"
+						:width="width"
+						:height="height"
+						/>
+					<div class="overlay" @click="playToggle">
+						<transition-group name="fade">
+							<img key="a" v-if="!decoded" :src="thumbUrl(video)" />
+							<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
+							<video-status-icon key="c" v-if="!ready && started" type="loading" class="rotating" />
+							<video-status-icon key="d" v-if="!started || !playing && ready" type="play" />
+						</transition-group>
+					</div>
+					<div @click="fullscreenToggle">
+						<video-status-icon class="fullscreen" key="off" v-if="!isFullscreen" type="fullscreen" />
+						<video-status-icon class="fullscreen" key="on"  v-if="isFullscreen" type="fullscreenExit" />
+					</div>
 				</div>
 			</div>
 		`
@@ -138,6 +140,7 @@ let Videoport = function(video, vue, canvas){
 	p.canvas = canvas;
 	p.context = canvas.getContext('2d');
 	p.shouldPlay = false;
+	p.lastDisplayedImage = null;
 	p.ready = false;
 	p.playOffset = 0;
 	p.sizeWindow();
@@ -171,8 +174,8 @@ Videoport.prototype = {
 		let frames = p.sourceBuffer.frameCount;
 		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
 		if(currentFrame !== p.prevFrame){
-			let sourceImage = p.sourceBuffer.canvasList[currentFrame];
-			p.context.drawImage(sourceImage, 0, 0, p.width, p.height);
+			p.lastDisplayedImage = p.sourceBuffer.canvasList[currentFrame];
+			p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
 			p.prevFrame = currentFrame;
 		}
 	},
@@ -183,6 +186,11 @@ Videoport.prototype = {
 		p.height = p.canvas.clientHeight * ratio;
 		p.vue.width = p.width;
 		p.vue.height = p.height;
+		if(p.lastDisplayedImage){
+			requestAnimationFrame(function() {
+				p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
+			});
+		}
 	},
 	handleBufferUpdate: function(){
 		let p = this;
@@ -195,6 +203,7 @@ Videoport.prototype = {
 		p.ready = b.ready;
 		let imageIndex = b.ready ? 0 : b.canvasList.length - 1;
 		let image = b.canvasList[imageIndex];
+		p.lastDisplayedImage = image;
 		if(image){
 			//I guess you can't render to a context the instant it's created?
 			requestAnimationFrame(function(){
