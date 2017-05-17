@@ -3,8 +3,8 @@
 let videoAddressPrefix = 'https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/';
 
 let qualitySuffixes = [
-	'960x540-yuv444p-lossless',
-	'1920x1080-yuv444p-lossless',
+	'960x540',
+	'1920x1080',
 ];
 let screenHasHdManyPixels = (Math.max(screen.width, screen.height) * window.devicePixelRatio) > 960;
 let defaultQuality = screenHasHdManyPixels ? 1 : 0;
@@ -17,7 +17,7 @@ let mixinAddresses = {
 			return `${videoAddressPrefix}${video.name}-preview.jpg`;
 		},
 		videoUrl: function(video){
-			return `${videoAddressPrefix}${video.name}-${qualitySuffixes[defaultQuality]}.webm`;
+			return `${videoAddressPrefix}${video.name}-${qualitySuffixes[defaultQuality]}.zip`;
 		}
 	}
 };
@@ -267,7 +267,7 @@ let DecodedFrameBuffer = function(video){
 	b.status = 'Not loaded';
 	b.canvasList = [];
 	b.videoportList = [];
-	b.decoder = new DecoderOGV(b);
+	b.decoder = new DecoderZip(b);
 	b.getTotalSize();
 	decodedFrameBufferMap[video.name] = b;
 };
