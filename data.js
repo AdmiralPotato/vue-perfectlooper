@@ -25,10 +25,68 @@ let ipsum = `
   height: 80px;
 }</code></pre>
 `;
+
+
+
 let videoList = [
 	{
-		title: 'Candy Links - Rainbow',
-		name: 'candy_links_rainbow-48',
+		title: 'Artificial Industrial Inspiration - Alternate',
+		name: 'artificial_industrial_inspiration_orig-24',
+		description: ipsum
+	},
+	{
+		title: 'Artificial Industrial Inspiration',
+		name: 'artificial_industrial_inspiration_alt-24',
+		description: ipsum
+	},
+	{
+		title: 'Bio Lab: Embryo Injector',
+		name: 'bio_lab_embryo_injector-48',
+		description: ipsum
+	},
+	{
+		title: 'CrusaderArts "Red Room" Tribute',
+		name: 'crusaderarts_red_room_tribute-24',
+		description: ipsum
+	},
+	{
+		title: 'Easter Shark Ramps Up For 2017',
+		name: 'easter_shark_2017-60',
+		description: ipsum
+	},
+	{
+		title: 'Easter Shark 2017: Inspected Eggs',
+		name: 'easter_shark_2017_inspected_eggs-48',
+		description: ipsum
+	},
+	{
+		title: 'Ghost Wants Candy Corn',
+		name: 'ghost_wants_candy_corn-96',
+		description: ipsum
+	},
+	{
+		title: 'Ghost Wins At Candy Corn',
+		name: 'ghost_wins_at_candy_corn-24',
+		description: ipsum
+	},
+	{
+		title: 'Hall of The Enlightened Triangles and Domes',
+		name: 'hall_of_the_enlightened_triangles_and_domes-48',
+		description: ipsum
+	},
+	{
+		title: 'Jesters Court Revisited',
+		name: 'jesters_court_revisited-48',
+		description: ipsum
+	},
+	{
+		title: 'Recursive Trefoil Knot: Top',
+		name: 'recursive_trefoil_knot_top-48',
+		description: ipsum
+	},
+	{
+		title: 'Recursive Trefoil Knot: Side',
+		name: 'recursive_trefoil_knot_side-48',
 		description: ipsum
 	},
 	{

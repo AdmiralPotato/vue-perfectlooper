@@ -1,13 +1,23 @@
 "use strict";
 
 let videoAddressPrefix = 'https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/';
+
+let qualitySuffixes = [
+	'960x540-yuv444p-lossless',
+	'1920x1080-yuv444p-lossless',
+];
+let screenHasHdManyPixels = (Math.max(screen.width, screen.height) * window.devicePixelRatio) > 960;
+let defaultQuality = screenHasHdManyPixels ? 1 : 0;
 let mixinAddresses = {
 	methods: {
 		thumbUrl: function(video){
-			return `${videoAddressPrefix}${video.name}.jpg`;
+			return `${videoAddressPrefix}${video.name}-thumb.jpg`;
+		},
+		previewUrl: function(video){
+			return `${videoAddressPrefix}${video.name}-preview.jpg`;
 		},
 		videoUrl: function(video){
-			return `${videoAddressPrefix}${video.name}-1920x1080-yuv420p-20000.hevc`;
+			return `${videoAddressPrefix}${video.name}-${qualitySuffixes[defaultQuality]}.webm`;
 		}
 	}
 };
@@ -98,7 +108,7 @@ Vue.component(
 						/>
 					<div class="overlay" @click="playToggle">
 						<transition-group name="fade">
-							<img key="a" v-if="!decoded" :src="thumbUrl(video)" />
+							<img key="a" v-if="!decoded" :src="previewUrl(video)" />
 							<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
 							<video-status-icon key="c" class="large rotating" v-if="!ready && started" type="loading" />
 							<video-status-icon key="d" class="large" v-if="!started || !playing && ready" type="play" />
@@ -257,7 +267,7 @@ let DecodedFrameBuffer = function(video){
 	b.status = 'Not loaded';
 	b.canvasList = [];
 	b.videoportList = [];
-	b.decoder = new DecoderHEVC(b);
+	b.decoder = new DecoderOGV(b);
 	b.getTotalSize();
 	decodedFrameBufferMap[video.name] = b;
 };
