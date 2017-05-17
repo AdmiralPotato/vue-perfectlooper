@@ -219,6 +219,9 @@ header nav li a{
 	border: 1px solid #999;
 	background-color: #666;
 }
+.videoHolder{
+	border-width: 1px 0;
+}
 .thumb,
 .video{
 	display: block;
@@ -388,6 +391,9 @@ ul, ol{
 	.box.forText,
 	.box.forVideo{
 		margin-bottom: 1rem;
+	}
+	.videoHolder{
+		border-width: 1px;
 	}
 	.video-list{
 		margin: -0.5rem;

@@ -77,15 +77,20 @@ Vue.component(
 				v.videoport.setPlay(v.playing);
 			},
 			fullscreenToggle: function(){
+				let canFullScreen = this.$el.requestFullscreen !== undefined;
 				this.activity();
-				if (!document.fullscreenElement) {
-					this.isFullscreen = true;
-					this.$el.requestFullscreen();
-				} else {
-					if (document.exitFullscreen) {
-						this.isFullscreen = false;
-						document.exitFullscreen();
+				if(canFullScreen){
+					if (!document.fullscreenElement) {
+						this.isFullscreen = true;
+						this.$el.requestFullscreen();
+					} else {
+						if (document.exitFullscreen) {
+							this.isFullscreen = false;
+							document.exitFullscreen();
+						}
 					}
+				} else {
+					this.$el.scrollIntoView();
 				}
 			}
 		},
