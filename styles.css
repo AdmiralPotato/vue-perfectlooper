@@ -257,9 +257,14 @@ header nav li a{
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	padding: 1rem;
+	padding: 0.5rem 1rem;
 	background-color: rgba(0,0,0,0.5);
 	border-radius: 0 1rem 0 0;
+}
+.videoport .statusMessage div{
+	height: 1.5rem;
+	line-height: 1.5rem;
+	font-size: 1rem;
 }
 .videoport .overlay .video-status-icon{
 	display: block;

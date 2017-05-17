@@ -13,11 +13,13 @@ DecoderZip.prototype = {
 		let request = new XMLHttpRequest();
 		request.open("get", url, true);
 		request.responseType = "arraybuffer";
+		decoder.decodedFrameBuffer.handleDecoderLoadStart();
 		request.onprogress = function(event) {
 			decoder.decodedFrameBuffer.handleDecoderLoadProgress(event);
 		};
 		request.onload = function(event) {
 			let data = event.target.response;
+			decoder.decodedFrameBuffer.handleDecoderDecodeStart();
 			decoder.decompressZipData(data);
 		};
 		request.send();
@@ -59,6 +61,6 @@ DecoderZip.prototype = {
 			decoder.decodedFrameBuffer.handleDecoderFrame(image);
 		});
 		image.src = 'data:image/jpg;base64,' + base64;
-		decoder.stopDecodeTime = '' + decoder.decodedFrameBuffer.canvasList.length + ':' + ((window.performance.now() - decoder.startDecodeTime) / 1000).toFixed(2);
+		decoder.stopDecodeTime = '' + decoder.decodedFrameBuffer.imageList.length + ':' + ((window.performance.now() - decoder.startDecodeTime) / 1000).toFixed(2);
 	}
 };

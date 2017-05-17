@@ -77,7 +77,6 @@ Vue.component(
 				v.videoport.setPlay(v.playing);
 			},
 			fullscreenToggle: function(){
-				console.log(this.isFullscreen);
 				this.activity();
 				if (!document.fullscreenElement) {
 					this.isFullscreen = true;
@@ -109,7 +108,11 @@ Vue.component(
 					<div class="overlay" @click="playToggle">
 						<transition-group name="fade">
 							<img key="a" v-if="!decoded" :src="previewUrl(video)" />
-							<div key="b" v-if="!ready" class="statusMessage">{{statusMessage}} - Loaded: {{loaded.toFixed(2)}} - Decoded: {{decoded.toFixed(2)}}</div>
+							<div key="b" v-if="!ready" class="statusMessage">
+								<div>{{statusMessage}}</div>
+								<div>Loaded: {{loaded.toFixed(2)}}</div>
+								<div>Decoded: {{decoded.toFixed(2)}}</div>
+							</div>
 							<video-status-icon key="c" class="large rotating" v-if="!ready && started" type="loading" />
 							<video-status-icon key="d" class="large" v-if="!started || !playing && ready" type="play" />
 						</transition-group>
@@ -180,6 +183,7 @@ let Videoport = function(video, vue, canvas){
 	p.canvas = canvas;
 	p.context = canvas.getContext('2d');
 	p.shouldPlay = false;
+	p.scaledCanvasList = [];
 	p.lastDisplayedImage = null;
 	p.ready = false;
 	p.playOffset = 0;
@@ -194,6 +198,7 @@ Videoport.prototype = {
 	fps: 24,
 	die: function(){
 		this.sourceBuffer.removeVideoport(this);
+		this.scaledCanvasList = [];
 		arrayRemove(videoportList, this);
 	},
 	setPlay: function(shouldPlay){
@@ -214,10 +219,32 @@ Videoport.prototype = {
 		let frames = p.sourceBuffer.frameCount;
 		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
 		if(currentFrame !== p.prevFrame){
-			p.lastDisplayedImage = p.sourceBuffer.canvasList[currentFrame];
-			p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(currentFrame);
+			p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			p.prevFrame = currentFrame;
 		}
+	},
+	getScaledCanvasByFrameIndex: function (frameIndex) {
+		let p = this;
+		let list = p.scaledCanvasList;
+		let canvas = list[frameIndex] || document.createElement('canvas');
+		let needUpdate = (
+			!list[frameIndex] ||
+			canvas.width !== p.width ||
+			canvas.height !== p.height
+		);
+		if(needUpdate){
+			let imageSource = p.sourceBuffer.imageList[frameIndex];
+			let context = canvas.getContext('2d');
+			canvas.width = p.width;
+			canvas.height = p.height;
+			context.drawImage(imageSource, 0, 0, p.width, p.height);
+
+			if(!list[frameIndex]){
+				list[frameIndex] = canvas;
+			}
+		}
+		return canvas;
 	},
 	sizeWindow: function () {
 		let p = this;
@@ -241,13 +268,13 @@ Videoport.prototype = {
 		vue.decoded = b.decoded;
 		vue.ready = b.ready;
 		p.ready = b.ready;
-		let imageIndex = b.ready ? 0 : b.canvasList.length - 1;
-		let image = b.canvasList[imageIndex];
-		p.lastDisplayedImage = image;
+		let imageIndex = b.ready ? 0 : b.imageList.length - 1;
+		let image = b.imageList[imageIndex];
 		if(image){
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(imageIndex);
 			//I guess you can't render to a context the instant it's created?
 			requestAnimationFrame(function(){
-				p.context.drawImage(image, 0, 0, p.width, p.height);
+				p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
 			});
 		}
 	}
@@ -265,7 +292,7 @@ let DecodedFrameBuffer = function(video){
 	b.decoded = 0;
 	b.ready = false;
 	b.status = 'Not loaded';
-	b.canvasList = [];
+	b.imageList = [];
 	b.videoportList = [];
 	b.decoder = new DecoderZip(b);
 	b.getTotalSize();
@@ -291,7 +318,7 @@ DecodedFrameBuffer.prototype = {
 		let sizeRequest = new XMLHttpRequest();
 		sizeRequest.open("head", b.videoAddress, true);
 		sizeRequest.onload = function(event){
-			b.totalSize = parseInt(event.total, 10);
+			b.totalSize = parseInt(event.total, 10) || b.frameCount * 512 * 1024;
 		};
 		sizeRequest.send();
 	},
@@ -309,6 +336,9 @@ DecodedFrameBuffer.prototype = {
 		this.updateVideoports();
 	},
 	handleDecoderLoadProgress: function(loadingProgressEvent){
+		if(loadingProgressEvent.total){
+			this.totalSize = loadingProgressEvent.total;
+		}
 		let loaded = Math.floor(loadingProgressEvent.loaded / 1024);
 		let total = Math.floor(this.totalSize / 1024);
 		this.status = `Loading ${loaded} / ${total || '??'} KB`;
@@ -322,7 +352,7 @@ DecodedFrameBuffer.prototype = {
 	},
 	handleDecoderFrame: function(frameCanvas){
 		let b = this;
-		let framesLoaded = b.canvasList.push(frameCanvas);
+		let framesLoaded = b.imageList.push(frameCanvas);
 		b.decoded = framesLoaded / b.frameCount;
 		b.lastStoredFrame = frameCanvas;
 		b.status = `Decoded ${framesLoaded} / ${b.frameCount} frames`;
