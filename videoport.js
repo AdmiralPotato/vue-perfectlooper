@@ -261,7 +261,8 @@ Videoport.prototype = {
 		p.vue.height = p.height;
 		if(p.lastDisplayedImage){
 			requestAnimationFrame(function() {
-				p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
+				p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
+				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
 		}
 	},
