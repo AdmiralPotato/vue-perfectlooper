@@ -275,10 +275,10 @@ Videoport.prototype = {
 		vue.decoded = b.decoded;
 		vue.ready = b.ready;
 		p.ready = b.ready;
-		let imageIndex = b.ready ? 0 : b.imageList.length - 1;
-		let image = b.imageList[imageIndex];
+		p.prevFrame = b.ready ? 0 : b.imageList.length - 1;
+		let image = b.imageList[p.prevFrame];
 		if(image){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(imageIndex);
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 			//I guess you can't render to a context the instant it's created?
 			requestAnimationFrame(function(){
 				p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
