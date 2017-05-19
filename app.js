@@ -136,14 +136,16 @@ let app = new Vue({
 						</ul>
 					</nav>
 				</header>
-				<transition
-					name="fadeOutRight"
-					mode="out-in"
-					enter-active-class="animated fadeInRight"
-					leave-active-class="animated fadeOutLeft"
-					>
-					<component :is="state.activePage" :state="state"></component>
-				</transition>
+				<div class="page-content">
+					<transition
+						name="fadeOutRight"
+						mode="out-in"
+						enter-active-class="animated fadeInRight"
+						leave-active-class="animated fadeOutLeft"
+						>
+						<component :is="state.activePage" :state="state"></component>
+					</transition>
+				</div>
 			</div>
 		</div>
 	`

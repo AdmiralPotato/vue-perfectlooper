@@ -1,3 +1,9 @@
+html {
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -52,14 +58,14 @@ body {
 	bottom: 0;
 }
 .backgroundImage{
-	background-image: url('https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/networking-48-thumb.jpg');
+	background-image: url('https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/networking-48-preview.jpg');
 	background-repeat: no-repeat;
 	background-size: 180vmax;
 	background-position: top center;
 	opacity: 0.5;
 }
 .dots{
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><ellipse fill="rgba(255,255,255,0.075)" cx="12" cy="12" rx="1.5" ry="1.5" /></svg>');
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="0 0 48 48"><ellipse fill="rgba(255,255,255,0.075)" cx="24" cy="24" rx="1.75" ry="1.75" /></svg>');
 	background-repeat: repeat;
 	background-position: top center;
 }
@@ -112,24 +118,25 @@ body a:visited{
 }
 
 header{
-	padding: 0 1rem;
-	overflow: hidden;
+	padding: 0.875rem 1rem 0 1rem;
+	height: 5.5rem;
+}
+header *{
+	line-height: 2rem;
 }
 header .brand{
-	padding-top: 0.75rem;
 	overflow: hidden;
+	text-align: center;
 }
 header .brand h1 {
-	line-height: 2.5rem;
-	float: left;
 	margin: 0;
 }
 header .brand h4 {
 	display: none;
+	position: relative;
 	font-size: 0.75rem;
-	color: #666;
-	line-height: 0.75rem;
-	padding-top: 1.125rem;
+	color: rgba(255, 255, 255, 0.125);
+	top: 0.25rem;
 	padding-left: 0.25rem;
 	margin: 0;
 	float: left;
@@ -137,8 +144,6 @@ header .brand h4 {
 
 header nav {
 	text-align: center;
-	line-height: 2.5rem;
-	padding-bottom: 0.5rem;
 }
 header nav ul{
 	display: flex;
@@ -165,12 +170,11 @@ header nav li a{
 .box {
 	display: block;
 	position: relative;
-	padding: 1rem;
+	padding: 0.5rem;
 }
 
 .box.forVideo {
 	padding: 0;
-	margin: -1px;
 }
 
 .box.forText {
@@ -188,7 +192,7 @@ header nav li a{
 .video-list{
 	display: flex;
 	flex-flow: row wrap;
-	margin: -0.5rem 0.75rem 0 0.75rem;
+	padding: 0 0.5rem;
 }
 .video-list-item{
 	flex: 1 50%;
@@ -196,10 +200,8 @@ header nav li a{
 }
 .video-list-item a{
 	display: block;
-	padding: 0.5rem;
 }
 .video-list-item .box{
-	padding: 0;
 }
 .video-list-item .box .titleHolder {
 	display: none;
@@ -217,10 +219,12 @@ header nav li a{
 	position: relative;
 	line-height: 0;
 	border: 1px solid #999;
+	margin: -1px;
 	background-color: #666;
 }
 .videoHolder{
 	border-width: 1px 0;
+	margin: -1px 0;
 }
 .thumb,
 .video{
@@ -347,6 +351,9 @@ ul, ol{
 
 /* small */
 @media (min-width: 480px) {
+	header .brand h1 {
+		float: left;
+	}
 	header .brand h4 {
 		display: block;
 	}
@@ -358,12 +365,20 @@ ul, ol{
 	}
 	header{
 		display: flex;
-		padding: 0 0 0.75rem 0;
+		height: 6rem;
+	}
+	header *{
+		line-height: 4rem;
 	}
 	header .brand,
 	header nav{
-		padding-top: 0.875rem;
 		flex-grow: 1;
+	}
+	header .brand{
+		text-align: left;
+	}
+	header nav {
+		text-align: right;
 	}
 	.box:before{
 		content: ' ';
@@ -388,15 +403,15 @@ ul, ol{
 		padding: 1rem;
 		margin: 0;
 	}
-	.box.forText,
-	.box.forVideo{
-		margin-bottom: 1rem;
-	}
 	.videoHolder{
 		border-width: 1px;
+		margin: -1px;
+	}
+	.page-content{
+		padding: 0 1rem;
 	}
 	.video-list{
-		margin: -0.5rem;
+		padding: 0;
 	}
 	.video-list-item .box{
 		padding: 1rem 1rem 0 1rem;
@@ -411,7 +426,7 @@ ul, ol{
 /* medium */
 @media (min-width: 720px) {
 	.container{
-		width: 704px;
+		width: 672px;
 		padding: 0 0 1rem 0;
 		margin: 0 auto;
 	}
@@ -421,18 +436,18 @@ ul, ol{
 	}
 }
 /* large */
-@media (min-width: 920px) {
+@media (min-width: 832px) {
 	.container{
-		width: 846px;
-	}
-	.video-list-item{
-		flex: 1 25%;
-		max-width: 25%;
+		width: 752px;
 	}
 }
 /* xlarge */
 @media (min-width: 1020px) {
 	.container{
-		width: 944px;
+		width: 992px;
+	}
+	.video-list-item{
+		flex: 1 25%;
+		max-width: 25%;
 	}
 }
