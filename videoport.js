@@ -243,6 +243,7 @@ Videoport.prototype = {
 			let context = canvas.getContext('2d');
 			canvas.width = p.width;
 			canvas.height = p.height;
+			context.imageSmoothingQuality = "high";
 			context.drawImage(imageSource, 0, 0, p.width, p.height);
 
 			if(!list[frameIndex]){
