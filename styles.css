@@ -56,18 +56,23 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform : translate3d(0, 0, 0);
 }
 .backgroundImage{
-	background-image: url('https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/networking-48-preview.jpg');
+	background-image: url('https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/networking-48-thumb.jpg');
 	background-repeat: no-repeat;
-	background-size: 180vmax;
+	background-size: cover;
 	background-position: top center;
 	opacity: 0.5;
 }
 .dots{
 	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="0 0 48 48"><ellipse fill="rgba(255,255,255,0.075)" cx="24" cy="24" rx="1.75" ry="1.75" /></svg>');
 	background-repeat: repeat;
-	background-position: top center;
+	background-position-y: -1.5rem;
+	background-position-x: center;
 }
 
 h1, h2, h3, h4, p, pre{
@@ -85,7 +90,7 @@ pre{
 	font-family: monospace;
 	background-color: rgba(0,0,0,0.5);
 	padding: 0.5rem 1rem;
-	border-radius: 0.5rem;
+	border-radius: 0.25rem;
 }
 
 body a,
@@ -114,15 +119,21 @@ body a:visited{
 
 .container{
 	position: relative;
-	padding-bottom: 1rem;
+	margin: 0 auto;
+	top: 0;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform : translate3d(0, 0, 0);
 }
 
 header{
-	padding: 0.875rem 1rem 0 1rem;
-	height: 5.5rem;
+	padding: 0 1rem;
+	height: 6rem;
 }
 header *{
-	line-height: 2rem;
+	line-height: 2.75rem;
+}
+header > * {
+	height: 3rem;
 }
 header .brand{
 	overflow: hidden;
@@ -157,6 +168,12 @@ header nav li a{
 	display: block;
 }
 
+.page-content{
+	position: relative;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform : translate3d(0, 0, 0);
+}
+
 .noSelect,
 .noSelect *{
 	-webkit-user-select: none;
@@ -173,19 +190,15 @@ header nav li a{
 	padding: 0.5rem;
 }
 
-.box.forVideo {
-	padding: 0;
-}
-
 .box.forText {
 	padding: 0.25rem 1rem;
 }
 
-.box:hover:before{
+a .box:hover:before{
 	opacity: 0.5;
 }
-.box:active:before,
-.box:focus:before{
+a .box:active:before,
+a .box:focus:before{
 	opacity: 0.75;
 }
 
@@ -212,19 +225,33 @@ header nav li a{
 	padding: 0;
 }
 
+.video-theatre{
+	position: relative;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.theatre-fade{
+	position: relative;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5));
+	height: 1rem;
+}
+.video-description{
+	position: relative;
+	background-color: rgba(0, 0, 0, 0.25);
+}
 
 .videoHolder,
 .thumbHolder {
 	display: block;
 	position: relative;
 	line-height: 0;
-	border: 1px solid #999;
-	margin: -1px;
-	background-color: #666;
 }
 .videoHolder{
 	border-width: 1px 0;
 	margin: -1px 0;
+}
+.thumbHolder{
+	border: 1px solid rgba(255, 255, 255, 0.125);
+	margin: -1px;
 }
 .thumb,
 .video{
@@ -351,34 +378,35 @@ ul, ol{
 
 /* small */
 @media (min-width: 480px) {
-	header .brand h1 {
-		float: left;
-	}
-	header .brand h4 {
-		display: block;
-	}
 }
 /* medium */
 @media (min-width: 628px) {
-	.container {
-		padding: 0 1rem;
-	}
 	header{
-		display: flex;
-		height: 6rem;
+		position: relative;
+		padding: 0;
 	}
 	header *{
 		line-height: 4rem;
 	}
 	header .brand,
 	header nav{
-		flex-grow: 1;
+		top: 1rem;
+		position: absolute;
 	}
 	header .brand{
+		left: 1.5rem;
 		text-align: left;
 	}
+	header .brand h1 {
+		float: left;
+	}
+	header .brand h4 {
+		display: block;
+	}
 	header nav {
-		text-align: right;
+		right: 0;
+		text-align: center;
+		width: 18rem;
 	}
 	.box:before{
 		content: ' ';
@@ -399,16 +427,9 @@ ul, ol{
 		background-repeat: no-repeat;
 		background-position: top left, top right, bottom right, bottom left;
 	}
-	.box.forVideo {
-		padding: 1rem;
-		margin: 0;
-	}
 	.videoHolder{
-		border-width: 1px;
-		margin: -1px;
-	}
-	.page-content{
-		padding: 0 1rem;
+		border-width: 0;
+		margin: 0;
 	}
 	.video-list{
 		padding: 0;
@@ -425,9 +446,17 @@ ul, ol{
 }
 /* medium */
 @media (min-width: 720px) {
+	.backgroundImage{
+		background-image: url('https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/networking-48-preview.jpg');
+	}
+	.dots{
+		background-position-x: calc(50% - 24px);
+	}
+	header{
+		height: 6rem;
+	}
 	.container{
-		width: 672px;
-		padding: 0 0 1rem 0;
+		width: 720px;
 		margin: 0 auto;
 	}
 	.video-list-item{
@@ -435,16 +464,13 @@ ul, ol{
 		max-width: 33.3333333%;
 	}
 }
-/* large */
-@media (min-width: 832px) {
-	.container{
-		width: 752px;
-	}
-}
 /* xlarge */
-@media (min-width: 1020px) {
+@media (min-width: 960px) {
+	.dots{
+		background-position-x: center;
+	}
 	.container{
-		width: 992px;
+		width: 960px;
 	}
 	.video-list-item{
 		flex: 1 25%;

@@ -9,7 +9,7 @@ Vue.component(
 	'contact',
 	{
 		template: `
-		<div class="contact" v-once>
+		<div class="contact container" v-once>
 			<div class="box forText"><h1>Contact</h1></div>
 		</div>
 		`
@@ -20,7 +20,7 @@ Vue.component(
 	'about',
 	{
 		template: `
-		<div class="about" v-once>
+		<div class="about container" v-once>
 			<div class="box forText">
 				<h1>About</h1>
 				<p>Hi. My name is <a href="http://nuclearpixel.com/">Admiral Potato</a>. Welcome to my perfectly-looping Video Portfolio. I put a lot of work into making online experience looks as good as it does, so let's make it sound impressive with some buzzwords. This is a first-of-its-kind Marble Friendly Intersite Webbernet Wapp with Lazor Synthesized Virtual Shadow Dog Crumpitulation.</p>
@@ -47,15 +47,22 @@ Vue.component(
 		},
 		template: `
 			<div class="video-detail">
-				<div class="box forVideo">
-					<div class="videoHolder">
-						<div class="video">
-							<videoport :video="video" />
+				<div class="video-theatre">
+					<div class="container">
+						<div class="videoHolder">
+							<div class="video">
+								<videoport :video="video" />
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="box forText"><h1>{{video.title}}</h1></div>
-				<div class="box forText" v-html="video.description"></div>
+				<div class="theatre-fade"></div>
+				<div class="video-description">
+					<div class="container">
+						<div class="box forText"><h1>{{video.title}}</h1></div>
+						<div class="box forText" v-html="video.description"></div>
+					</div>
+				</div>
 			</div>
 		`
 	}
@@ -70,11 +77,13 @@ Vue.component(
 			};
 		},
 		template: `
-			<div class="video-list noSelect">
-				<video-list-item
-					v-for="video in videoList"
-					:video="video"
-					:key="video.name" />
+			<div class="container">
+				<div class="video-list noSelect">
+					<video-list-item
+						v-for="video in videoList"
+						:video="video"
+						:key="video.name" />
+				</div>
 			</div>
 		`
 	}
@@ -122,31 +131,30 @@ let app = new Vue({
 		<div class="root">
 			<div class="backgroundImage"></div>
 			<div class="dots"></div>
-			<div class="container">
-				<header>
-					<div class="brand">
-						<h1 tabindex="0" @click="navigate('video-list');"><em>Video</em>.NuclearPixel.com</h1>
-						<h4>v0.0.1</h4>
-					</div>
-					<nav>
-						<ul>
-							<li><a tabindex="0" @click="navigate('video-list')">Videos</a></li>
-							<li><a tabindex="0" @click="navigate('about')">About</a></li>
-							<li><a tabindex="0" @click="navigate('contact')">Contact</a></li>
-						</ul>
-					</nav>
-				</header>
-				<div class="page-content">
-					<transition
-						name="fadeOutRight"
-						mode="out-in"
-						enter-active-class="animated fadeInRight"
-						leave-active-class="animated fadeOutLeft"
-						>
-						<component :is="state.activePage" :state="state"></component>
-					</transition>
+			<header class="container">
+				<div class="brand">
+					<h1 tabindex="0" @click="navigate('video-list');"><em>Video</em>.NuclearPixel.com</h1>
+					<h4>v0.0.1</h4>
 				</div>
+				<nav>
+					<ul>
+						<li><a tabindex="0" @click="navigate('video-list')">Videos</a></li>
+						<li><a tabindex="0" @click="navigate('about')">About</a></li>
+						<li><a tabindex="0" @click="navigate('contact')">Contact</a></li>
+					</ul>
+				</nav>
+			</header>
+			<div class="page-content">
+				<transition
+					name="fadeOutRight"
+					mode="out-in"
+					enter-active-class="animated fadeInRight"
+					leave-active-class="animated fadeOutLeft"
+					>
+					<component :is="state.activePage" :state="state"></component>
+				</transition>
 			</div>
+		</div>
 		</div>
 	`
 });
