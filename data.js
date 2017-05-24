@@ -160,3 +160,8 @@ let videoList = [
 		description: ipsum
 	}
 ];
+
+let videoMap = {};
+videoList.forEach(function(video){
+	videoMap[video.name] = video;
+});

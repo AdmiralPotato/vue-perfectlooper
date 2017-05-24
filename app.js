@@ -5,7 +5,7 @@ let state = {
 	activeVideo: undefined
 };
 
-Vue.component(
+let Contact = Vue.component(
 	'contact',
 	{
 		template: `
@@ -16,7 +16,7 @@ Vue.component(
 	}
 );
 
-Vue.component(
+let About = Vue.component(
 	'about',
 	{
 		template: `
@@ -33,20 +33,19 @@ Vue.component(
 	}
 );
 
-Vue.component(
+let VideoDetail = Vue.component(
 	'video-detail',
 	{
-		props: {
-			state: Object
-		},
 		created: function(){
-			this.video = this.state.activeVideo;
+			this.video = videoMap[this.$route.params.videoName];
 			if(!this.video){
-				state.activePage = 'video-list';
+				console.log('Video not found.');
+				router.replace('/');
+				router.go('/');
 			}
 		},
 		template: `
-			<div class="video-detail">
+			<div class="video-detail" v-if="video">
 				<div class="video-theatre">
 					<div class="container">
 						<div class="videoHolder">
@@ -68,7 +67,7 @@ Vue.component(
 	}
 );
 
-Vue.component(
+let VideoList = Vue.component(
 	'video-list',
 	{
 		data: function(){
@@ -96,28 +95,45 @@ Vue.component(
 		props: {
 			video: Object
 		},
-		methods: {
-			navigateToVideo: function(){
-				state.activeVideo = this.video;
-				state.activePage = 'video-detail';
-				window.scrollTo(0, 0);
-			}
-		},
 		template: `
 			<div class="video-list-item">
-				<a @click="navigateToVideo" tabindex="0">
+				<router-link :to="'/video/' + video.name">
 					<span class="box">
 						<span class="thumbHolder"><span class="thumb"><img :src="thumbUrl(video)" /></span></span>
 						<span class="titleHolder"><span class="title">{{video.title}}</span></span>
 					</span>
-				</a>
+				</router-link>
 			</div>
 		`
 	}
 );
 
+let router = new VueRouter({
+	mode: 'hash',
+	routes: [
+		{path: '/', component: VideoList},
+		{path: '/video/:videoName', component: VideoDetail},
+		{path: '/about/', component: About},
+		{path: '/contact/', component: Contact},
+	],
+	scrollBehavior: function(to, from, savedPosition) {
+		//works nicely, but only works when mode = 'history'
+		//enable when I solve the 404 aspect in a pleasing manner
+		if (savedPosition) {
+			return savedPosition
+		} else {
+			return { x: 0, y: 0 };
+		}
+	}
+});
+router.afterEach(function(){
+	//temporary until 404 fix, see above
+	window.scrollTo(0, 0);
+});
+
 let app = new Vue({
 	el: '#appHolder',
+	router: router,
 	data: {
 		state: state
 	},
@@ -133,14 +149,14 @@ let app = new Vue({
 			<div class="dots"></div>
 			<header class="container">
 				<div class="brand">
-					<h1 tabindex="0" @click="navigate('video-list');"><em>Video</em>.NuclearPixel.com</h1>
+					<h1><router-link to="/"><em>Video</em>.NuclearPixel.com</router-link></h1>
 					<h4>v0.0.1</h4>
 				</div>
 				<nav>
 					<ul>
-						<li><a tabindex="0" @click="navigate('video-list')">Videos</a></li>
-						<li><a tabindex="0" @click="navigate('about')">About</a></li>
-						<li><a tabindex="0" @click="navigate('contact')">Contact</a></li>
+						<li><router-link to="/">Videos</router-link></li>
+						<li><router-link to="/about/">About</router-link></li>
+						<li><router-link to="/contact/">Contact</router-link></li>
 					</ul>
 				</nav>
 			</header>
@@ -151,7 +167,7 @@ let app = new Vue({
 					enter-active-class="animated fadeInRight"
 					leave-active-class="animated fadeOutLeft"
 					>
-					<component :is="state.activePage" :state="state"></component>
+					<router-view />
 				</transition>
 			</div>
 		</div>
