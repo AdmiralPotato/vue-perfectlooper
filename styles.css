@@ -241,6 +241,7 @@ a .box:focus:before{
 .video-description{
 	position: relative;
 	background-color: rgba(0, 0, 0, 0.25);
+	padding-bottom: 1rem;
 }
 
 .videoHolder,
@@ -415,6 +416,7 @@ ul, ol{
 	.box:before{
 		content: ' ';
 		position: absolute;
+		z-index: -1;
 		display: block;
 		top: 0;
 		bottom: 0;

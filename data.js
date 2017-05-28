@@ -30,13 +30,18 @@ let ipsum = `
 
 let videoList = [
 	{
+		title: 'Electric Flower',
+		name: 'electric_flower-48',
+		description: ipsum
+	},
+	{
 		title: 'Artificial Industrial Inspiration - Alternate',
-		name: 'artificial_industrial_inspiration_orig-24',
+		name: 'artificial_industrial_inspiration_alt-24',
 		description: ipsum
 	},
 	{
 		title: 'Artificial Industrial Inspiration',
-		name: 'artificial_industrial_inspiration_alt-24',
+		name: 'artificial_industrial_inspiration_orig-24',
 		description: ipsum
 	},
 	{
