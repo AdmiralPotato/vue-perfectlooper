@@ -266,7 +266,9 @@ Videoport.prototype = {
 		p.width = p.canvas.clientWidth * ratio;
 		p.height = p.canvas.clientHeight * ratio;
 		p.vue.resize(p.width, p.height);
-		if(p.lastDisplayedImage){
+		if(!p.width || !p.height){
+			requestAnimationFrame(function(){p.sizeWindow();});
+		} else if(p.lastDisplayedImage){
 			requestAnimationFrame(function() {
 				p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
@@ -288,7 +290,7 @@ Videoport.prototype = {
 			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 			//I guess you can't render to a context the instant it's created?
 			requestAnimationFrame(function(){
-				p.context.drawImage(p.lastDisplayedImage, 0, 0, p.width, p.height);
+				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
 		}
 	}
