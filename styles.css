@@ -244,28 +244,21 @@ a .box:focus:before{
 	padding-bottom: 1rem;
 }
 
-.videoHolder,
 .thumbHolder {
 	display: block;
 	position: relative;
 	line-height: 0;
 }
-.videoHolder{
-	border-width: 1px 0;
-	margin: -1px 0;
-}
 .thumbHolder{
 	border: 1px solid rgba(255, 255, 255, 0.125);
 	margin: -1px;
 }
-.thumb,
-.video{
+.thumb{
 	display: block;
 	padding-bottom: 56.25%;
 	cursor: pointer;
 }
 .thumb img,
-.videoport,
 .videoport canvas,
 .videoport img,
 .videoport .overlay{
@@ -274,13 +267,15 @@ a .box:focus:before{
 	width: 100%;
 	height: 100%;
 }
+
 .videoport{
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	display: block;
+	position: relative;
 }
 .videoport.fullscreen{
-	max-width: 177.77777777777777vmin;
+	max-width: 177.77777777777777vmin; /* enforces aspect when superwide... chrome only? TODO: multi-browser fixes */
+	height: 100%;
+	width: 100%;
 }
 .videoport.hideCursor{
 	cursor: none;
@@ -289,8 +284,12 @@ a .box:focus:before{
 	position: relative;
 	height: 0;
 	padding-bottom: 56.25%;
-	margin: 0 auto;
 	width: 100%;
+}
+.videoport.fullscreen .aspectEnforcer{
+	-webkit-transform: translate3d(0, -50%, 0);
+	transform: translate3d(0, -50%, 0);
+	top: 50%;
 }
 .videoport .statusMessage{
 	position: absolute;
@@ -424,18 +423,14 @@ ul, ol{
 		right: 0;
 		opacity: 0.25;
 		background-image:
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(  0 12 12)" stroke="rgb(255,255,255)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate( 90 12 12)" stroke="rgb(255,255,255)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(180 12 12)" stroke="rgb(255,255,255)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>'),
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><polyline transform="rotate(-90 12 12)" stroke="rgb(255,255,255)" stroke-width="1" stroke-linecap="round" fill="none" stroke-linejoin="round" points="2,22 2,2 22,2" /></svg>');
 	}
 	.box:before {
 		background-repeat: no-repeat;
 		background-position: top left, top right, bottom right, bottom left;
-	}
-	.videoHolder{
-		border-width: 0;
-		margin: 0;
 	}
 	.video-list{
 		padding: 0;

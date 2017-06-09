@@ -48,11 +48,7 @@ let VideoDetail = Vue.component(
 			<div class="video-detail" v-if="video">
 				<div class="video-theatre">
 					<div class="container">
-						<div class="videoHolder">
-							<div class="video">
-								<videoport :video="video" />
-							</div>
-						</div>
+						<videoport :video="video" />
 					</div>
 				</div>
 				<div class="theatre-fade"></div>

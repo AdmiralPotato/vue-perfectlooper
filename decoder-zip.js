@@ -28,7 +28,6 @@ DecoderZip.prototype = {
 	decompressZipData: function (data) {
 		let decoder = this;
 		decoder.zip.loadAsync(data).then(function (zip) {
-			console.log('zip:', zip);
 			let imageNameList = [];
 			for(let propertyName in zip.files){
 				if(zip.files.hasOwnProperty(propertyName)){
@@ -36,7 +35,6 @@ DecoderZip.prototype = {
 				}
 			}
 			imageNameList.sort();
-			console.log();
 			let nextIndex = 0;
 			let getNextImage = function(){
 				zip.files[imageNameList[nextIndex]]

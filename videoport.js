@@ -76,11 +76,19 @@ Vue.component(
 				v.playing = !v.playing;
 				v.videoport.setPlay(v.playing);
 			},
+			resize: function (width, height) {
+				this.width = width;
+				this.height = height;
+				this.isFullscreen = document.fullscreenElement === this.$el;
+			},
 			fullscreenToggle: function(){
 				let canFullScreen = this.$el.requestFullscreen !== undefined;
 				this.activity();
 				if(canFullScreen){
-					if (!document.fullscreenElement) {
+					if (
+						!document.fullscreenElement ||
+						document.fullscreenElement !== this.$el
+					) {
 						this.isFullscreen = true;
 						this.$el.requestFullscreen();
 					} else {
@@ -257,8 +265,7 @@ Videoport.prototype = {
 		let ratio = window['devicePixelRatio'] || 1;
 		p.width = p.canvas.clientWidth * ratio;
 		p.height = p.canvas.clientHeight * ratio;
-		p.vue.width = p.width;
-		p.vue.height = p.height;
+		p.vue.resize(p.width, p.height);
 		if(p.lastDisplayedImage){
 			requestAnimationFrame(function() {
 				p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
