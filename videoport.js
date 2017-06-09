@@ -85,15 +85,10 @@ Vue.component(
 				let canFullScreen = this.$el.requestFullscreen !== undefined;
 				this.activity();
 				if(canFullScreen){
-					if (
-						!document.fullscreenElement ||
-						document.fullscreenElement !== this.$el
-					) {
-						this.isFullscreen = true;
+					if (!this.isFullscreen) {
 						this.$el.requestFullscreen();
 					} else {
 						if (document.exitFullscreen) {
-							this.isFullscreen = false;
 							document.exitFullscreen();
 						}
 					}
@@ -263,14 +258,20 @@ Videoport.prototype = {
 	sizeWindow: function () {
 		let p = this;
 		let ratio = window['devicePixelRatio'] || 1;
-		p.width = p.canvas.clientWidth * ratio;
-		p.height = p.canvas.clientHeight * ratio;
+		let newWidth = p.canvas.clientWidth * ratio;
+		let newHeight = p.canvas.clientHeight * ratio;
+		let isCanvasInvalid = !newWidth || !newHeight;
+		let needsAnotherSizeUpdateBecauseSlowFullscreen = p.width !== newWidth || p.height !== newHeight;
+		let hasAnyFrameDecodedYet = p.lastDisplayedImage !== null;
+		p.width = newWidth;
+		p.height = newHeight;
 		p.vue.resize(p.width, p.height);
-		if(!p.width || !p.height){
+		if(isCanvasInvalid || needsAnotherSizeUpdateBecauseSlowFullscreen){
 			requestAnimationFrame(function(){p.sizeWindow();});
-		} else if(p.lastDisplayedImage){
+		}
+		if(!isCanvasInvalid && hasAnyFrameDecodedYet){
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 			requestAnimationFrame(function() {
-				p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
 		}
