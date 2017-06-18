@@ -280,6 +280,11 @@ a .box:focus:before{
 .videoport.hideCursor{
 	cursor: none;
 }
+.videoport canvas,
+.videoport .overlay{
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
 .videoport .aspectEnforcer{
 	position: relative;
 	height: 0;
@@ -307,6 +312,7 @@ a .box:focus:before{
 .videoport .overlay .video-status-icon{
 	display: block;
 	position: absolute;
+	z-index: 1;
 	top: 0;
 	bottom: 0;
 	left: 0;

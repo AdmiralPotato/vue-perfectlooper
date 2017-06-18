@@ -193,6 +193,7 @@ let Videoport = function(video, vue, canvas){
 	p.shouldPlay = false;
 	p.scaledCanvasList = [];
 	p.lastDisplayedImage = null;
+	p.nextImage = null;
 	p.ready = false;
 	p.playOffset = 0;
 	p.sizeWindow();
@@ -226,10 +227,20 @@ Videoport.prototype = {
 		let p = this;
 		let frames = p.sourceBuffer.frameCount;
 		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
-		if(currentFrame !== p.prevFrame){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(currentFrame);
+		if(currentFrame !== p.prevFrame && p.nextImage){
+			p.lastDisplayedImage = p.nextImage;
 			p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			p.prevFrame = currentFrame;
+			p.nextImage = null;
+		}
+		if(!p.nextImage){
+			setTimeout(
+				function () {
+					let nextFrameIndex = (currentFrame + 1) % frames;
+					p.nextImage = p.getScaledCanvasByFrameIndex(nextFrameIndex);
+				},
+				0
+			);
 		}
 	},
 	getScaledCanvasByFrameIndex: function (frameIndex) {
