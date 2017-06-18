@@ -17,7 +17,7 @@ let mixinAddresses = {
 			return `${videoAddressPrefix}${video.name}-preview.jpg`;
 		},
 		videoUrl: function(video){
-			return `${videoAddressPrefix}${video.name}-${qualitySuffixes[defaultQuality]}.zip`;
+			return `${videoAddressPrefix}${video.name}-${qualitySuffixes[defaultQuality]}`;
 		}
 	}
 };
@@ -283,13 +283,18 @@ Videoport.prototype = {
 		vue.statusMessage = b.status;
 		vue.loaded = b.loaded;
 		vue.decoded = b.decoded;
-		vue.ready = b.ready;
 		p.ready = b.ready;
+		requestAnimationFrame(function () {
+			vue.ready = p.ready;
+		});
+		if(b.lastStoredFrameIndex !== null){
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(b.lastStoredFrameIndex);
+		}
 		p.prevFrame = b.ready ? 0 : b.imageList.length - 1;
 		let image = b.imageList[p.prevFrame];
 		if(image){
 			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
-			//I guess you can't render to a context the instant it's created?
+			//I guess you can't draw from a context the instant it's created?
 			requestAnimationFrame(function(){
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
@@ -311,8 +316,9 @@ let DecodedFrameBuffer = function(video){
 	b.status = 'Not loaded';
 	b.imageList = [];
 	b.videoportList = [];
-	b.decoder = new DecoderZip(b);
-	b.getTotalSize();
+	b.framesLoaded = 0;
+	b.lastStoredFrameIndex = null;
+	b.decoder = new DecoderImage(b);
 	decodedFrameBufferMap[video.name] = b;
 };
 
@@ -329,15 +335,6 @@ DecodedFrameBuffer.prototype = {
 		b.videoportList.forEach(function(p){
 			p.handleBufferUpdate();
 		});
-	},
-	getTotalSize: function(){
-		let b = this;
-		let sizeRequest = new XMLHttpRequest();
-		sizeRequest.open("head", b.videoAddress, true);
-		sizeRequest.onload = function(event){
-			b.totalSize = parseInt(event.total, 10) || b.frameCount * 512 * 1024;
-		};
-		sizeRequest.send();
 	},
 	load: function () {
 		let b = this;
@@ -367,16 +364,17 @@ DecodedFrameBuffer.prototype = {
 		this.loaded = 1;
 		this.updateVideoports();
 	},
-	handleDecoderFrame: function(frameCanvas){
+	handleDecoderFrame: function(frameCanvas, index){
 		let b = this;
-		let framesLoaded = b.imageList.push(frameCanvas);
-		b.decoded = framesLoaded / b.frameCount;
-		b.lastStoredFrame = frameCanvas;
-		b.status = `Decoded ${framesLoaded} / ${b.frameCount} frames`;
+		b.framesLoaded += 1;
+		b.imageList[index] = frameCanvas;
+		b.decoded = b.framesLoaded / b.frameCount;
+		b.lastStoredFrameIndex = index;
+		b.status = `Decoded ${b.framesLoaded} / ${b.frameCount} frames`;
 		if(b.decoded === 1){
-			this.status = `Ready; Loaded & Decoded`;
-			this.ready = true;
-			this.decoder = null;
+			b.status = `Ready; Loaded & Decoded`;
+			b.ready = true;
+			b.decoder = null;
 		}
 		this.updateVideoports();
 	},
