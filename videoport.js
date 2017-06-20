@@ -234,14 +234,19 @@ Videoport.prototype = {
 			p.nextImage = null;
 		}
 		if(!p.nextImage){
-			setTimeout(
-				function () {
-					let nextFrameIndex = (currentFrame + 1) % frames;
-					p.nextImage = p.getScaledCanvasByFrameIndex(nextFrameIndex);
-				},
-				0
-			);
+			p.prepareNextImage();
 		}
+	},
+	prepareNextImage: function () {
+		let p = this;
+		let frames = p.sourceBuffer.frameCount;
+		setTimeout(
+			function () {
+				let nextFrameIndex = (p.prevFrame + 1) % frames;
+				p.nextImage = p.getScaledCanvasByFrameIndex(nextFrameIndex);
+			},
+			0
+		);
 	},
 	getScaledCanvasByFrameIndex: function (frameIndex) {
 		let p = this;
@@ -285,6 +290,10 @@ Videoport.prototype = {
 			requestAnimationFrame(function() {
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
+			if(p.ready){
+				p.nextImage = null;
+				p.prepareNextImage();
+			}
 		}
 	},
 	handleBufferUpdate: function(){
