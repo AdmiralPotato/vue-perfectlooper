@@ -215,7 +215,12 @@ Videoport.prototype = {
 	fps: 24,
 	die: function(){
 		this.sourceBuffer.removeVideoport(this);
+		this.scaledCanvasList.forEach(function (canvas) {
+			canvas.width = 0;
+			canvas.height = 0;
+		});
 		this.scaledCanvasList = [];
+		this.shouldPlay = false;
 	},
 	setPlay: function(shouldPlay){
 		let p = this;
