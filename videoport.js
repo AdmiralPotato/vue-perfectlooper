@@ -44,19 +44,24 @@ Vue.component(
 			video: Object
 		},
 		mounted: function() {
-			let t = this;
-			this.videoport = new Videoport(t.video, t, t.$refs.canvas);
+			let v = this;
+			v.videoport = new Videoport(v.video, v, v.$refs.canvas);
 		},
 		beforeMount: function () {
-			document.addEventListener('resize', resizeWindowEventHandler);
-			document.addEventListener('fullscreenchange', resizeWindowEventHandler);
-			window.addEventListener('resize', resizeWindowEventHandler);
+			let v = this;
+			v.resizeWindowEventHandler = function () {
+				v.videoport.sizeWindow();
+			};
+			document.addEventListener('resize', v.resizeWindowEventHandler);
+			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
+			window.addEventListener('resize', v.resizeWindowEventHandler);
 		},
 		beforeDestroy: function () {
-			this.videoport.die();
-			document.removeEventListener('resize', resizeWindowEventHandler);
-			document.removeEventListener('fullscreenchange', resizeWindowEventHandler);
-			window.removeEventListener('resize', resizeWindowEventHandler);
+			let v = this;
+			v.videoport.die();
+			document.removeEventListener('resize', v.resizeWindowEventHandler);
+			document.removeEventListener('fullscreenchange', v.resizeWindowEventHandler);
+			window.removeEventListener('resize', v.resizeWindowEventHandler);
 		},
 		methods: {
 			activity: function(){
@@ -182,8 +187,6 @@ let arrayRemove = function(array, item){
 	return array;
 };
 
-let videoportList = [];
-
 let Videoport = function(video, vue, canvas){
 	let p = this;
 	p.video = video;
@@ -193,14 +196,19 @@ let Videoport = function(video, vue, canvas){
 	p.shouldPlay = false;
 	p.scaledCanvasList = [];
 	p.lastDisplayedImage = null;
+	p.lastDisplayedIndex = 0;
 	p.nextImage = null;
 	p.ready = false;
 	p.playOffset = 0;
 	p.sizeWindow();
 	p.sourceBuffer = decodedFrameBufferMap[p.video.name] || new DecodedFrameBuffer(p.video);
 	p.sourceBuffer.addVideoport(p);
-
-	videoportList.push(p);
+	p.renderLoop = function (time) {
+		if(p.shouldPlay){
+			requestAnimationFrame(p.renderLoop);
+		}
+		p.render(time);
+	};
 };
 
 Videoport.prototype = {
@@ -208,15 +216,21 @@ Videoport.prototype = {
 	die: function(){
 		this.sourceBuffer.removeVideoport(this);
 		this.scaledCanvasList = [];
-		arrayRemove(videoportList, this);
 	},
 	setPlay: function(shouldPlay){
-		this.shouldPlay = shouldPlay;
-		this.sourceBuffer.load();
+		let p = this;
+		p.shouldPlay = shouldPlay;
+		p.sourceBuffer.load();
+		if(shouldPlay){
+			requestAnimationFrame(function (time) {
+				p.lastTimeSample = time;
+				requestAnimationFrame(p.renderLoop);
+			});
+		}
 	},
 	render: function (time) {
 		let p = this;
-		if(p.shouldPlay && p.ready){
+		if(p.ready){
 			let delta = time - (p.lastTimeSample || 0);
 			p.playOffset += delta;
 			p.setFrameByTime(p.playOffset);
@@ -399,33 +413,3 @@ DecodedFrameBuffer.prototype = {
 		this.updateVideoports();
 	},
 };
-
-let resizeWindowEventHandler = function () {
-		videoportList.forEach(function (item) {
-			item.sizeWindow();
-		});
-	},
-	renderAllViews = function (time) {
-		videoportList.forEach(function (item) {
-			item.render(time);
-		});
-	};
-
-let go = true,
-	start = function(){
-		go = true;
-		requestAnimationFrame(render);
-	},
-	stop = function(){
-		go = false;
-	};
-
-let render = function (time){
-	if(go){
-		requestAnimationFrame(render);
-	}
-	renderAllViews(time);
-};
-
-start();
-
