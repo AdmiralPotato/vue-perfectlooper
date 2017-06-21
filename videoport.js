@@ -100,21 +100,36 @@ Vue.component(
 				v.started = true;
 				v.playing = !v.playing;
 				v.videoport.setPlay(v.playing);
+				v.$ga.event({
+					eventCategory: 'Video',
+					eventAction: `${v.playing ? 'play' : 'pause'}-${v.isFullscreen ? 'fullscreen' : 'windowed'}`,
+					eventLabel: v.video.title
+				});
 			},
 			fullscreenToggle: function(){
-				let canFullScreen = this.$el.requestFullscreen !== undefined;
-				this.activity();
+				let v = this;
+				let canFullScreen = v.$el.requestFullscreen !== undefined;
+				v.activity();
+				let action;
 				if(canFullScreen){
-					if (!this.isFullscreen) {
-						this.$el.requestFullscreen();
+					if (!v.isFullscreen) {
+						v.$el.requestFullscreen();
+						action = 'requestFullscreen';
 					} else {
 						if (document.exitFullscreen) {
 							document.exitFullscreen();
+							action = 'exitFullscreen';
 						}
 					}
 				} else {
-					this.$el.scrollIntoView();
+					v.$el.scrollIntoView();
+					action = 'scrollIntoView';
 				}
+				v.$ga.event({
+					eventCategory: 'Video',
+					eventAction: `fullscreen-${action}`,
+					eventLabel: v.video.title
+				});
 			}
 		},
 		template: `
@@ -231,13 +246,19 @@ let Videoport = function(video, vue, canvas){
 Videoport.prototype = {
 	fps: 24,
 	die: function(){
-		this.sourceBuffer.removeVideoport(this);
-		this.scaledCanvasList.forEach(function (canvas) {
+		let p = this;
+		p.sourceBuffer.removeVideoport(this);
+		p.scaledCanvasList.forEach(function (canvas) {
 			canvas.width = 0;
 			canvas.height = 0;
 		});
-		this.scaledCanvasList = [];
-		this.shouldPlay = false;
+		p.scaledCanvasList = [];
+		p.shouldPlay = false;
+		p.vue.$ga.event({
+			eventCategory: 'Video',
+			eventAction: 'unload',
+			eventLabel: p.video.title
+		});
 	},
 	setPlay: function(shouldPlay){
 		let p = this;
@@ -310,6 +331,12 @@ Videoport.prototype = {
 		setTimeout(function () {
 			if(p.scaledFrameCount === p.sourceBuffer.frameCount){
 				p.ready = true;
+				p.vue.$ga.event({
+					eventCategory: 'Video',
+					eventAction: 'scale-finish',
+					eventLabel: p.video.title,
+					eventValue: p.width
+				});
 			}
 			p.updateUI();
 		}, 0);
@@ -329,6 +356,14 @@ Videoport.prototype = {
 			}
 			if(p.shouldPlay){
 				p.scaleAllFramesAndReady();
+			}
+			if(!p.scaledFrameCount && p.shouldPlay){
+				p.vue.$ga.event({
+					eventCategory: 'Video',
+					eventAction: 'scale-start',
+					eventLabel: p.video.title,
+					eventValue: p.width
+				});
 			}
 		}
 		if(p.ready){
@@ -356,6 +391,7 @@ let decodedFrameBufferMap = {};
 
 let DecodedFrameBuffer = function(video){
 	let b = this;
+	b.video = video;
 	b.videoAddress = mixinAddresses.methods.videoUrl(video);
 	b.frameCount = parseInt(video.name.split('-').pop(), 10);
 	b.started = false;
@@ -392,6 +428,11 @@ DecodedFrameBuffer.prototype = {
 			b.started = true;
 			b.decoder.startLoad(b.videoAddress);
 			this.updateVideoports();
+			Vue.$ga.event({
+				eventCategory: 'Video',
+				eventAction: 'load-start',
+				eventLabel: b.video.title
+			});
 		}
 	},
 	handleDecoderLoadStart: function(){
@@ -409,6 +450,11 @@ DecodedFrameBuffer.prototype = {
 			b.status = `All frames Loaded`;
 			b.ready = true;
 			b.decoder = null;
+			Vue.$ga.event({
+				eventCategory: 'Video',
+				eventAction: 'load-finish',
+				eventLabel: b.video.title
+			});
 		}
 		this.updateVideoports();
 	},

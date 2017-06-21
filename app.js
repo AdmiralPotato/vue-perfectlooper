@@ -127,6 +127,17 @@ router.afterEach(function(){
 	window.scrollTo(0, 0);
 });
 
+Vue.use(
+	VueAnalytics,
+	{
+		id: 'UA-7088806-7',
+		autoTracking: {
+			exception: true
+		},
+		router: router
+	}
+);
+
 let app = new Vue({
 	el: '#appHolder',
 	router: router,
