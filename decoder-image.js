@@ -17,10 +17,7 @@ DecoderImage.prototype = {
 			let src = decoder.getImagePath(frameIndex);
 			let getImage = function () {
 				let image = new Image();
-				image.addEventListener('load', function(e){
-					if(!decoder.framesLoaded){
-						decoder.decodedFrameBuffer.handleDecoderDecodeStart();
-					}
+				image.addEventListener('load', function(){
 					decoder.framesLoaded += 1;
 					requestAnimationFrame(function () {
 						decoder.decodedFrameBuffer.handleDecoderFrame(image, frameIndex);

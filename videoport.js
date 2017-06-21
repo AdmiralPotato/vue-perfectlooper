@@ -35,7 +35,6 @@ Vue.component(
 				isFullscreen: false,
 				activityHalted: true,
 				loaded: 0,
-				decoded: 0,
 				scaled: 0,
 				ready: false,
 				statusMessage: ''
@@ -136,11 +135,10 @@ Vue.component(
 						/>
 					<div class="overlay" @click="playToggle">
 						<transition-group name="fade">
-							<img key="a" v-if="!decoded" :src="previewUrl(video)" />
+							<img key="a" v-if="!loaded" :src="previewUrl(video)" />
 							<div key="b" v-if="!ready" class="statusMessage">
 								<div>{{statusMessage}}</div>
 								<div>Loaded: {{loaded.toFixed(2)}}</div>
-								<div>Decoded: {{decoded.toFixed(2)}}</div>
 								<div>Scaled: {{scaled.toFixed(2)}}</div>
 							</div>
 							<video-status-icon key="c" class="large rotating" v-if="!ready && started && playing" type="loading" />
@@ -323,12 +321,15 @@ Videoport.prototype = {
 		let scaled = p.scaledFrameCount / b.frameCount;
 		let status;
 		vue.loaded = b.loaded;
-		vue.decoded = b.decoded;
 		vue.scaled = scaled;
 		p.ready = b.ready && scaled === 1;
-		if(b.ready && !p.ready && p.shouldPlay){
-			status = `Scaled ${p.scaledFrameCount}/${b.frameCount} frames`;
-			p.scaleAllFramesAndReady();
+		if(b.ready && !p.ready){
+			if(p.scaledFrameCount){
+				status = `Scaled ${p.scaledFrameCount}/${b.frameCount} frames`;
+			}
+			if(p.shouldPlay){
+				p.scaleAllFramesAndReady();
+			}
 		}
 		if(p.ready){
 			status = 'Ready';
@@ -360,7 +361,6 @@ let DecodedFrameBuffer = function(video){
 	b.started = false;
 	b.totalSize = 0;
 	b.loaded = 0;
-	b.decoded = 0;
 	b.ready = false;
 	b.status = 'Not loaded';
 	b.imageList = [];
@@ -398,30 +398,15 @@ DecodedFrameBuffer.prototype = {
 		this.status = 'Loading started';
 		this.updateVideoports();
 	},
-	handleDecoderLoadProgress: function(loadingProgressEvent){
-		if(loadingProgressEvent.total){
-			this.totalSize = loadingProgressEvent.total;
-		}
-		let loaded = Math.floor(loadingProgressEvent.loaded / 1024);
-		let total = Math.floor(this.totalSize / 1024);
-		this.status = `Loading ${loaded} / ${total || '??'} KB`;
-		this.loaded = loaded / total;
-		this.updateVideoports();
-	},
-	handleDecoderDecodeStart: function(){
-		this.status = 'Decoding started';
-		this.loaded = 1;
-		this.updateVideoports();
-	},
 	handleDecoderFrame: function(frameCanvas, index){
 		let b = this;
 		b.framesLoaded += 1;
 		b.imageList[index] = frameCanvas;
-		b.decoded = b.framesLoaded / b.frameCount;
+		b.loaded = b.framesLoaded / b.frameCount;
 		b.lastStoredFrameIndex = index;
-		b.status = `Decoded ${b.framesLoaded} / ${b.frameCount} frames`;
-		if(b.decoded === 1){
-			b.status = `Ready; Loaded & Decoded`;
+		b.status = `Loaded ${b.framesLoaded} / ${b.frameCount} frames`;
+		if(b.loaded === 1){
+			b.status = `All frames Loaded`;
 			b.ready = true;
 			b.decoder = null;
 		}
