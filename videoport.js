@@ -36,6 +36,7 @@ Vue.component(
 				activityHalted: true,
 				loaded: 0,
 				decoded: 0,
+				scaled: 0,
 				ready: false,
 				statusMessage: ''
 			}
@@ -45,12 +46,32 @@ Vue.component(
 		},
 		mounted: function() {
 			let v = this;
+			v.resizeWindowEventHandler();
 			v.videoport = new Videoport(v.video, v, v.$refs.canvas);
 		},
 		beforeMount: function () {
 			let v = this;
 			v.resizeWindowEventHandler = function () {
-				v.videoport.sizeWindow();
+				let ratio = window['devicePixelRatio'] || 1;
+				let canvas = v.$refs.canvas;
+				let newWidth = canvas.clientWidth * ratio;
+				let newHeight = canvas.clientHeight * ratio;
+				let isCanvasInvalid = !newWidth || !newHeight;
+				let justResized = v.width !== newWidth || v.height !== newHeight;
+				v.width = newWidth;
+				v.height = newHeight;
+				v.isFullscreen = document.fullscreenElement === v.$el;
+				if(isCanvasInvalid || justResized){
+					requestAnimationFrame(v.resizeWindowEventHandler);
+				}
+				if(!isCanvasInvalid && justResized){
+					requestAnimationFrame(function(){
+						if(v.playing){
+							v.playToggle();
+						}
+						v.videoport.sizeWindow(newWidth, newHeight);
+					});
+				}
 			};
 			document.addEventListener('resize', v.resizeWindowEventHandler);
 			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
@@ -80,11 +101,6 @@ Vue.component(
 				v.started = true;
 				v.playing = !v.playing;
 				v.videoport.setPlay(v.playing);
-			},
-			resize: function (width, height) {
-				this.width = width;
-				this.height = height;
-				this.isFullscreen = document.fullscreenElement === this.$el;
 			},
 			fullscreenToggle: function(){
 				let canFullScreen = this.$el.requestFullscreen !== undefined;
@@ -125,9 +141,10 @@ Vue.component(
 								<div>{{statusMessage}}</div>
 								<div>Loaded: {{loaded.toFixed(2)}}</div>
 								<div>Decoded: {{decoded.toFixed(2)}}</div>
+								<div>Scaled: {{scaled.toFixed(2)}}</div>
 							</div>
-							<video-status-icon key="c" class="large rotating" v-if="!ready && started" type="loading" />
-							<video-status-icon key="d" class="large" v-if="!started || !playing && ready" type="play" />
+							<video-status-icon key="c" class="large rotating" v-if="!ready && started && playing" type="loading" />
+							<video-status-icon key="d" class="large" v-if="!started || !playing" type="play" />
 						</transition-group>
 					</div>
 					<transition-group key="fullscreen" name="fade">
@@ -197,17 +214,19 @@ let Videoport = function(video, vue, canvas){
 	p.scaledCanvasList = [];
 	p.lastDisplayedImage = null;
 	p.lastDisplayedIndex = 0;
-	p.nextImage = null;
+	p.scaledFrameCount = 0;
 	p.ready = false;
 	p.playOffset = 0;
-	p.sizeWindow();
+	p.prevFrame = 0;
 	p.sourceBuffer = decodedFrameBufferMap[p.video.name] || new DecodedFrameBuffer(p.video);
 	p.sourceBuffer.addVideoport(p);
 	p.renderLoop = function (time) {
 		if(p.shouldPlay){
 			requestAnimationFrame(p.renderLoop);
+			if(p.ready){
+				p.render(time);
+			}
 		}
-		p.render(time);
 	};
 };
 
@@ -226,46 +245,30 @@ Videoport.prototype = {
 		let p = this;
 		p.shouldPlay = shouldPlay;
 		p.sourceBuffer.load();
+		p.updateUI();
 		if(shouldPlay){
 			requestAnimationFrame(function (time) {
 				p.lastTimeSample = time;
-				requestAnimationFrame(p.renderLoop);
+				p.renderLoop(time);
 			});
 		}
 	},
 	render: function (time) {
 		let p = this;
-		if(p.ready){
-			let delta = time - (p.lastTimeSample || 0);
-			p.playOffset += delta;
-			p.setFrameByTime(p.playOffset);
-		}
+		let delta = time - (p.lastTimeSample || 0);
+		p.playOffset += delta;
+		p.setFrameByTime(p.playOffset);
 		p.lastTimeSample = time;
 	},
 	setFrameByTime: function(time){
 		let p = this;
 		let frames = p.sourceBuffer.frameCount;
 		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
-		if(currentFrame !== p.prevFrame && p.nextImage){
-			p.lastDisplayedImage = p.nextImage;
+		if(currentFrame !== p.prevFrame){
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(currentFrame);
 			p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			p.prevFrame = currentFrame;
-			p.nextImage = null;
 		}
-		if(!p.nextImage){
-			p.prepareNextImage();
-		}
-	},
-	prepareNextImage: function () {
-		let p = this;
-		let frames = p.sourceBuffer.frameCount;
-		setTimeout(
-			function () {
-				let nextFrameIndex = (p.prevFrame + 1) % frames;
-				p.nextImage = p.getScaledCanvasByFrameIndex(nextFrameIndex);
-			},
-			0
-		);
 	},
 	getScaledCanvasByFrameIndex: function (frameIndex) {
 		let p = this;
@@ -290,54 +293,61 @@ Videoport.prototype = {
 		}
 		return canvas;
 	},
-	sizeWindow: function () {
+	sizeWindow: function (newWidth, newHeight) {
 		let p = this;
-		let ratio = window['devicePixelRatio'] || 1;
-		let newWidth = p.canvas.clientWidth * ratio;
-		let newHeight = p.canvas.clientHeight * ratio;
-		let isCanvasInvalid = !newWidth || !newHeight;
-		let needsAnotherSizeUpdateBecauseSlowFullscreen = p.width !== newWidth || p.height !== newHeight;
 		let hasAnyFrameDecodedYet = p.lastDisplayedImage !== null;
 		p.width = newWidth;
 		p.height = newHeight;
-		p.vue.resize(p.width, p.height);
-		if(isCanvasInvalid || needsAnotherSizeUpdateBecauseSlowFullscreen){
-			requestAnimationFrame(function(){p.sizeWindow();});
-		}
-		if(!isCanvasInvalid && hasAnyFrameDecodedYet){
+		p.scaledFrameCount = 0;
+		if(hasAnyFrameDecodedYet){
 			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
 			requestAnimationFrame(function() {
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
-			if(p.ready){
-				p.nextImage = null;
-				p.prepareNextImage();
-			}
 		}
 	},
-	handleBufferUpdate: function(){
+	scaleAllFramesAndReady: function () {
+		let p = this;
+		p.context.drawImage(p.getScaledCanvasByFrameIndex(p.scaledFrameCount++), 0, 0);
+		setTimeout(function () {
+			if(p.scaledFrameCount === p.sourceBuffer.frameCount){
+				p.ready = true;
+			}
+			p.updateUI();
+		}, 0);
+	},
+	updateUI: function(){
 		let p = this;
 		let b = p.sourceBuffer;
 		let vue = p.vue;
-		vue.statusMessage = b.status;
+		let scaled = p.scaledFrameCount / b.frameCount;
+		let status;
 		vue.loaded = b.loaded;
 		vue.decoded = b.decoded;
-		p.ready = b.ready;
-		requestAnimationFrame(function () {
-			vue.ready = p.ready;
-		});
-		if(b.lastStoredFrameIndex !== null){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(b.lastStoredFrameIndex);
+		vue.scaled = scaled;
+		p.ready = b.ready && scaled === 1;
+		if(b.ready && !p.ready && p.shouldPlay){
+			status = `Scaled ${p.scaledFrameCount}/${b.frameCount} frames`;
+			p.scaleAllFramesAndReady();
 		}
-		p.prevFrame = b.ready ? 0 : b.imageList.length - 1;
-		let image = b.imageList[p.prevFrame];
-		if(image){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
+		if(p.ready){
+			status = 'Ready';
+		}
+		vue.statusMessage = status || b.status;
+		let displayFrame = p.ready ? p.prevFrame : b.ready ? Math.max(0, p.scaledFrameCount - 1) : b.lastStoredFrameIndex;
+		if(displayFrame !== null){
+			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(displayFrame);
+		}
+		if(p.lastDisplayedImage){
 			//I guess you can't draw from a context the instant it's created?
 			requestAnimationFrame(function(){
 				p.context.drawImage(p.lastDisplayedImage, 0, 0);
 			});
 		}
+		requestAnimationFrame(function () {
+			//ensures that Vue updates the status before fading it out
+			vue.ready = p.ready;
+		});
 	}
 };
 
@@ -372,7 +382,7 @@ DecodedFrameBuffer.prototype = {
 	updateVideoports: function () {
 		let b = this;
 		b.videoportList.forEach(function(p){
-			p.handleBufferUpdate();
+			p.updateUI();
 		});
 	},
 	load: function () {
