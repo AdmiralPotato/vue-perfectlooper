@@ -70,6 +70,9 @@ Vue.component(
 					requestAnimationFrame(function(){
 						if(v.playing){
 							v.playToggle();
+							requestAnimationFrame(function(){
+								v.playToggle();
+							});
 						}
 						v.videoport.sizeWindow(newWidth, newHeight);
 					});
@@ -157,7 +160,7 @@ Vue.component(
 							<div key="b" v-if="!ready && started" class="statusMessage">
 								<div>{{statusMessage}}</div>
 							</div>
-							<video-play-icon key="c" v-if="!playing" />
+							<video-play-icon key="c" v-if="!started" />
 						</transition-group>
 					</div>
 					<transition-group name="videoport_fade">
