@@ -30,6 +30,11 @@ let ipsum = `
 
 let videoList = [
 	{
+		title: 'Diamond Waves',
+		name: 'diamond_waves-48',
+		description: ipsum
+	},
+	{
 		title: 'Electric Flower',
 		name: 'electric_flower-48',
 		description: ipsum
