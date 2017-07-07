@@ -136,6 +136,28 @@ Vue.component(
 					eventAction: `fullscreen-${action}`,
 					eventLabel: v.video.title
 				});
+			},
+			focusHandler: function (event) {
+				this.activity();
+				this.focusElement = event.target;
+			},
+			blurHandler: function (event) {
+				this.focusElement = undefined;
+			},
+			leftHandler: function (event) {
+				console.log('left', event);
+				event.preventDefault();
+			},
+			rightHandler: function (event) {
+				console.log('right', event);
+				event.preventDefault();
+			},
+			spaceHandler: function (event) {
+				let shouldHandle = !(this.focusElement && this.focusElement.tagName === 'BUTTON');
+				if(shouldHandle){
+					event.preventDefault();
+					this.playToggle();
+				}
 			}
 		},
 		template: `
@@ -144,9 +166,13 @@ Vue.component(
 					fullscreen: isFullscreen,
 					hideCursor: playing && activityHalted
 				}"
-				v-on:mousemove="activity"
-				v-on:touchmove="activity"
-				v-on:touchstart="activity"
+				@mousemove="activity"
+				@touchmove="activity"
+				@touchstart="activity"
+				@focus.capture="focusHandler"
+				@keyup.capture.left="leftHandler"
+				@keyup.capture.right="rightHandler"
+				@keydown.capture.space="spaceHandler"
 			>
 				<div class="aspectEnforcer">
 					<canvas
@@ -154,7 +180,12 @@ Vue.component(
 						:width="width"
 						:height="height"
 						/>
-					<div class="overlay" @click="playToggle">
+					<div
+						class="overlay"
+						@click="playToggle"
+						@keyup.enter="playToggle"
+						tabindex="0"
+						role="button">
 						<transition-group name="videoport_fade">
 							<img key="a" v-if="!loaded" :src="previewUrl(video)" />
 							<div key="b" v-if="!ready && started" class="statusMessage">
@@ -163,21 +194,19 @@ Vue.component(
 							<video-play-icon key="c" v-if="!started" />
 						</transition-group>
 					</div>
-					<transition-group name="videoport_fade">
-						<video-controller key="e"
-							v-if="!ready || !playing || !activityHalted"
-							:width="cssWidth"
-							:started="started"
-							:playing="playing"
-							:isFullscreen="isFullscreen"
-							:loaded="loaded"
-							:scaled="scaled"
-							:ready="ready"
-							:playOffset="playOffset"
-							:playToggle="playToggle"
-							:fullscreenToggle="fullscreenToggle"
-							/>
-					</transition-group>
+					<video-controller
+						:class="{hidden: !(!ready || !playing || !activityHalted)}"
+						:width="cssWidth"
+						:started="started"
+						:playing="playing"
+						:isFullscreen="isFullscreen"
+						:loaded="loaded"
+						:scaled="scaled"
+						:ready="ready"
+						:playOffset="playOffset"
+						:playToggle="playToggle"
+						:fullscreenToggle="fullscreenToggle"
+						/>
 				</div>
 			</div>
 		`
@@ -232,77 +261,84 @@ Vue.component(
 			}
 		},
 		template: `
-			<svg class="video-controller" :viewBox="'0 0 ' + width + ' 64'">
-				<defs>
-					<path id="screen-line" class="stroke screen-line" d="M3.5,3.5l5,5"/>
-					<path id="full-triangle" class="fill" d="M10,9V4.41421a1,1,0,0,0-1.70711-.70711L3.70711,8.29289A1,1,0,0,0,4.41421,10H9A1,1,0,0,0,10,9Z"/>
-					<path id="exit-triangle" class="fill" d="M8.29289,3.70711,3.70711,8.29289A1,1,0,0,1,2,7.58579V3A1,1,0,0,1,3,2H7.58579A1,1,0,0,1,8.29289,3.70711Z"/>
-					<g id="full-corner">
-						<use xlink:href="#screen-line" />
-						<use xlink:href="#full-triangle" />
-					</g>
-					<g id="exit-corner">
-						<use xlink:href="#screen-line" />
-						<use xlink:href="#exit-triangle" />
-					</g>
-					<g id="icon-fullscreen">
-						<g transform="translate(24, 24)">
-							<use xlink:href="#full-corner" transform="rotate(  0)"/>
-							<use xlink:href="#full-corner" transform="rotate( 90)"/>
-							<use xlink:href="#full-corner" transform="rotate(180)"/>
-							<use xlink:href="#full-corner" transform="rotate(-90)"/>
+			<div class="video-controller">
+				<svg :viewBox="'0 0 ' + width + ' 48'">
+					<defs>
+						<path id="screen-line" class="stroke screen-line" d="M3.5,3.5l5,5"/>
+						<path id="full-triangle" class="fill" d="M10,9V4.41421a1,1,0,0,0-1.70711-.70711L3.70711,8.29289A1,1,0,0,0,4.41421,10H9A1,1,0,0,0,10,9Z"/>
+						<path id="exit-triangle" class="fill" d="M8.29289,3.70711,3.70711,8.29289A1,1,0,0,1,2,7.58579V3A1,1,0,0,1,3,2H7.58579A1,1,0,0,1,8.29289,3.70711Z"/>
+						<g id="full-corner">
+							<use xlink:href="#screen-line" />
+							<use xlink:href="#full-triangle" />
+						</g>
+						<g id="exit-corner">
+							<use xlink:href="#screen-line" />
+							<use xlink:href="#exit-triangle" />
+						</g>
+						<g id="icon-fullscreen">
+							<g transform="translate(24, 24)">
+								<use xlink:href="#full-corner" transform="rotate(  0)"/>
+								<use xlink:href="#full-corner" transform="rotate( 90)"/>
+								<use xlink:href="#full-corner" transform="rotate(180)"/>
+								<use xlink:href="#full-corner" transform="rotate(-90)"/>
+							</g>
+						</g>
+						<g id="icon-fullscreen-exit">
+							<g transform="translate(24, 24)">
+								<use xlink:href="#exit-corner" transform="rotate(  0)"/>
+								<use xlink:href="#exit-corner" transform="rotate( 90)"/>
+								<use xlink:href="#exit-corner" transform="rotate(180)"/>
+								<use xlink:href="#exit-corner" transform="rotate(-90)"/>
+							</g>
+						</g>
+						<path id="icon-play" class="fill" d="M17,15.33975V32.66025a2,2,0,0,0,3,1.73205l15-8.66025a2,2,0,0,0,0-3.4641L20,13.6077A2,2,0,0,0,17,15.33975Z"/>
+						<g id="icon-loading">
+							<path class="fill" d="M28.56066,26.56066l4.37868,4.37868a1.5,1.5,0,0,0,2.12132,0l4.37868-4.37868A1.5,1.5,0,0,0,38.37868,24H29.62132A1.5,1.5,0,0,0,28.56066,26.56066Z"/>
+							<path class="stroke loading" d="M24,34A10,10,0,1,1,34,24"/>
+						</g>
+						<path id="icon-pause" class="fill" d="M19,34H17a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,19,34Zm12,0H29a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,31,34Z"/>
+					</defs>
+					<g>
+						<g v-if="started">
+							<rect class="background" :width="width" height="48"/>
+							<g class="progressLines">
+								<line class="stroke total"  :x1="padding"  y1="24" :x2="lineFrac(1)" y2="24"/>
+								<line class="stroke loaded" :x1="padding"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
+								<line class="stroke scaled" :x1="padding"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
+							</g>
+							<g class="playhead" :transform="'translate('+lineFrac(playOffset)+', 0)'">
+								<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
+								<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
+							</g>
 						</g>
 					</g>
-					<g id="icon-fullscreen-exit">
-						<g transform="translate(24, 24)">
-							<use xlink:href="#exit-corner" transform="rotate(  0)"/>
-							<use xlink:href="#exit-corner" transform="rotate( 90)"/>
-							<use xlink:href="#exit-corner" transform="rotate(180)"/>
-							<use xlink:href="#exit-corner" transform="rotate(-90)"/>
-						</g>
-					</g>
-					<path id="icon-play" class="fill" d="M17,15.33975V32.66025a2,2,0,0,0,3,1.73205l15-8.66025a2,2,0,0,0,0-3.4641L20,13.6077A2,2,0,0,0,17,15.33975Z"/>
-					<g id="icon-loading">
-						<path class="fill" d="M28.56066,26.56066l4.37868,4.37868a1.5,1.5,0,0,0,2.12132,0l4.37868-4.37868A1.5,1.5,0,0,0,38.37868,24H29.62132A1.5,1.5,0,0,0,28.56066,26.56066Z"/>
-						<path class="stroke loading" d="M24,34A10,10,0,1,1,34,24"/>
-					</g>
-					<path id="icon-pause" class="fill" d="M19,34H17a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,19,34Zm12,0H29a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,31,34Z"/>
-				</defs>
-				<g>
-					<g v-if="started">
-						<rect class="background" :width="width" height="64"/>
-						<g class="progressLines">
-							<line class="stroke total"  :x1="padding"  y1="24" :x2="lineFrac(1)" y2="24"/>
-							<line class="stroke loaded" :x1="padding"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
-							<line class="stroke scaled" :x1="padding"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
-						</g>
-						<g class="playhead" :transform="'translate('+lineFrac(playOffset)+', 0)'">
-							<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
-							<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
-						</g>
-						<g @click="playToggle">
-							<use xlink:href="#icon-play" key="play"  v-if="!playing"/>
-							<use xlink:href="#icon-pause" key="pause" v-if="playing && ready"/>
-							<g key="loading" v-if="!ready && started && playing" transform="translate(24, 24)">
-								<g class="rotating">
-									<g transform="translate(-24, -24)">
-										<use xlink:href="#icon-loading"/>
-									</g>
+				</svg>
+				<button
+					v-if="started"
+					class="playToggle"
+					@click="playToggle">
+					<svg viewBox="0 0 48 48">
+						<use xlink:href="#icon-play" key="play"  v-if="!playing"/>
+						<use xlink:href="#icon-pause" key="pause" v-if="playing && ready"/>
+						<g key="loading" v-if="!ready && started && playing" transform="translate(24, 24)">
+							<g class="rotating">
+								<g transform="translate(-24, -24)">
+									<use xlink:href="#icon-loading"/>
 								</g>
 							</g>
-							<rect opacity="0" width="48" height="48"/>
 						</g>
-					</g>
-					<g
-						:transform="'translate('+(width - 48)+', 0)'"
-						@click="fullscreenToggle">
+						<rect opacity="0" width="48" height="48"/>
+					</svg>
+				</button>
+				<button class="fullscreenToggle" @click="fullscreenToggle">
+					<svg viewBox="0 0 48 48">
 						<rect v-if="!started" class="fullscreenBackground" x="8" y="8" width="32" height="32" rx="4" ry="4"/>
 						<use xlink:href="#icon-fullscreen"      key="off" v-if="!isFullscreen"/>
 						<use xlink:href="#icon-fullscreen-exit" key="on"  v-if="isFullscreen"/>
 						<rect opacity="0" width="48" height="48"/>
-					</g>
-				</g>
-			</svg>
+					</svg>
+				</button>
+			</div>
 		`
 	}
 );

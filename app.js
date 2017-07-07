@@ -1,8 +1,7 @@
 "use strict";
 
 let state = {
-	activePage: 'video-list',
-	activeVideo: undefined
+	activePage: 'video-list'
 };
 
 let Contact = Vue.component(
@@ -144,12 +143,6 @@ let app = new Vue({
 	data: {
 		state: state
 	},
-	methods: {
-		navigate: function(destination){
-			state.activePage = destination;
-			state.activeVideo = undefined;
-		}
-	},
 	template: `
 		<div class="root">
 			<div class="backgroundImage"></div>
@@ -181,3 +174,15 @@ let app = new Vue({
 		</div>
 	`
 });
+
+let disableFocusOutlines = function () {
+	document.body.classList.remove('keynav');
+};
+let enableFocusOutlines = function (event) {
+	if([9, 13].indexOf(event.keyCode) !== -1){
+		document.body.classList.add('keynav');
+	}
+};
+document.body.addEventListener('mousedown', disableFocusOutlines, true);
+document.body.addEventListener('touchstart', disableFocusOutlines, true);
+document.body.addEventListener('keydown', enableFocusOutlines, true);

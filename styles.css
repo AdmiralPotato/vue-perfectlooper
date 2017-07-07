@@ -8,7 +8,6 @@ html {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	outline: 0;
 	vertical-align: inherit;
 	font-size: inherit;
 	line-height: inherit;
@@ -30,6 +29,28 @@ body *:focus,
 body *:active {
 	outline: none;
 	text-decoration: none;
+}
+::-moz-focus-inner {border:0;}
+
+body.keynav a[href]:not([tabindex='-1']):focus,
+body.keynav area[href]:not([tabindex='-1']):focus,
+body.keynav input:not([disabled]):not([tabindex='-1']):focus,
+body.keynav select:not([disabled]):not([tabindex='-1']):focus,
+body.keynav textarea:not([disabled]):not([tabindex='-1']):focus,
+body.keynav button:not([disabled]):not([tabindex='-1']):focus,
+body.keynav iframe:not([tabindex='-1']):focus,
+body.keynav [tabindex]:not([tabindex='-1']):focus,
+body.keynav [contentEditable=true]:not([tabindex='-1']):focus,
+body.keynav a[href]:not([tabindex='-1']):active,
+body.keynav area[href]:not([tabindex='-1']):active,
+body.keynav input:not([disabled]):not([tabindex='-1']):active,
+body.keynav select:not([disabled]):not([tabindex='-1']):active,
+body.keynav textarea:not([disabled]):not([tabindex='-1']):active,
+body.keynav button:not([disabled]):not([tabindex='-1']):active,
+body.keynav iframe:not([tabindex='-1']):active,
+body.keynav [tabindex]:not([tabindex='-1']):active,
+body.keynav [contentEditable=true]:not([tabindex='-1']):active{
+	outline: #9f0 solid 2px;
 }
 
 html {
@@ -137,7 +158,6 @@ header > * {
 	height: 3rem;
 }
 header .brand{
-	overflow: hidden;
 	text-align: center;
 }
 header .brand h1 {
@@ -149,9 +169,15 @@ header .brand h4 {
 	font-size: 0.75rem;
 	color: rgba(255, 255, 255, 0.125);
 	top: 0.25rem;
+	left: -1.5rem;
 	padding-left: 0.25rem;
 	margin: 0;
 	float: left;
+}
+header a{
+	display: block;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform : translate3d(0, 0, 0);
 }
 
 header nav {
@@ -164,14 +190,11 @@ header nav ul{
 header nav li{
 	display: block;
 	flex-grow: 1;
-}
-header nav li a{
-	display: block;
+	flex-basis: 0;
 }
 
 .page-content{
 	position: relative;
-	overflow-x: hidden;
 	width: 100vw;
 	max-width: 100%;
 	-webkit-transform: translate3d(0, 0, 0);
@@ -237,6 +260,7 @@ a .box:focus:before{
 	position: relative;
 	background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5));
 	height: 1rem;
+	z-index: -1;
 }
 .video-description{
 	position: relative;
@@ -295,8 +319,11 @@ ul, ol{
 		position: absolute;
 	}
 	header .brand{
-		left: 1.5rem;
+		left: 0;
 		text-align: left;
+	}
+	header .brand h1 a {
+		padding: 0 1.5rem;
 	}
 	header .brand h1 {
 		float: left;

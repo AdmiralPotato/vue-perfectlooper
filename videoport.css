@@ -7,6 +7,10 @@
 	user-select: none;
 	-webkit-user-drag: none;
 	user-drag: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline-color: #9f0;
 }
 .videoport{
 	display: block;
@@ -39,13 +43,11 @@
 	height: 0;
 	padding-bottom: 56.25%;
 	width: 100%;
-	overflow: hidden;
 }
 .videoport.fullscreen .aspectEnforcer{
 	-webkit-transform: translate3d(0, -50%, 0);
 	transform: translate3d(0, -50%, 0);
 	top: 50%;
-	overflow: visible;
 }
 .videoport .statusMessage{
 	position: absolute;
@@ -99,11 +101,33 @@
 .video-controller{
 	position: absolute;
 	z-index: 10;
-	bottom: -1rem;
+	bottom: 0;
+	width: 100%;
+	opacity: 1;
+	transition: all .5s;
+}
+.videoport.fullscreen .video-controller{
+	box-shadow: 0 4px 0 0 rgba(0,0,0,0.75);
+}
+.video-controller.hidden {
+	opacity: 0;
 }
 .video-controller .background{
 	fill: #000;
 	opacity: 0.75;
+}
+.video-controller .playToggle,
+.video-controller .fullscreenToggle{
+	position: absolute;
+	height: 3rem;
+	width: 3rem;
+	bottom: 0;
+}
+.video-controller .playToggle{
+	left: 0;
+}
+.video-controller .fullscreenToggle{
+	right: 0;
 }
 .video-controller .fullscreenBackground{
 	fill: #000;
