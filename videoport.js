@@ -78,9 +78,23 @@ Vue.component(
 					});
 				}
 			};
+			v.fullscreenFocusChangeHandler = function (event) {
+				let relativePosition = v.$el.compareDocumentPosition(event.target);
+				let contains = (relativePosition & Node.DOCUMENT_POSITION_CONTAINED_BY) > 0;
+				if(v.isFullscreen && !contains){
+					let before = (relativePosition & Node.DOCUMENT_POSITION_PRECEDING) > 0;
+					let after = (relativePosition & Node.DOCUMENT_POSITION_FOLLOWING) > 0;
+					let focusSelector = before ? '.lastFocus' : after ? '.firstFocus' : null;
+					let focusTarget = focusSelector ? v.$el.querySelector(focusSelector) : null;
+					if(focusTarget){
+						focusTarget.focus();
+					}
+				}
+			};
 			document.addEventListener('resize', v.resizeWindowEventHandler);
 			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.addEventListener('resize', v.resizeWindowEventHandler);
+			document.body.addEventListener('focus', v.fullscreenFocusChangeHandler, true);
 		},
 		beforeDestroy: function () {
 			let v = this;
@@ -88,6 +102,7 @@ Vue.component(
 			document.removeEventListener('resize', v.resizeWindowEventHandler);
 			document.removeEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.removeEventListener('resize', v.resizeWindowEventHandler);
+			document.body.removeEventListener('focus', v.fullscreenFocusChangeHandler, true);
 		},
 		methods: {
 			activity: function(){
@@ -138,10 +153,12 @@ Vue.component(
 				});
 			},
 			focusHandler: function (event) {
+				event.stopPropagation();
 				this.activity();
 				this.focusElement = event.target;
 			},
 			blurHandler: function (event) {
+				event.stopPropagation();
 				this.focusElement = undefined;
 			},
 			leftHandler: function (event) {
@@ -170,6 +187,7 @@ Vue.component(
 				@touchmove="activity"
 				@touchstart="activity"
 				@focus.capture="focusHandler"
+				@blur.capture="blurHandler"
 				@keyup.capture.left="leftHandler"
 				@keyup.capture.right="rightHandler"
 				@keydown.capture.space="spaceHandler"
@@ -181,7 +199,7 @@ Vue.component(
 						:height="height"
 						/>
 					<div
-						class="overlay"
+						class="overlay firstFocus"
 						@click="playToggle"
 						@keyup.enter="playToggle"
 						tabindex="0"
@@ -330,7 +348,7 @@ Vue.component(
 						<rect opacity="0" width="48" height="48"/>
 					</svg>
 				</button>
-				<button class="fullscreenToggle" @click="fullscreenToggle">
+				<button class="fullscreenToggle lastFocus" @click="fullscreenToggle">
 					<svg viewBox="0 0 48 48">
 						<rect v-if="!started" class="fullscreenBackground" x="8" y="8" width="32" height="32" rx="4" ry="4"/>
 						<use xlink:href="#icon-fullscreen"      key="off" v-if="!isFullscreen"/>
