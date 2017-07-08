@@ -1,173 +1,201 @@
 "use strict";
 
-let ipsum = `
-<p><strong>HTML Ipsum Presents - Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-<h2>Header Level 2</h2>
-
-<ol>
-   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-   <li>Aliquam tincidunt mauris eu risus.</li>
-</ol>
-
-<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-<h3>Header Level 3</h3>
-
-<ul>
-   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-   <li>Aliquam tincidunt mauris eu risus.</li>
-</ul>
-
-<pre><code>#header h1 a {
-  display: block;
-  width: 300px;
-  height: 80px;
-}</code></pre>
-`;
-
-
-
 let videoList = [
 	{
-		title: 'Diamond Waves',
-		name: 'diamond_waves-48',
-		description: ipsum
+		"title": "Diamond Waves",
+		"name": "diamond_waves-48",
+		"tumblrId": 162451078334,
+		"description": "<p>Check out the <a href=\"https://o.ello.co/http://imgur.com/gallery/0Y36f\">Creative Process Gallery</a>, where I have posted a test render from each step of this design's development, and the thought process describing the changes in each iteration. This set is pretty great.</p><p>Sometimes you've been uninspired all month long, then you see ONE IMAGE, and it's like &ldquo;BOOM&rdquo;! Then that's it. You're off. You're ready to go. Your inspiration is carrying you through the design and everything is almost effortless. I kinda hate designs like that because they can only happen at the intersection of your availability to work on the design, your level of energy to focus on and create it, and then the inspiration striking you in just the right way. In some ways, it feels like cheating, with everything on auto-pilot; In other ways, it feels like a rare moment that must be seized at all costs, and held on to for a long as possible, and holding on to it takes every shred of you to push through to the very final step.</p><p>The image that fueled me with the inspiration me to create this design was &ldquo;<a href=\"https://o.ello.co/http://kiandjan.tumblr.com/post/161968229244/poemergent-60-x-120-kiandjan-2017\">poemergent · 60″ x 120″</a>&rdquo;, by a designer named <a class=\"tumblelog\" href=\"https://tmblr.co/mkjtGWueANUf_XZxbT1a2Ng\" target=\"_blank\">@kiandjan</a>.</p>",
+		"date": "2017-06-30 23:08:53 GMT"
 	},
 	{
-		title: 'Electric Flower',
-		name: 'electric_flower-48',
-		description: ipsum
+		"title": "Electric Flower",
+		"name": "electric_flower-48",
+		"tumblrId": 161176458637,
+		"description": "<p>So, back in June of 2014, I made one of my most beautiful animations ever, titled: <a href=\"https://o.ello.co/http://admiralpotato.tumblr.com/post/89040129689/electric-branches-0\">&ldquo;Electric Branches - 0&rdquo;</a>. For some reason, it came to mind while I was thinking what I could pull off before the end of the month for the <a href=\"https://tmblr.co/mny4sn_pK5nFE5MH97Mdu7g\">@gifartistscollective</a> monthly theme of &ldquo;Flower&rdquo;. I feel like I already said everything I could say about this design over in the <a href=\"https://o.ello.co/http://imgur.com/gallery/hNkbl\" target=\"_blank\">Creative Process Gallery</a>, so go read about it there if you like.</p><p>On another topic&hellip; Here's a little secret I'll let you in on. I've been very busy building my own infrastructure for a high quality, HD, fullscreen, perfect looping animation portfolio of all of my favorite designs. You can fullscreen it and study these animations at a much higher quality than what's allowed at any of the other places I've been posting them. Even I can get lost in my own work if I leave the full quality versions of these animations open too long.</p><p>It's really close to done, but not quite there yet. I'm still working out the bugs in the last details - I want this to be the best possible experience for perfect looping animation enthusiasts - and my perfectionism is close to being satisfied on this project. Look forward to it. ;)</p>",
+		"date": "2017-05-28 21:10:26 GMT"
 	},
 	{
-		title: 'Artificial Industrial Inspiration - Alternate',
-		name: 'artificial_industrial_inspiration_alt-24',
-		description: ipsum
+		"title": "Artificial Industrial Inspiration - Alternate",
+		"name": "artificial_industrial_inspiration_alt-24",
+		"tumblrId": 150334066464,
+		"description": "<p><a href=\"https://goo.gl/photos/o5VRA61cJFu4RSMY9\">Uncompressed 4K wallpapers are available at G+ Photos.</a></p><p>You can see each step in the creation of this design at <a href=\"http://imgur.com/gallery/5ZTcd\">the Creative Process Gallery here</a>.</p><p>When I wrote the script that generated the output for this scene <a href=\"http://artificialhousewife.tumblr.com/\">with a friend</a>, I had a hard time deciding what offset should actually be the &ldquo;center&rdquo;. This was another interesting view which I thought deserved a slightly larger render. :)</p><p><a href=\"http://admiralpotato.tumblr.com/post/150333892294/artificial-industrial-inspiration-26-4k-wallpapers\" target=\"_blank\">Here is the original view.</a></p>",
+		"date": "2016-09-13 01:00:13 GMT"
 	},
 	{
-		title: 'Artificial Industrial Inspiration',
-		name: 'artificial_industrial_inspiration_orig-24',
-		description: ipsum
+		"title": "Artificial Industrial Inspiration",
+		"name": "artificial_industrial_inspiration_orig-24",
+		"tumblrId": 150333892294,
+		"description": "<p><a href=\"https://goo.gl/photos/o5VRA61cJFu4RSMY9\">Uncompressed 4K wallpapers are available at G+ Photos.</a></p><p>You can see each step in the creation of this design at <a href=\"http://imgur.com/gallery/5ZTcd\">the Creative Process Gallery here</a>.</p><p>Inspiration is everything. That's pretty much what I can say about this design. It can often come from the very place that you intend to put your designs as well. I always look at the profiles of the people who reblog my work on a regular basis, and I have met some pretty cool people that way. In this circumstance, I found someone who has excellent taste in industrial design, and I was inspired by a LOT of what they have been reblogging. In an attempt to overcome my recent low of creative energy, I thought I would reach out to them and see if they would be interested in watching my process as I create something new. It has been an absolute treat making this design via screen sharing with <a href=\"http://artificialhousewife.tumblr.com/\">a friend that I met through her reblogs on my Tumblr</a>.</p><p>As it turns out, I work better when I get to interact with another participant when creating new designs. I used to mentor at a local community center for about 11 years - but it closed down last year because of political idiocy. This experience was doubly rewarding in that this friend was able to learn a great deal about the nuts and bolts of how to create a design in Blender. It was great for me, because it turns out that I have really missed teaching&hellip; so thank you, friend. :)</p><p>If you happen to be a fan of my work, have similar aesthetic tastes, and are interested in seeing how I create my designs, give me a poke. If you have 3 ~ 5 evenings to spare screen sharing, perhaps we can create something new together!</p><p>For anyone who digs on moodboards, here were the images which acted as our inspiration for this design:<br/>[<a href=\"http://artificialhousewife.tumblr.com/post/142093238377\">00</a>, <a href=\"http://artificialhousewife.tumblr.com/post/148991132537/takeovertime-bathroom-furniture-swoon\">01</a>, <a href=\"http://artificialhousewife.tumblr.com/post/146997735492/henrycaird-alchemist-junghoon-lee\">02</a>, <a href=\"http://artificialhousewife.tumblr.com/post/146997716232/henrycaird-alchemist-junghoon-lee\">03</a>, <a href=\"http://artificialhousewife.tumblr.com/post/149081005417\">04</a>, <a href=\"http://artificialhousewife.tumblr.com/post/149012287622\">05</a>, <a href=\"http://artificialhousewife.tumblr.com/post/148305400227\">06</a>, <a href=\"http://artificialhousewife.tumblr.com/post/147096137732\">07</a>, <a href=\"http://artificialhousewife.tumblr.com/post/146960517722\">08</a>, <a href=\"http://artificialhousewife.tumblr.com/post/146574699982\">09</a>, <a href=\"http://artificialhousewife.tumblr.com/post/143144472367\" target=\"_blank\">10</a>]</p>",
+		"date": "2016-09-13 00:55:40 GMT"
 	},
 	{
-		title: 'Bio Lab: Embryo Injector',
-		name: 'bio_lab_embryo_injector-48',
-		description: ipsum
+		"title": "Bio Lab: Embryo Injector",
+		"name": "bio_lab_embryo_injector-48",
+		"tumblrId": 89764093434,
+		"description": "<p>The other day, I was reading a press release titled &ldquo;<a href=\"http://www.uea.ac.uk/mac/comm/media/press/2014/June/antibiotic-resistance-achilles-heel\" title=\"SO PRETTY!\" target=\"_blank\">UEA researchers discover Achilles’ heel in antibiotic-resistant bacteria</a>&rdquo; - but before I could even read the words in the article, the Eye Candy at the top of the page leapt out and VIOLENTLY ATTACKED ME WITH INSPIRATION! I was like &ldquo;OH NO! MY OTHER PLANS FOR TONIGHT! THEY HAVE JUST DIED BECAUSE NOW I HAVE TO MAKE A GIF!!!&rdquo; and then the modeling and animation for this design happened in about 3 hours. So I set it up to render at 3AM before going to bed. It was still rendering the next morning, so I went in to work, knowing that it would be done when I got home. Then I got home from work and realized that the output had flaws. So I was like &ldquo;NOOOOOOOO~!&rdquo;. Then I fixed those issues in about 2 hours and rendered it again last night starting at 1.75AM, and it finished this morning before I had to leave for work.</p>\n<p>I don't know who took that photograph, but I want to tell them: &ldquo;Thank you for violently attacking TWO NIGHTS worth of my evening plans. They DIED. BECAUSE OF YOU AND YOUR BEAUTIFUL ART. But seriously. Your photography is Yes. How did you come up with the ideas for that lighting setup? It is beautiful.&rdquo;</p>\n<p><em>This GIF is one in a set named &ldquo;<a href=\"http://admiralpotato.tumblr.com/tagged/bio-lab\" target=\"_blank\" target=\"_blank\">Bio-Lab</a>&rdquo; - and I hope to find - not the time, but the right inspiration - to make a few more of these, because this one is hella shiny and I'm totally down for that.</em></p>",
+		"date": "2014-06-24 15:35:22 GMT"
 	},
 	{
-		title: 'CrusaderArts "Red Room" Tribute',
-		name: 'crusaderarts_red_room_tribute-24',
-		description: ipsum
+		"title": "CrusaderArts \"Red Room\" Tribute",
+		"name": "crusaderarts_red_room_tribute-24",
+		"tumblrId": 150862074534,
+		"description": "<p>Uncompressed 4K wallpapers are available at <a href=\"https://goo.gl/photos/moC35AUQxoLf9onz9\">G+ Photos</a>.</p><p>You can see each step in the creation of this design at the <a href=\"http://imgur.com/gallery/4jUB1\">Creative Process Gallery here</a>.</p><p>Once upon a week ago, I stumbled across a design named <a href=\"http://crusaderarts.tumblr.com/post/148114950040/red-room\">&ldquo;Red Room&rdquo;</a> by <a class=\"tumblelog\" href=\"https://tmblr.co/mJnN4Oq6DrX-kop7tp2ocew\">@crusaderarts</a>, and it charged me with such inspiration that I had to create something. So I did. The first few revisions of this design looked nothing like this; In fact, they almost looked a lot more like one of my previous designs, <a href=\"http://admiralpotato.tumblr.com/post/83790246330/cascading-tiles\" target=\"_blank\">&ldquo;Cascading Tiles&rdquo;</a> - and I would almost have been happy with posting that&hellip; but I was having a hard enough time with the -execution- of the design that I was almost willing to give up on some of the creative aspects I wanted, and just post it so I could have something new up before the end of the month.</p><p>Then I showed the design to a few friends, and they said that it still needed some work. So I worked at it, and I recreated the piece from scratch with compound matrix transforms rather than with modifiers and face instancing. I spent a lot more time caring about what shapes were actually being tiled, rather than just using some boring, segmented and beveled planes. I payed a lot more attention to each of the specific details which I liked in the source image, and created a reference to each one in my design. Later, a happy accident with the hue slider in post-processing -really- brought the design to life with these wonderfully vibrant purples. All of the extra effort shows in this design, and I couldn't be happier with it. :)</p><p>The lesson I learned this time, is that sometimes it's a lot faster and easier to start over knowing what mistakes not to repeat, rather than to keep iterating on something which is difficult or inflexible to steer in the direction you -want- to be going.</p>",
+		"date": "2016-09-24 13:29:43 GMT"
 	},
 	{
-		title: 'Easter Shark Ramps Up For 2017',
-		name: 'easter_shark_2017-60',
-		description: ipsum
+		"title": "Easter Shark Ramps Up For 2017",
+		"name": "easter_shark_2017-60",
+		"tumblrId": 159351607150,
+		"description": "<p>You can see each step in the creation of these designs in the <a href=\"https://o.ello.co/http://imgur.com/gallery/zYKgy\">Creative Process Gallery</a>.</p><p>This is the first quality inspection phase of the Easter Shark's annual production process. After the Chocolate Chickens lay the Chocolate Eggs, the Eggs need to be checked before they get wrapped. The Easter Shark personally checks each Egg for any defects before swimming across the sky in a rainbow to deliver them to the children of the world.</p><p><a href=\"https://o.ello.co/http://admiralpotato.tumblr.com/tagged/easter-shark\" target=\"_blank\">You can learn more about the legend of the Easter Shark from previous years designs here.</a></p>",
+		"date": "2017-04-08 22:10:25 GMT"
 	},
 	{
-		title: 'Easter Shark 2017: Inspected Eggs',
-		name: 'easter_shark_2017_inspected_eggs-48',
-		description: ipsum
+		"title": "Easter Shark 2017: Inspected Eggs",
+		"name": "easter_shark_2017_inspected_eggs-48",
+		"tumblrId": 159351759851,
+		"description": "<p>You can see each step in the creation of these designs in the <a href=\"https://o.ello.co/http://imgur.com/gallery/zYKgy\">Creative Process Gallery</a>.</p><p>These eggs have already been personally quality inspected by the Easter Shark, and are ready to go on to the next phase of the production process. Look at how flawless they are!</p><p><a href=\"https://o.ello.co/http://admiralpotato.tumblr.com/tagged/easter-shark\" target=\"_blank\">You can learn more about the legend of the Easter Shark from previous years designs here.</a></p>",
+		"date": "2017-04-08 22:15:27 GMT"
 	},
 	{
-		title: 'Ghost Wants Candy Corn',
-		name: 'ghost_wants_candy_corn-96',
-		description: ipsum
+		"title": "Ghost Wants Candy Corn",
+		"name": "ghost_wants_candy_corn-96",
+		"tumblrId": 152502544624,
+		"description": "<p>You can see each step in the creation of this design at the <a href=\"http://imgur.com/gallery/F52nH\">Creative Process Gallery</a>.</p><p>Sometimes you want something that's just out of reach - and then you move to reach it, and the object of your desires moves just to outside of your reach again! Like this Candy Corn with a mind of its own! All this little Ghost wants is to be happy and colorful too! Don't give up on your dream, little Ghost! You'll catch that Candy Corn some day!</p><p>I didn't want to let another whole month go by without posting something new, so I decided to create something simple and minimal that couldn't possibly become complicated enough to take more than 2 evenings to create. I'm glad that this idea came to mind, because I really like this cute little scene.</p><p>I've got another 3 or 4 designs in the works at the moment, but I've no idea how I'm going to finish them up so I can post them. That's something I struggle with - having a design that's just out of reach, but I don't yet have the ideas on how I can to take it from where it's at to a point of completion. Persistence is key, I suppose. If you don't keep at it, it will never get to the &ldquo;good enough to call done&rdquo; point.</p><p><a href=\"http://admiralpotato.tumblr.com/post/152502546289/ghost-wins-at-candy-corn\" target=\"_blank\">Wish this little guy some luck, he deserves to catch that Candy Corn!</a></p>",
+		"date": "2016-10-30 10:03:04 GMT"
 	},
 	{
-		title: 'Ghost Wins At Candy Corn',
-		name: 'ghost_wins_at_candy_corn-24',
-		description: ipsum
+		"title": "Ghost Wins At Candy Corn",
+		"name": "ghost_wins_at_candy_corn-24",
+		"tumblrId": 152502546289,
+		"description": "<p>You can see each step in the creation of this design at the <a href=\"http://imgur.com/gallery/F52nH\">Creative Process Gallery</a>.</p><p>You know that seemingly endless struggle that you fight against to achieve your dreams? <a href=\"http://admiralpotato.tumblr.com/post/152502544624/ghost-wants-candy-corn\" target=\"_blank\">This ghost faced that same challenge once.</a> It's beatable. The key? Persistence! Work hard and win at your dreams, everyone! :D</p>",
+		"date": "2016-10-30 10:03:10 GMT"
 	},
 	{
-		title: 'Hall of The Enlightened Triangles and Domes',
-		name: 'hall_of_the_enlightened_triangles_and_domes-48',
-		description: ipsum
+		"title": "Hall of The Enlightened Triangles and Domes",
+		"name": "hall_of_the_enlightened_triangles_and_domes-48",
+		"tumblrId": 159054511734,
+		"description": "<p>The lossless 4k PNG Wallpaper is available at <a href=\"https://o.ello.co/https://goo.gl/photos/RfVh3dceJ8c6kRsv7\">G+ Photos</a>.</p><p>You can see all of the iterations on this design in the <a href=\"https://o.ello.co/http://imgur.com/gallery/yJQkv\">Creative Process Gallery</a>.</p><p>So, on the topic of &ldquo;Enlightening&rdquo; things - <a href=\"https://o.ello.co/https://www.youtube.com/watch?v=m9AT7H4GGrA\">Have any of you other Cycles users been playing with the &ldquo;Filmic&rdquo; color system yet?</a> I can't speak highly enough about it - I have tried to work on well-lit scenes within a closed space before, only to blow out all detail in the light areas, and say goodbye to any approximation of subtlety in the highlights. Filmic expands Blender's dynamic range from 5 photographic stops to 25! SUCH BRIGHT DETAILS HOTNESS!</p><p>I don't normally think much about the &ldquo;environment&rdquo; for my designs - I have an idea for a subject, and that's what I create. The &ldquo;set&rdquo; of the scene is not something I am in the habit of thinking much about yet - but I think it payed off to spend more time on the scenery in this animation. I think I'll try more of this out moving forward. It was a lot of work, but it was worth it.</p><p>I should also say, as painfully dumb a movie as Lego Batman was (though, yes, the classic Batman callbacks were quite fun) - it was almost worth sitting through most of the brain-damagingly stupid slapstick comedy, just to find the wonderful gem of visual design inspiration that I caught <a href=\"https://o.ello.co/https://www.youtube.com/watch?v=-ddO2oMX61E&amp;t=36s\" target=\"_blank\">at about 36 seconds in to the &ldquo;Intro to the credits sequence music video&rdquo;</a>.</p>",
+		"date": "2017-04-01 00:01:14 GMT"
 	},
 	{
-		title: 'Jesters Court Revisited',
-		name: 'jesters_court_revisited-48',
-		description: ipsum
+		"title": "Jesters Court Revisited",
+		"name": "jesters_court_revisited-48",
+		"tumblrId": 157836818879,
+		"description": "<p>4K PNG wallpapers can be found at the <a href=\"https://o.ello.co/https://goo.gl/photos/31KL6JVFDvJkXKro6\">G+ wallpapers gallery</a>.</p><p>A few whiles back, I created an animation that I named <a href=\"http://admiralpotato.tumblr.com/post/114967032814/jesters-court-gifs-wallaper-higher-quality\">&ldquo;Jester's Court&rdquo;</a>. Looking at that design again recently, I found myself inspired by some of its elements, while also thinking &ldquo;I can do better than that now&rdquo;. I like to think that the same &ldquo;Jester&rdquo; who decorated the original court grew up a little bit, became interested in the sciences, went to college and got a degree in bio-chem, and eventually came back and redecorated his court with a slightly keener sense of style.</p><p>This design went through a crap-ton of variations before it became what it is now - each one of them really interesting. If you'd like to see how this came about, please take a look at the <a href=\"https://o.ello.co/http://imgur.com/gallery/NArfy\">Creative Process Gallery</a>.</p><p>Also, a shout-out and thanks to <a href=\"https://tmblr.co/mr_BTLFg8QzTPUMVSbe3vbg\" target=\"_blank\">@staff</a> for boosting the GIF size limit to 3MB. :)</p>",
+		"date": "2017-02-28 22:33:21 GMT"
 	},
 	{
-		title: 'Recursive Trefoil Knot: Top',
-		name: 'recursive_trefoil_knot_top-48',
-		description: ipsum
+		"title": "Recursive Trefoil Knot: Top",
+		"name": "recursive_trefoil_knot_top-48",
+		"tumblrId": 124761092504,
+		"description": "<p>Everyone here is familiar with the concept of the <a href=\"https://en.wikipedia.org/wiki/Trefoil_knot\">Trefoil Knot</a>, right? \n\nTopologically, it's the simplest possible non-trivial knot. Well, I like that shape a lot, so I wanted to make one of my own&hellip; but this is where the recursion comes in, and this is the cool part: The objects moving along this path are exactly the same shape as the path itself, and they're all interlinked! They each move and rotate along the path while maintaining that linkage the whole time. AWW YEAH HOT MATHS!</p><p>I will be posting <a href=\"http://admiralpotato.tumblr.com/post/124761477759/recursive-trefoil-knot-another-perspective\">another perspective of this same scene</a> in just a moment.</p><p>I have also prepared a 1920x1080 <a href=\"https://vimeo.com/admiral/recursivetrefoilknot\">1 minute looping video of these two perspectives</a> in case you would like to put on some music, fullscreen them, and study them without distraction. I recommend trying this because this animation is hot.</p><p>For this design, I chose to learn how to work with moving objects along a <a href=\"https://en.wikipedia.org/wiki/Bezier_curve\">Bezier Curve</a> using the <a href=\"http://www.blendernation.com/2015/03/17/review-animation-nodes-addon\">Blender Animation Nodes Addon</a>. It took a while to figure out how to move objects along a curve using the &ldquo;Follow Path&rdquo; constraint, and then to ditch that approach because it wouldn't allow me to build complete loops in rotation. Then it took me a while to learn how to use the &ldquo;Evaluate Spline&rdquo; node, and convert the derivative tangent at that point in the curve into a rotation that I could use to orient my moving objects like the &ldquo;Follow Path&rdquo; constraint does. It took me a while longer to figure out that I needed to be performing compound rotation matrix multiplication in order to rotate the shapes along their animated axis first, and then orient them to the direction of that tangent.</p><p><a href=\"http://imgur.com/gallery/6RsCk\" target=\"_blank\">See this node setup here.</a></p>",
+		"date": "2015-07-22 17:18:07 GMT"
 	},
 	{
-		title: 'Recursive Trefoil Knot: Side',
-		name: 'recursive_trefoil_knot_side-48',
-		description: ipsum
+		"title": "Recursive Trefoil Knot: Side",
+		"name": "recursive_trefoil_knot_side-48",
+		"tumblrId": 124761477759,
+		"description": "<p>This is an alternate perspective on <a href=\"http://admiralpotato.tumblr.com/post/124761092504/recursive-trefoil-knot\">my original “Recursive Trefoil Knot” design</a>.</p><p>Everyone here is familiar with the concept of the <a href=\"https://en.wikipedia.org/wiki/Trefoil_knot\">Trefoil Knot</a>, right? \n\nTopologically, it’s the simplest possible non-trivial knot. Well, I like that shape a lot, so I wanted to make one of my own… but this is where the recursion comes in, and this is the cool part: The objects moving along this path are exactly the same shape as the path itself, and they’re all interlinked! They each move and rotate along the path while maintaining that linkage the whole time. AWW YEAH HOT MATHS!</p><p>I have also prepared a 1920x1080 <a href=\"https://vimeo.com/admiral/recursivetrefoilknot\">1 minute looping video of these two perspectives</a> in case you would like to put on some music, fullscreen them, and study them without distraction. I recommend trying this because this animation is hot.</p><p>For this design, I chose to learn how to work with moving objects along a <a href=\"https://en.wikipedia.org/wiki/Bezier_curve\">Bezier Curve</a> using the <a href=\"http://www.blendernation.com/2015/03/17/review-animation-nodes-addon\">Blender Animation Nodes Addon</a>. It took a while to figure out how to move objects along a curve using the “Follow Path” constraint, and then to ditch that approach because it wouldn’t allow me to build complete loops in rotation. Then it took me a while to learn how to use the “Evaluate Spline” node, and convert the derivative tangent at that point in the curve into a rotation that I could use to orient my moving objects like the “Follow Path” constraint does. It took me a while longer to figure out that I needed to be performing compound rotation matrix multiplication in order to rotate the shapes along their animated axis first, and then orient them to the direction of that tangent.</p><p><a href=\"http://imgur.com/gallery/6RsCk\" target=\"_blank\">See this node setup here.</a></p>",
+		"date": "2015-07-22 17:23:51 GMT"
 	},
 	{
-		title: 'Candy Links - Peppermint',
-		name: 'candy_links_peppermint-48',
-		description: ipsum
+		"title": "Candy Links - Peppermint",
+		"name": "candy_links_peppermint-48",
+		"tumblrId": 135658237219,
+		"description": "<p>Friends Courtney and Veronica from work were chillin' in my lab with me and giving me some awesome ideas for GIFs a few weeks ago. We came up with a preliminary idea, and I spent a few extra hours working on it after they left. This was what I came up with from that hangout session. Thanks you two! :D</p>",
+		"date": "2015-12-21 20:01:47 GMT"
 	},
 	{
-		title: 'Candy Links - Wintermint',
-		name: 'candy_links_wintermint-48',
-		description: ipsum
+		"title": "Candy Links - Wintermint",
+		"name": "candy_links_wintermint-48",
+		"tumblrId": 135658405954,
+		"description": "<p>Friends Courtney and Veronica from work were chillin’ in my lab with me and giving me some awesome ideas for GIFs a few weeks ago. We came up with a preliminary idea, and I spent a few extra hours working on it after they left. This was what I came up with from that hangout session. Thanks you two! :D</p>",
+		"date": "2015-12-21 20:04:43 GMT"
 	},
 	{
-		title: 'Doubly Pyramidal',
-		name: 'doubly_pyramidal-48',
-		description: ipsum
+		"title": "Doubly Pyramidal",
+		"name": "doubly_pyramidal-48",
+		"tumblrId": 144167792313,
+		"description": "<p>The Wallpaper can be found at both at <a href=\"http://imgur.com/gallery/ROxwx\">Imgur</a> and <a href=\"https://goo.gl/photos/goBynWsSzFRofDdM8\">G+ Photos</a>.</p><p>I don't really have much to say about this design, other than saying thanks to a few people, and <a href=\"http://imgur.com/gallery/S9JFY\">linking to the design's process gallery</a>, where you can see how I put the thing together, and see a few of the ideas that were interesting, but not perfect.</p><p>Thank you to <a href=\"https://tmblr.co/melOuX9alCjVl9vdfh06M2g\">@aspenexcel</a> for the inspiration you provided me in your design titled <a href=\"http://www.aspenexcel.com/post/143965108283/652016-excavation\">&ldquo;6.5.2016 - Excavation&rdquo;</a>. That particular color of glass plus the shape of the pyramids made my brain go &ldquo;ZING!&rdquo; and I had to play with the idea myself.</p><p>Thank you to <a href=\"https://tmblr.co/msUme0P-DlLQZano7LOTlNQ\" target=\"_blank\">@obviologist</a> for helping me figure out the lighting configuration that I'm using to cast the sharp pink sun rays through the circular blinds.</p>",
+		"date": "2016-05-10 22:20:31 GMT"
 	},
 	{
-		title: 'Chocolate Hearts',
-		name: 'chocolate_hearts-48',
-		description: ipsum
+		"title": "Chocolate Hearts",
+		"name": "chocolate_hearts-48",
+		"tumblrId": 143128018485,
+		"description": "<p>Some days you wake up, and it's -really- not a good day. You've already tried <b><a href=\"http://admiralpotato.tumblr.com/post/143108106339/chocolate-pills\">Chocolate Pills</a></b>, and they're just not helping. Is today a <b>DOUBLE Chocolate day</b>? <i><b>YES IT IS!!!</b></i> Just add <b>DOUBLE Chocolate</b>, and your day will <b>RADICALLY improve!</b> Every day can be a DOUBLE Chocolate day if you take <b>Chocolate HEARTS!</b> Chocolate Hearts are a happiness-inducing medication for oral use only. Side effects are common, and include: <b>smiling a MEGA lot more</b>, and having a <b>MUCH better day</b>. Consult yourself to see if today is a <b>DOUBLE Chocolate day</b> before use.</p><p>This design is a rebound of <a href=\"http://admiralpotato.tumblr.com/post/143108106339/chocolate-pills\" target=\"_blank\">a previous design, &ldquo;Chocolate Pills&rdquo;</a>.</p>",
+		"date": "2016-04-20 20:20:39 GMT"
 	},
 	{
-		title: 'Hella Hearts',
-		name: 'hella_hearts_d-48',
-		description: ipsum
+		"title": "Hella Hearts",
+		"name": "hella_hearts_d-48",
+		"tumblrId": 142366843003,
+		"description": "<p>A few years ago, I had the idealized shape of a heart on my mind, so <a href=\"http://admiralpotato.tumblr.com/tagged/i-heart-math\">I created a design set titled &ldquo;I Heart Math&rdquo;</a>. Last weekend, I started a new design set, in which I decided to revisit the shape and colors in the <a href=\"http://admiralpotato.tumblr.com/tagged/i-heart-math\">&ldquo;I Heart Math&rdquo; set</a>, but use some of my newer production workflows to make like a zillion hearts - because I'm just feelin' that good these days. I thought I would also give myself a new conceptual guideline for this set: Allow the object instances to intersect with each other. Normally the thought of this is repulsive to me because I generally only consider my designs &ldquo;good enough&rdquo; or &ldquo;valid&rdquo; when the objects -do not- intersect with each other. I'm happy that I tried this out though, because these designs are super beautiful. :)<br/></p><p>The objects in this set were animated using <a href=\"https://github.com/JacquesLucke/animation_nodes/releases\">the Blender Animation Nodes addon</a>. I've really got to hand it to Jacques Lucke for his continuing work on the addon to improve performance, increase stability, add new features, and be so actively engaged with the community to both solve problems and provide amazing transparency into the development of a consistently amazing tool for other artists and developers. <a href=\"https://github.com/JacquesLucke/animation_nodes/releases\">I'd like to congratulate him for making it to the 1.5 release</a> of what is currently my favorite part of my animation toolbox; It's been a lot of work getting it to this point, and that effort is incredibly appreciated! Thank you! :D</p><p>To anyone wondering - yes, the shader on these hearts is <a href=\"https://www.blender.org/manual/render/blender_render/materials/properties/subsurface_scattering.html\">SubSurfaceScatter </a>rather than Diffuse. Lessons learned: Path Tracing - 12 minutes per frame to get it looking good in the shadows; Branched Path Tracing - 3 minutes per frame. Branched Path Tracing will make your computer 100% unusable while it's rendering though - so plan to let that render sit overnight, or while you're away for a good chunk of hours. Also, if you're having issues with Blender crashing after only rendering a few frames of your animations, you should try using the <a href=\"https://www.blender.org/api/blender_python_api_2_70_0/bpy.types.RenderSettings.html#bpy.types.RenderSettings.use_lock_interface\">&ldquo;Lock interface during rendering in favor of giving more memory to the renderer&rdquo;</a> lock icon in your Render Settings - it solved a crap-ton of problems for me. Thank you again for that tip, Jacques!</p><p>&mdash;-</p><p>This design is number 4 of 4 in <a href=\"http://admiralpotato.tumblr.com/tagged/hella-hearts\">a set titled &ldquo;Hella Hearts&rdquo;</a>, and uses assets originally created in <a href=\"http://admiralpotato.tumblr.com/tagged/i-heart-math\" target=\"_blank\">a set titled &ldquo;I Heart Math&rdquo;</a>.</p>",
+		"date": "2016-04-06 20:43:14 GMT"
 	},
 	{
-		title: 'Hexagonal Hard Candy',
-		name: 'hexagonal_hard_candy-96',
-		description: ipsum
+		"title": "Hexagonal Hard Candy",
+		"name": "hexagonal_hard_candy-96",
+		"tumblrId": 124620736479,
+		"description": "<p>While I originally didn't think I had anything to say about this design, now that I sit down to post it, it feels more and more like a kind of progress and internal change marker for me. Seeing it completed, I'm realizing that it's motion is almost the exact inverse of the design I created named <a href=\"http://admiralpotato.tumblr.com/post/92996732374/happy-tumblrversary-hexeosis\">&ldquo;Hexeosiversary&rdquo;</a> as tribute for <a class=\"tumblelog\" href=\"http://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">hexeosis</a>. The difference is that my whole design and production process has undergone 2 or 3 paradigm shifts since then. Things have also significantly changed in the ways I'm able to spend motivation on my art, and those are the areas which I will be focusing most on addressing next in my life.</p><p>Then: The production process used to be more labor intensive, but the inspiration and energy I had available was fresh and crisp, and even if the design was not perfectly clear in my mind, the inspiration lasted through posting. In the older design, I was getting frustrated and stuck with the mathematical imprecision I had with manually keyframing my animations, then restarting and retrying for about 3 hours until I got the animation right. I struggled with composition for some reason, and my usage of the material and lighting system was far from realistic. It used to be that my inspiration came from actually opening my production program of choice and just playing around with built-in functions until something aligned in such a way as to be interesting, and I worked with the design from there. I haven't been able to do that in a while though, but I want it back.</p><p>Now: The production process is a lot easier for me, but finding and keeping focus and inspiration to make it to the finish line are increasingly difficult. This time, I implemented the animation using the <a href=\"https://github.com/JacquesLucke/animation_nodes\">Blender Animation Nodes addon</a> in about 1 hour, and I let my design inspiration guide me with the lighting and shaders, which took about 1 hour as well. I find that the more Math I put into practice through building custom shader node networks and animation node networks, the more natural and intuitive those things become to me. But this is where I hit my points of difficulty. Part way through the rendering process, I am held back my technical issues in the sotware tools that I use. They're typically tiny things that are simple to fix in production, but the fact that a render broke means that I have to go fix it, and that's not a super big problem&hellip; But wait, there's more broken, or the breakage stacks on top of some other bug in the software that's prevented me from completing other renders&hellip; and the motivation is just gone. So I have this amazing design that's stuck at 99% completion, but I don't have the motivation to deal with the crazy obscure problem that comes up in only this circumstance. These days, finding inspiration in someone else's work, or something else that I can already see, is the most essential part of my artistic and motivational processes. Without the inspiration, the work is simply drudgery and becomes completely impossible for me to complete. It is currently a hardship, but I will find my way back to a point where motivation is no longer a struggle. This is a promise which I make to myself, and all those who's lives I will positively effect through my work.</p><p>Anyway, this design was inspired strongly enough to make it to the finish line, and I have these two artists to thank for their works. My inspiration was a design by <a href=\"http://tmblr.co/m5wjwKL2NqvJ5FJ_n920Odw\">beeple</a> named <a href=\"http://beeple.tumblr.com/post/121070958584/testtube-enemies-fr\">&ldquo;TESTTUBE ENEMIES(FR)&rdquo;</a> and a design by my best friend, <a href=\"http://tmblr.co/msUme0P-DlLQZano7LOTlNQ\">obviologist</a><a href=\"https://ello.co/obviologist\"></a> named <a href=\"https://ello.co/obviologist/post/WJkCCF8Ykfso4eAKkEC1uA\" target=\"_blank\">&ldquo;ABC, easy as 123&rdquo;</a>.</p>",
+		"date": "2015-07-21 01:17:45 GMT"
 	},
 	{
-		title: 'Hexagonal Hard Candy Revisited - Planar',
-		name: 'hexagonal_hard_candy_revisited_planar-48',
-		description: ipsum
+		"title": "Hexagonal Hard Candy Revisited - Planar",
+		"name": "hexagonal_hard_candy_revisited_planar-48",
+		"tumblrId": 147776773254,
+		"description": "<p>It’s been exactly 1 year since I posted my design titled <a href=\"http://admiralpotato.tumblr.com/post/124620736479/hexagonal-hard-candy\">“Hexagonal Hard Candy”</a> - and I thought it would be a fun experiment to revisit an old scene with a few of my newer tricks. In some ways it was quite fun, and in other ways, my process has been hindered more by self doubt. “Did it look better that way, or this?” Sometimes you just need to keep working on something, until it no longer looks like it needs any work - and that’s when you can call it done. As the title implies, this is one of my designs that took a large number of iterations to get to that point.</p><p>This one, v23, is actually just number 3 of 3 variations in the set that made it to the finish line, which I’m quite happy to have crossed. <a href=\"http://t.umblr.com/redirect?z=http%3A%2F%2Fimgur.com%2Fgallery%2F8UCKr&amp;t=ZGYxMDc2MDFjNGFmMzI0ZjExNWNjOWMxNDkxYjA3ZmViMGU2NmQyMCwyaWFLQnd0ag%3D%3D\">You can see all of the other steps in my creative process for this design set at the Imgur gallery here.</a></p><p>Quick shout-outs to <a href=\"https://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a>, <a href=\"https://tmblr.co/melOuX9alCjVl9vdfh06M2g\">@aspenexcel</a>, <a href=\"https://tmblr.co/m5wjwKL2NqvJ5FJ_n920Odw\">@beeple</a>, <a href=\"https://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> and <a href=\"https://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> who have been inspiring me a lot this year. It’s always nice to see you guys creating new work. :) </p><p>—-</p><p>This design is number 3 of 3 in a set titled <a href=\"http://admiralpotato.tumblr.com/tagged/hexagonal-hard-candy-revisited\">“Hexagonal Hard Candy Revisited”</a>, a set of GIFs in which I revisit the materials, and some of the lighting setup for my previous design, <a href=\"http://admiralpotato.tumblr.com/post/124620736479/hexagonal-hard-candy\" target=\"_blank\">“Hexagonal Hard Candy”</a> .</p>",
+		"date": "2016-07-22 02:27:45 GMT"
 	},
 	{
-		title: 'Hexagonal Hard Candy Revisited - Sphere',
-		name: 'hexagonal_hard_candy_revisited_sphere-48',
-		description: ipsum
+		"title": "Hexagonal Hard Candy Revisited - Sphere",
+		"name": "hexagonal_hard_candy_revisited_sphere-48",
+		"tumblrId": 147776348268,
+		"description": "<p>It's been exactly 1 year since I posted my design titled <a href=\"http://admiralpotato.tumblr.com/post/124620736479/hexagonal-hard-candy\">&ldquo;Hexagonal Hard Candy&rdquo;</a> - and I thought it would be a fun experiment to revisit an old scene with a few of my newer tricks. In some ways it was quite fun, and in other ways, my process has been hindered more by self doubt. &ldquo;Did it look better that way, or this?&rdquo; Sometimes you just need to keep working on something, until it no longer looks like it needs any work - and that's when you can call it done. As the title implies, this is one of my designs that took a large number of iterations to get to that point.</p><p>This one, v20, is actually just number 1 of 3 variations in the set that made it to the finish line, which I'm quite happy to have crossed. <a href=\"http://imgur.com/gallery/8UCKr\">You can see all of the other steps in my creative process for this design set at the Imgur gallery here.</a> \n\n Oh yeah, there’s even a <a class=\"tumblelog\" href=\"https://tmblr.co/m3OpqN2Dx4402mTwcieNCBA\">@protobacillus</a>​ inspired variant over there that you should check out - it’s I think… after v19 in that list.\n\n</p><p>Quick shout-outs to <a class=\"tumblelog\" href=\"https://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a>, <a href=\"https://tmblr.co/melOuX9alCjVl9vdfh06M2g\">@aspenexcel</a>, <a href=\"https://tmblr.co/m5wjwKL2NqvJ5FJ_n920Odw\">@beeple</a>, <a href=\"https://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> and <a href=\"https://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> who have been inspiring me a lot this year. It’s always nice to see you guys creating new work. :)</p><p>&mdash;-</p><p>\n\nThis design is number 1 of 3 in a set titled <a href=\"http://admiralpotato.tumblr.com/tagged/hexagonal-hard-candy-revisited\">“Hexagonal Hard Candy Revisited”</a>, a set of GIFs in which I revisit the materials, and some of the lighting setup for my previous design, <a href=\"http://admiralpotato.tumblr.com/post/124620736479/hexagonal-hard-candy\" target=\"_blank\">&ldquo;Hexagonal Hard Candy&rdquo;</a>\n\n.</p>",
+		"date": "2016-07-22 02:17:02 GMT"
 	},
 	{
-		title: 'Honey Swarm - A',
-		name: 'honey_swarm_a-48',
-		description: ipsum
+		"title": "Honey Swarm - A",
+		"name": "honey_swarm_a-48",
+		"tumblrId": 134043248729,
+		"description": "<p>Happy ThanksGIFing everyone! :D I had the day off of work today, so I practiced an annual tradition where I make GIFs and think about how truly awesome it is that such a universe exists where a planet that can support our particular biology is possible. I will always be in awe of how we were the result of a system of random events which selectively encouraged a set of traits in our ancestors which allow us to enjoy nourishment so much today.<br/></p><p>I mixed several ideas together for this design - a drop of honey, a honey drizzler, a swarm of bees, and the hexagonal nature of a honeycomb structure. This time, the shape of the individual objects, as well as the shape that they created through their combined motion was so fascinating to me, I decided to explore this scene from multiple perspectives. I am extremely pleased with these results.</p><p>You can <a href=\"https://drive.google.com/open?id=0B5_wZvl81Zi0OF9DMFVJaEtxYjg\">download the blend file for this design</a> and play with it yourself if you like. Please note that you will need to install and enable the Animation Nodes addon (bundled with the blend file) for the scene to animate.</p><p>Id like to make another shout-out to Jacques Lucke for his <a href=\"https://github.com/JacquesLucke/animation_nodes\">fantastic Blender Animation Nodes addon</a>, which I used to create the motion of this scene. This fantastic tool makes creating the complex motion of many objects both manageable and incredibly enjoyable. :)</p><p>Also, shout-out to these fellow GIF artists who inspire me regularly - keep it up everyone! Happy ThanksGIFing! :D <a href=\"http://tmblr.co/msUme0P-DlLQZano7LOTlNQ\">@obviologist</a> <a href=\"http://tmblr.co/mKcKXB5NJLSihu7V49WRYYw\">@beesandbombs</a> <a href=\"http://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> <a href=\"http://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a> <a href=\"http://tmblr.co/mTf0k9lzThYY_45LCekNuyg\">@echophon</a> <a href=\"http://tmblr.co/mJF_OqrlCoRMZUGC8cfn5NA\">@kidmograph</a> <a href=\"http://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> <a href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\"></a><a class=\"tumblelog\" href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\">@bigblueboo</a> <a class=\"tumblelog\" href=\"http://tmblr.co/mvqL7CfuJipNxfcBQZ18Z1w\" target=\"_blank\">@garethwashere</a></p>",
+		"date": "2015-11-27 06:01:58 GMT"
 	},
 	{
-		title: 'Honey Swarm - B',
-		name: 'honey_swarm_b-48',
-		description: ipsum
+		"title": "Honey Swarm - B",
+		"name": "honey_swarm_b-48",
+		"tumblrId": 134043248729,
+		"description": "<p>Happy ThanksGIFing everyone! :D I had the day off of work today, so I practiced an annual tradition where I make GIFs and think about how truly awesome it is that such a universe exists where a planet that can support our particular biology is possible. I will always be in awe of how we were the result of a system of random events which selectively encouraged a set of traits in our ancestors which allow us to enjoy nourishment so much today.<br/></p><p>I mixed several ideas together for this design - a drop of honey, a honey drizzler, a swarm of bees, and the hexagonal nature of a honeycomb structure. This time, the shape of the individual objects, as well as the shape that they created through their combined motion was so fascinating to me, I decided to explore this scene from multiple perspectives. I am extremely pleased with these results.</p><p>You can <a href=\"https://drive.google.com/open?id=0B5_wZvl81Zi0OF9DMFVJaEtxYjg\">download the blend file for this design</a> and play with it yourself if you like. Please note that you will need to install and enable the Animation Nodes addon (bundled with the blend file) for the scene to animate.</p><p>Id like to make another shout-out to Jacques Lucke for his <a href=\"https://github.com/JacquesLucke/animation_nodes\">fantastic Blender Animation Nodes addon</a>, which I used to create the motion of this scene. This fantastic tool makes creating the complex motion of many objects both manageable and incredibly enjoyable. :)</p><p>Also, shout-out to these fellow GIF artists who inspire me regularly - keep it up everyone! Happy ThanksGIFing! :D <a href=\"http://tmblr.co/msUme0P-DlLQZano7LOTlNQ\">@obviologist</a> <a href=\"http://tmblr.co/mKcKXB5NJLSihu7V49WRYYw\">@beesandbombs</a> <a href=\"http://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> <a href=\"http://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a> <a href=\"http://tmblr.co/mTf0k9lzThYY_45LCekNuyg\">@echophon</a> <a href=\"http://tmblr.co/mJF_OqrlCoRMZUGC8cfn5NA\">@kidmograph</a> <a href=\"http://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> <a href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\"></a><a class=\"tumblelog\" href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\">@bigblueboo</a> <a class=\"tumblelog\" href=\"http://tmblr.co/mvqL7CfuJipNxfcBQZ18Z1w\" target=\"_blank\">@garethwashere</a></p>",
+		"date": "2015-11-27 06:01:58 GMT"
 	},
 	{
-		title: 'Honey Swarm - C',
-		name: 'honey_swarm_c-48',
-		description: ipsum
+		"title": "Honey Swarm - C",
+		"name": "honey_swarm_c-48",
+		"tumblrId": 134043248729,
+		"description": "<p>Happy ThanksGIFing everyone! :D I had the day off of work today, so I practiced an annual tradition where I make GIFs and think about how truly awesome it is that such a universe exists where a planet that can support our particular biology is possible. I will always be in awe of how we were the result of a system of random events which selectively encouraged a set of traits in our ancestors which allow us to enjoy nourishment so much today.<br/></p><p>I mixed several ideas together for this design - a drop of honey, a honey drizzler, a swarm of bees, and the hexagonal nature of a honeycomb structure. This time, the shape of the individual objects, as well as the shape that they created through their combined motion was so fascinating to me, I decided to explore this scene from multiple perspectives. I am extremely pleased with these results.</p><p>You can <a href=\"https://drive.google.com/open?id=0B5_wZvl81Zi0OF9DMFVJaEtxYjg\">download the blend file for this design</a> and play with it yourself if you like. Please note that you will need to install and enable the Animation Nodes addon (bundled with the blend file) for the scene to animate.</p><p>Id like to make another shout-out to Jacques Lucke for his <a href=\"https://github.com/JacquesLucke/animation_nodes\">fantastic Blender Animation Nodes addon</a>, which I used to create the motion of this scene. This fantastic tool makes creating the complex motion of many objects both manageable and incredibly enjoyable. :)</p><p>Also, shout-out to these fellow GIF artists who inspire me regularly - keep it up everyone! Happy ThanksGIFing! :D <a href=\"http://tmblr.co/msUme0P-DlLQZano7LOTlNQ\">@obviologist</a> <a href=\"http://tmblr.co/mKcKXB5NJLSihu7V49WRYYw\">@beesandbombs</a> <a href=\"http://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> <a href=\"http://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a> <a href=\"http://tmblr.co/mTf0k9lzThYY_45LCekNuyg\">@echophon</a> <a href=\"http://tmblr.co/mJF_OqrlCoRMZUGC8cfn5NA\">@kidmograph</a> <a href=\"http://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> <a href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\"></a><a class=\"tumblelog\" href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\">@bigblueboo</a> <a class=\"tumblelog\" href=\"http://tmblr.co/mvqL7CfuJipNxfcBQZ18Z1w\" target=\"_blank\">@garethwashere</a></p>",
+		"date": "2015-11-27 06:01:58 GMT"
 	},
 	{
-		title: 'Honey Swarm - A',
-		name: 'honey_swarm_d-48',
-		description: ipsum
+		"title": "Honey Swarm - A",
+		"name": "honey_swarm_d-48",
+		"tumblrId": 134043248729,
+		"description": "<p>Happy ThanksGIFing everyone! :D I had the day off of work today, so I practiced an annual tradition where I make GIFs and think about how truly awesome it is that such a universe exists where a planet that can support our particular biology is possible. I will always be in awe of how we were the result of a system of random events which selectively encouraged a set of traits in our ancestors which allow us to enjoy nourishment so much today.<br/></p><p>I mixed several ideas together for this design - a drop of honey, a honey drizzler, a swarm of bees, and the hexagonal nature of a honeycomb structure. This time, the shape of the individual objects, as well as the shape that they created through their combined motion was so fascinating to me, I decided to explore this scene from multiple perspectives. I am extremely pleased with these results.</p><p>You can <a href=\"https://drive.google.com/open?id=0B5_wZvl81Zi0OF9DMFVJaEtxYjg\">download the blend file for this design</a> and play with it yourself if you like. Please note that you will need to install and enable the Animation Nodes addon (bundled with the blend file) for the scene to animate.</p><p>Id like to make another shout-out to Jacques Lucke for his <a href=\"https://github.com/JacquesLucke/animation_nodes\">fantastic Blender Animation Nodes addon</a>, which I used to create the motion of this scene. This fantastic tool makes creating the complex motion of many objects both manageable and incredibly enjoyable. :)</p><p>Also, shout-out to these fellow GIF artists who inspire me regularly - keep it up everyone! Happy ThanksGIFing! :D <a href=\"http://tmblr.co/msUme0P-DlLQZano7LOTlNQ\">@obviologist</a> <a href=\"http://tmblr.co/mKcKXB5NJLSihu7V49WRYYw\">@beesandbombs</a> <a href=\"http://tmblr.co/m0gmxkcJvLIH-Tk144Jrc2w\">@isopoly</a> <a href=\"http://tmblr.co/mcMt6p3l_xzQ0Xm7X9YFLQg\">@hexeosis</a> <a href=\"http://tmblr.co/mTf0k9lzThYY_45LCekNuyg\">@echophon</a> <a href=\"http://tmblr.co/mJF_OqrlCoRMZUGC8cfn5NA\">@kidmograph</a> <a href=\"http://tmblr.co/m8iZcFrQkQr0FxwSXQs5hvQ\">@shonk</a> <a href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\"></a><a class=\"tumblelog\" href=\"http://tmblr.co/mxPpJKiZCpEdtZSMLkALMHQ\">@bigblueboo</a> <a class=\"tumblelog\" href=\"http://tmblr.co/mvqL7CfuJipNxfcBQZ18Z1w\" target=\"_blank\">@garethwashere</a></p>",
+		"date": "2015-11-27 06:01:58 GMT"
 	},
 	{
-		title: 'Metal Eyes',
-		name: 'metal_eyes-24',
-		description: ipsum
+		"title": "Metal Eyes",
+		"name": "metal_eyes-24",
+		"tumblrId": 140647118991,
+		"description": "<p>Don't ask me to explain what's going on here in this design. It's obvious. Don't you see it? Ugh. Do I have to explain everything? This is clearly what happened when <a href=\"https://www.google.com/search?q=GLaDOS&amp;source=lnms&amp;tbm=isch\">GLaDOS</a> and <a href=\"https://www.google.com/search?q=hal+9000&amp;source=lnms&amp;tbm=isch\">HAL 9000</a> had children. Well, several generations down the line, at least. These are probably their great, great, great grand-cores. Now 30% less homicidal toward humanity, because well, all of the humans have already been wiped out. Probably. At least on Earth.</p><p>It's been a while since I've created a design that looks fairly tech. The last time I tried my hand at this stuff, I created a design named <a href=\"http://admiralpotato.tumblr.com/post/89764093434/bio-lab-embryo-injector\">&ldquo;Embryo Injector&rdquo;</a>, but that was like&hellip; a lifetime ago. I hope I can get back into the habit of making designs this complex and awesome looking; I'm quite proud of this one, and would like to continue developing some designs in this direction. It's just so hard to have the energy left over to be able to -be- inspired after getting home from a stressful work day of problem solving needlessly complex technical shenanigans. You know what though? Some artists' works of art are so powerfully inspiring that they help me end my day creatively regardless of the frustration. This particular animation was fueled by a piece by <a href=\"https://tmblr.co/mfwNMLypS1Dry_tR2RR7uFA\">@iamstylow</a><a href=\"https://ello.co/stylow\"></a>, titled <a href=\"http://iamstylow.tumblr.com/post/138439746551/day-155-eyecu-robot-neon-space-eye\" target=\"_blank\">&ldquo;Day 155 - Eye.C.U.&rdquo;</a>. Thanks, Stylow. :)</p>",
+		"date": "2016-03-07 21:09:03 GMT"
 	},
 	{
-		title: 'Networking',
-		name: 'networking-48',
-		description: ipsum
+		"title": "Networking",
+		"name": "networking-48",
+		"tumblrId": 114531379504,
+		"description": "<p>I was asked by one of the leaders of the <a href=\"http://www.meetup.com/Salt-Lake-Motion-Graphics-Group/\">Salt Lake Motion Graphics Meetup</a> to create a GIF to represent this month's meetup theme: <a href=\"http://www.meetup.com/Salt-Lake-Motion-Graphics-Group/events/221188884/\">&ldquo;Hyper Mograph Networking&rdquo;</a> - and I was pleased to take on the task. This is what I came up with. If any of you happen to live in the valley, and have an interest in Motion Graphics, why don't you come downtown and meet me and some of these other interesting people on April 2nd?</p><p><a href=\"http://goo.gl/JMw0a8\" target=\"_blank\">A 1920x1080 wallpaper of this design is also available here.</a></p>",
+		"date": "2015-03-24 23:01:03 GMT"
 	}
 ];
 
