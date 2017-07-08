@@ -116,19 +116,17 @@
 	fill: #000;
 	opacity: 0.75;
 }
-.video-controller .playToggle,
-.video-controller .fullscreenToggle{
+.video-controller button{
 	position: absolute;
-	height: 3rem;
-	width: 3rem;
+	height: 2.75rem;
+	width: 2.75rem;
+	margin: 0.125rem;
 	bottom: 0;
 }
-.video-controller .playToggle{
-	left: 0;
-}
-.video-controller .fullscreenToggle{
-	right: 0;
-}
+.video-controller .step-prev{left: 0;}
+.video-controller .playToggle{left: 3rem;}
+.video-controller .step-next{left: 6rem;}
+.video-controller .fullscreenToggle{right: 0;}
 .video-controller .fullscreenBackground{
 	fill: #000;
 	opacity: 0.25;
@@ -136,11 +134,17 @@
 .video-controller .fill{
 	fill: #9f0;
 }
+.video-controller *:active .fill {
+	fill: #ff0;
+}
 .video-controller .stroke{
 	fill: none;
 	stroke-linecap: round;
 	stroke-miterlimit: 10;
 	stroke: #9f0;
+}
+.video-controller *:active .stroke {
+	stroke: #ff0;
 }
 .video-controller .stroke.screen-line{
 	stroke-width: 3px;

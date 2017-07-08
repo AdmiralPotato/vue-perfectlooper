@@ -127,6 +127,17 @@ Vue.component(
 					eventLabel: v.video.title
 				});
 			},
+			step: function (direction) {
+				let v = this;
+				if(!v.started){
+					v.playToggle();
+				}
+				if(v.loaded === 1){
+					v.playing = false;
+					v.videoport.setPlay(false);
+					v.videoport.step(direction);
+				}
+			},
 			fullscreenToggle: function(){
 				let v = this;
 				let canFullScreen = v.$el.requestFullscreen !== undefined;
@@ -162,12 +173,12 @@ Vue.component(
 				this.focusElement = undefined;
 			},
 			leftHandler: function (event) {
-				console.log('left', event);
 				event.preventDefault();
+				this.step(-1);
 			},
 			rightHandler: function (event) {
-				console.log('right', event);
 				event.preventDefault();
+				this.step(1);
 			},
 			spaceHandler: function (event) {
 				let shouldHandle = !(this.focusElement && this.focusElement.tagName === 'BUTTON');
@@ -224,6 +235,7 @@ Vue.component(
 						:playOffset="playOffset"
 						:playToggle="playToggle"
 						:fullscreenToggle="fullscreenToggle"
+						:step="step"
 						/>
 				</div>
 			</div>
@@ -263,79 +275,57 @@ Vue.component(
 			width: Number,
 			playOffset: Number,
 			playToggle: Function,
-			fullscreenToggle: Function
+			fullscreenToggle: Function,
+			step: Function
 		},
 		created: function () {
-			this.padding = 56;
+			this.padLeft = (48 * 3) + 16;
+			this.padRight = 48 + 16;
 		},
 		computed: {
 			lineWidth: function () {
-				return this.width - (this.padding * 2);
+				return this.width - (this.padLeft + this.padRight);
 			}
 		},
 		methods: {
 			lineFrac: function (n) {
-				return this.padding + (this.lineWidth * n);
+				return this.padLeft + (this.lineWidth * n);
 			}
 		},
 		template: `
 			<div class="video-controller">
-				<svg :viewBox="'0 0 ' + width + ' 48'">
-					<defs>
-						<path id="screen-line" class="stroke screen-line" d="M3.5,3.5l5,5"/>
-						<path id="full-triangle" class="fill" d="M10,9V4.41421a1,1,0,0,0-1.70711-.70711L3.70711,8.29289A1,1,0,0,0,4.41421,10H9A1,1,0,0,0,10,9Z"/>
-						<path id="exit-triangle" class="fill" d="M8.29289,3.70711,3.70711,8.29289A1,1,0,0,1,2,7.58579V3A1,1,0,0,1,3,2H7.58579A1,1,0,0,1,8.29289,3.70711Z"/>
-						<g id="full-corner">
-							<use xlink:href="#screen-line" />
-							<use xlink:href="#full-triangle" />
-						</g>
-						<g id="exit-corner">
-							<use xlink:href="#screen-line" />
-							<use xlink:href="#exit-triangle" />
-						</g>
-						<g id="icon-fullscreen">
-							<g transform="translate(24, 24)">
-								<use xlink:href="#full-corner" transform="rotate(  0)"/>
-								<use xlink:href="#full-corner" transform="rotate( 90)"/>
-								<use xlink:href="#full-corner" transform="rotate(180)"/>
-								<use xlink:href="#full-corner" transform="rotate(-90)"/>
-							</g>
-						</g>
-						<g id="icon-fullscreen-exit">
-							<g transform="translate(24, 24)">
-								<use xlink:href="#exit-corner" transform="rotate(  0)"/>
-								<use xlink:href="#exit-corner" transform="rotate( 90)"/>
-								<use xlink:href="#exit-corner" transform="rotate(180)"/>
-								<use xlink:href="#exit-corner" transform="rotate(-90)"/>
-							</g>
-						</g>
-						<path id="icon-play" class="fill" d="M17,15.33975V32.66025a2,2,0,0,0,3,1.73205l15-8.66025a2,2,0,0,0,0-3.4641L20,13.6077A2,2,0,0,0,17,15.33975Z"/>
-						<g id="icon-loading">
-							<path class="fill" d="M28.56066,26.56066l4.37868,4.37868a1.5,1.5,0,0,0,2.12132,0l4.37868-4.37868A1.5,1.5,0,0,0,38.37868,24H29.62132A1.5,1.5,0,0,0,28.56066,26.56066Z"/>
-							<path class="stroke loading" d="M24,34A10,10,0,1,1,34,24"/>
-						</g>
-						<path id="icon-pause" class="fill" d="M19,34H17a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,19,34Zm12,0H29a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,31,34Z"/>
-					</defs>
-					<g>
-						<g v-if="started">
+				<video-controller-defs />
+				<div v-if="started">
+					<svg :viewBox="'0 0 ' + width + ' 48'">
+						<g>
 							<rect class="background" :width="width" height="48"/>
 							<g class="progressLines">
-								<line class="stroke total"  :x1="padding"  y1="24" :x2="lineFrac(1)" y2="24"/>
-								<line class="stroke loaded" :x1="padding"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
-								<line class="stroke scaled" :x1="padding"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
+								<line class="stroke total"  :x1="padLeft"  y1="24" :x2="lineFrac(1)" y2="24"/>
+								<line class="stroke loaded" :x1="padLeft"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
+								<line class="stroke scaled" :x1="padLeft"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
 							</g>
 							<g class="playhead" :transform="'translate('+lineFrac(playOffset)+', 0)'">
 								<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
 								<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
 							</g>
 						</g>
-					</g>
-				</svg>
-				<button
-					v-if="started"
-					class="playToggle"
-					@click="playToggle">
-					<svg viewBox="0 0 48 48">
+					</svg>
+					<video-controller-button
+						label="Step 1 frame backward"
+						class="step-prev"
+						@click.native="step(-1)">
+						<g transform="translate(24, 24)">
+							<g transform="rotate(180)">
+								<g transform="translate(-24, -24)">
+									<use xlink:href="#icon-advance"/>
+								</g>
+							</g>
+						</g>
+					</video-controller-button>
+					<video-controller-button
+						:label="playing ? 'Pause' : 'Play'"
+						class="playToggle"
+						@click.native="playToggle">
 						<use xlink:href="#icon-play" key="play"  v-if="!playing"/>
 						<use xlink:href="#icon-pause" key="pause" v-if="playing && ready"/>
 						<g key="loading" v-if="!ready && started && playing" transform="translate(24, 24)">
@@ -345,18 +335,87 @@ Vue.component(
 								</g>
 							</g>
 						</g>
-						<rect opacity="0" width="48" height="48"/>
-					</svg>
-				</button>
-				<button class="fullscreenToggle lastFocus" @click="fullscreenToggle">
-					<svg viewBox="0 0 48 48">
-						<rect v-if="!started" class="fullscreenBackground" x="8" y="8" width="32" height="32" rx="4" ry="4"/>
-						<use xlink:href="#icon-fullscreen"      key="off" v-if="!isFullscreen"/>
-						<use xlink:href="#icon-fullscreen-exit" key="on"  v-if="isFullscreen"/>
-						<rect opacity="0" width="48" height="48"/>
-					</svg>
-				</button>
+					</video-controller-button>
+					<video-controller-button
+						label="Step 1 frame forward"
+						class="step-next"
+						@click.native="step(1)">
+						<use xlink:href="#icon-advance"/>
+					</video-controller-button>
+				</div>
+				<video-controller-button
+					label="Toggle Fullscreen"
+					class="fullscreenToggle lastFocus"
+					@click.native="fullscreenToggle">
+					<rect v-if="!started" class="fullscreenBackground" x="8" y="8" width="32" height="32" rx="4" ry="4"/>
+					<use xlink:href="#icon-fullscreen"      key="off" v-if="!isFullscreen"/>
+					<use xlink:href="#icon-fullscreen-exit" key="on"  v-if="isFullscreen"/>
+				</video-controller-button>
 			</div>
+		`
+	}
+);
+
+Vue.component(
+	'video-controller-button',
+	{
+		props: {
+			label: String
+		},
+		template: `
+			<button :title="label" :alt="label">
+				<svg viewBox="2 2 44 44">
+					<slot />
+					<use xlink:href="#button-click-mask" />
+				</svg>
+			</button>
+		`
+	}
+);
+
+Vue.component(
+	'video-controller-defs',
+	{
+		template: `
+			<svg class="video-controller-defs" style="display: none;">
+				<defs>
+					<path id="screen-line" class="stroke screen-line" d="M3.5,3.5l5,5"/>
+					<path id="full-triangle" class="fill" d="M10,9V4.41421a1,1,0,0,0-1.70711-.70711L3.70711,8.29289A1,1,0,0,0,4.41421,10H9A1,1,0,0,0,10,9Z"/>
+					<path id="exit-triangle" class="fill" d="M8.29289,3.70711,3.70711,8.29289A1,1,0,0,1,2,7.58579V3A1,1,0,0,1,3,2H7.58579A1,1,0,0,1,8.29289,3.70711Z"/>
+					<g id="full-corner">
+						<use xlink:href="#screen-line" />
+						<use xlink:href="#full-triangle" />
+					</g>
+					<g id="exit-corner">
+						<use xlink:href="#screen-line" />
+						<use xlink:href="#exit-triangle" />
+					</g>
+					<g id="icon-fullscreen">
+						<g transform="translate(24, 24)">
+							<use xlink:href="#full-corner" transform="rotate(  0)"/>
+							<use xlink:href="#full-corner" transform="rotate( 90)"/>
+							<use xlink:href="#full-corner" transform="rotate(180)"/>
+							<use xlink:href="#full-corner" transform="rotate(-90)"/>
+						</g>
+					</g>
+					<g id="icon-fullscreen-exit">
+						<g transform="translate(24, 24)">
+							<use xlink:href="#exit-corner" transform="rotate(  0)"/>
+							<use xlink:href="#exit-corner" transform="rotate( 90)"/>
+							<use xlink:href="#exit-corner" transform="rotate(180)"/>
+							<use xlink:href="#exit-corner" transform="rotate(-90)"/>
+						</g>
+					</g>
+					<path id="icon-play" class="fill" d="M17,15.33975V32.66025a2,2,0,0,0,3,1.73205l15-8.66025a2,2,0,0,0,0-3.4641L20,13.6077A2,2,0,0,0,17,15.33975Z"/>
+					<g id="icon-loading">
+						<path class="fill" d="M28.56066,26.56066l4.37868,4.37868a1.5,1.5,0,0,0,2.12132,0l4.37868-4.37868A1.5,1.5,0,0,0,38.37868,24H29.62132A1.5,1.5,0,0,0,28.56066,26.56066Z"/>
+						<path class="stroke loading" d="M24,34A10,10,0,1,1,34,24"/>
+					</g>
+					<path id="icon-pause" class="fill" d="M19,34H17a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,19,34Zm12,0H29a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2h2a2,2,0,0,1,2,2V32A2,2,0,0,1,31,34Z"/>
+					<path id="icon-advance" class="fill" d="M26.125,16.85529l9,5.19615a2.25,2.25,0,0,1,0,3.89711l-9,5.19615a2.25,2.25,0,0,1-3.375-1.94856V18.80385A2.25,2.25,0,0,1,26.125,16.85529ZM17.75,29.5v-11a2,2,0,0,0-2-2h-.5a2,2,0,0,0-2,2v11a2,2,0,0,0,2,2h.5A2,2,0,0,0,17.75,29.5Z"/>
+					<rect id="button-click-mask" opacity="0" x="2" y="2" width="44" height="44" />
+				</defs>
+			</svg>
 		`
 	}
 );
@@ -380,6 +439,7 @@ let Videoport = function(video, vue, canvas){
 	p.lastDisplayedImage = null;
 	p.lastDisplayedIndex = 0;
 	p.scaledFrameCount = 0;
+	p.frameCount = 0;
 	p.ready = false;
 	p.playOffset = 0;
 	p.prevFrame = 0;
@@ -389,7 +449,7 @@ let Videoport = function(video, vue, canvas){
 		if(p.shouldPlay){
 			requestAnimationFrame(p.renderLoop);
 			if(p.ready){
-				p.render(time);
+				p.play(time);
 			}
 		}
 	};
@@ -424,23 +484,33 @@ Videoport.prototype = {
 			});
 		}
 	},
-	render: function (time) {
+	play: function (time) {
 		let p = this;
 		let delta = time - (p.lastTimeSample || 0);
 		p.playOffset += delta;
 		p.setFrameByTime(p.playOffset);
 		p.lastTimeSample = time;
 	},
+	step: function (direction) {
+		let p = this;
+		let targetFrame = (p.prevFrame + direction + p.frameCount) % p.frameCount;
+		p.playOffset += ((1 / p.fps) * direction) * 1000;
+		p.setFrameByIndex(targetFrame);
+	},
 	setFrameByTime: function(time){
 		let p = this;
-		let frames = p.sourceBuffer.frameCount;
+		let frames = p.frameCount;
 		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
 		if(currentFrame !== p.prevFrame){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(currentFrame);
-			p.context.drawImage(p.lastDisplayedImage, 0, 0);
-			p.prevFrame = currentFrame;
-			p.vue.playOffset = currentFrame / frames;
+			p.setFrameByIndex(currentFrame);
 		}
+	},
+	setFrameByIndex: function (frameIndex) {
+		let p = this;
+		p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(frameIndex);
+		p.context.drawImage(p.lastDisplayedImage, 0, 0);
+		p.prevFrame = frameIndex;
+		p.vue.playOffset = frameIndex / p.frameCount;
 	},
 	getScaledCanvasByFrameIndex: function (frameIndex) {
 		let p = this;
@@ -483,7 +553,7 @@ Videoport.prototype = {
 		let p = this;
 		p.context.drawImage(p.getScaledCanvasByFrameIndex(p.scaledFrameCount++), 0, 0);
 		setTimeout(function () {
-			if(p.scaledFrameCount === p.sourceBuffer.frameCount){
+			if(p.scaledFrameCount === p.frameCount){
 				p.ready = true;
 				p.vue.$ga.event({
 					eventCategory: 'Video',
@@ -501,6 +571,7 @@ Videoport.prototype = {
 		let vue = p.vue;
 		let scaled = p.scaledFrameCount / b.frameCount;
 		let status;
+		p.frameCount = b.frameCount;
 		vue.loaded = b.loaded;
 		vue.scaled = scaled;
 		p.ready = b.ready && scaled === 1;
