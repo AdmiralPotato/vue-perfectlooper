@@ -199,8 +199,8 @@ Vue.component(
 				@touchstart="activity"
 				@focus.capture="focusHandler"
 				@blur.capture="blurHandler"
-				@keyup.capture.left="leftHandler"
-				@keyup.capture.right="rightHandler"
+				@keydown.capture.left="leftHandler"
+				@keydown.capture.right="rightHandler"
 				@keydown.capture.space="spaceHandler"
 			>
 				<div class="aspectEnforcer">
