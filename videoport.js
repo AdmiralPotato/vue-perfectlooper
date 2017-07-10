@@ -439,11 +439,12 @@ let Videoport = function(video, vue, canvas){
 	p.lastDisplayedImage = null;
 	p.lastDisplayedIndex = 0;
 	p.scaledFrameCount = 0;
-	p.frameCount = 0;
+	p.scaled = 0;
 	p.ready = false;
 	p.playOffset = 0;
 	p.prevFrame = 0;
 	p.sourceBuffer = decodedFrameBufferMap[p.video.name] || new DecodedFrameBuffer(p.video);
+	p.frameCount = p.sourceBuffer.frameCount;
 	p.sourceBuffer.addVideoport(p);
 	p.renderLoop = function (time) {
 		if(p.shouldPlay){
@@ -500,9 +501,9 @@ Videoport.prototype = {
 	setFrameByTime: function(time){
 		let p = this;
 		let frames = p.frameCount;
-		let currentFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
-		if(currentFrame !== p.prevFrame){
-			p.setFrameByIndex(currentFrame);
+		let targetFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
+		if(targetFrame !== p.prevFrame){
+			p.setFrameByIndex(targetFrame);
 		}
 	},
 	setFrameByIndex: function (frameIndex) {
@@ -537,21 +538,26 @@ Videoport.prototype = {
 	},
 	sizeWindow: function (newWidth, newHeight) {
 		let p = this;
-		let hasAnyFrameDecodedYet = p.lastDisplayedImage !== null;
 		p.width = newWidth;
 		p.height = newHeight;
 		p.scaledFrameCount = 0;
-		if(hasAnyFrameDecodedYet){
-			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(p.prevFrame);
-			requestAnimationFrame(function() {
-				p.context.drawImage(p.lastDisplayedImage, 0, 0);
-				p.updateUI();
-			});
-		}
+		p.scaled = 0;
+		p.ready = false;
+		p.updateUI();
 	},
 	scaleAllFramesAndReady: function () {
 		let p = this;
-		p.context.drawImage(p.getScaledCanvasByFrameIndex(p.scaledFrameCount++), 0, 0);
+		let frame = p.scaledFrameCount++;
+		if(!frame){
+			p.vue.$ga.event({
+				eventCategory: 'Video',
+				eventAction: 'scale-start',
+				eventLabel: p.video.title,
+				eventValue: p.width
+			});
+		}
+		p.context.drawImage(p.getScaledCanvasByFrameIndex(frame), 0, 0);
+		p.scaled = p.scaledFrameCount / p.frameCount;
 		setTimeout(function () {
 			if(p.scaledFrameCount === p.frameCount){
 				p.ready = true;
@@ -569,12 +575,8 @@ Videoport.prototype = {
 		let p = this;
 		let b = p.sourceBuffer;
 		let vue = p.vue;
-		let scaled = p.scaledFrameCount / b.frameCount;
-		let status;
-		p.frameCount = b.frameCount;
-		vue.loaded = b.loaded;
-		vue.scaled = scaled;
-		p.ready = b.ready && scaled === 1;
+		let status = b.status;
+		let displayFrame = p.whichFrameShouldBeDisplayedOnUpdate();
 		if(b.ready && !p.ready){
 			if(p.scaledFrameCount){
 				status = `Scaled ${p.scaledFrameCount}/${b.frameCount} frames`;
@@ -582,33 +584,33 @@ Videoport.prototype = {
 			if(p.shouldPlay){
 				p.scaleAllFramesAndReady();
 			}
-			if(!p.scaledFrameCount && p.shouldPlay){
-				p.vue.$ga.event({
-					eventCategory: 'Video',
-					eventAction: 'scale-start',
-					eventLabel: p.video.title,
-					eventValue: p.width
-				});
-			}
 		}
 		if(p.ready){
 			status = 'Ready';
 		}
-		vue.statusMessage = status || b.status;
-		let displayFrame = p.ready ? p.prevFrame : b.ready ? Math.max(0, p.scaledFrameCount - 1) : b.lastStoredFrameIndex;
 		if(displayFrame !== null){
 			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(displayFrame);
 		}
 		if(p.lastDisplayedImage){
-			//I guess you can't draw from a context the instant it's created?
-			requestAnimationFrame(function(){
-				p.context.drawImage(p.lastDisplayedImage, 0, 0);
-			});
+			p.context.drawImage(p.lastDisplayedImage, 0, 0);
 		}
-		requestAnimationFrame(function () {
-			//ensures that Vue updates the status before fading it out
-			vue.ready = p.ready;
-		});
+		vue.statusMessage = status;
+		vue.loaded = b.loaded;
+		vue.scaled = p.scaled;
+		vue.ready = p.ready;
+	},
+	whichFrameShouldBeDisplayedOnUpdate: function(){
+		let p = this;
+		let b = p.sourceBuffer;
+		let displayFrame = b.lastStoredFrameIndex;
+		if(b.ready) {
+			if (!p.shouldPlay || p.ready) {
+				displayFrame = p.prevFrame;
+			} else {
+				displayFrame = Math.max(0, p.scaledFrameCount - 1);
+			}
+		}
+		return displayFrame;
 	}
 };
 
