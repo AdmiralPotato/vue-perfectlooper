@@ -39,11 +39,16 @@ Vue.component(
 				scaled: 0,
 				playOffset: 0,
 				ready: false,
-				statusMessage: ''
+				statusMessage: '',
+				isIOS: false,
+				isIOSWarnNeeded: false
 			}
 		},
 		props: {
 			video: Object
+		},
+		created: function() {
+			this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 		},
 		mounted: function() {
 			let v = this;
@@ -95,6 +100,21 @@ Vue.component(
 			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.addEventListener('resize', v.resizeWindowEventHandler);
 			document.body.addEventListener('focus', v.fullscreenFocusChangeHandler, true);
+			if(v.isIOS){
+				v.isMounted = true;
+				v.scrollWarningWatcher = function () {
+					if(v.isMounted){
+						requestAnimationFrame(v.scrollWarningWatcher);
+						let videoportRect = v.$el.getBoundingClientRect();
+						let controlButton = v.$el.querySelector('button');
+						let buttonHeight = controlButton ? controlButton.clientHeight : 0;
+						let height = videoportRect.height;
+						let bottom = videoportRect.bottom;
+						v.isIOSWarnNeeded = bottom >= height - buttonHeight && bottom <= height + buttonHeight;
+					}
+				};
+				requestAnimationFrame(v.scrollWarningWatcher);
+			}
 		},
 		beforeDestroy: function () {
 			let v = this;
@@ -103,6 +123,7 @@ Vue.component(
 			document.removeEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.removeEventListener('resize', v.resizeWindowEventHandler);
 			document.body.removeEventListener('focus', v.fullscreenFocusChangeHandler, true);
+			if(v.isIOS){v.isMounted = false;}
 		},
 		methods: {
 			activity: function(){
@@ -192,7 +213,9 @@ Vue.component(
 			<div class="videoport"
 				:class="{
 					fullscreen: isFullscreen,
-					hideCursor: playing && activityHalted
+					hideCursor: playing && activityHalted,
+					ios: isIOS,
+					iosDangerZone: isIOSWarnNeeded
 				}"
 				@mousemove="activity"
 				@touchmove="activity"
