@@ -445,6 +445,7 @@ let Videoport = function(video, vue, canvas){
 	p.prevFrame = 0;
 	p.sourceBuffer = decodedFrameBufferMap[p.video.name] || new DecodedFrameBuffer(p.video);
 	p.frameCount = p.sourceBuffer.frameCount;
+	p.duration = p.frameCount / p.fps;
 	p.sourceBuffer.addVideoport(p);
 	p.renderLoop = function (time) {
 		if(p.shouldPlay){
@@ -487,21 +488,26 @@ Videoport.prototype = {
 	},
 	play: function (time) {
 		let p = this;
-		let delta = time - (p.lastTimeSample || 0);
-		p.playOffset += delta;
-		p.setFrameByTime(p.playOffset);
+		p.offsetTime(((time - (p.lastTimeSample || 0)) / 1000) / p.duration);
+		p.setFrameByTime();
 		p.lastTimeSample = time;
+	},
+	offsetTime: function (delta) {
+		let p = this;
+		p.playOffset = p.rangeBind(p.playOffset + delta, 1);
+	},
+	rangeBind: function (value, max) {
+		return Math.sign(value) === -1 ? max + (value % max) : value % max;
 	},
 	step: function (direction) {
 		let p = this;
-		let targetFrame = (p.prevFrame + direction + p.frameCount) % p.frameCount;
-		p.playOffset += ((1 / p.fps) * direction) * 1000;
+		let targetFrame = p.rangeBind(p.prevFrame + direction,  p.frameCount);
+		p.offsetTime((1 / p.frameCount) * direction);
 		p.setFrameByIndex(targetFrame);
 	},
-	setFrameByTime: function(time){
+	setFrameByTime: function(){
 		let p = this;
-		let frames = p.frameCount;
-		let targetFrame = Math.floor(time / 1000 / (frames / p.fps) * frames) % frames;
+		let targetFrame = Math.floor(p.playOffset * p.frameCount);
 		if(targetFrame !== p.prevFrame){
 			p.setFrameByIndex(targetFrame);
 		}
