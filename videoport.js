@@ -170,9 +170,10 @@ Vue.component(
 			scrub: function (playOffset) {
 				let v = this;
 				if(v.loaded === 1){
+					let preventOffsetWrapping = Math.max(0, playOffset - 0.000000001);
 					v.playing = false;
 					v.videoport.setPlay(false);
-					v.videoport.setTime(playOffset - 0.000000001); //prevents from wrapping by mod 1 on drag
+					v.videoport.setTime(preventOffsetWrapping);
 					v.videoport.setFrameByTime();
 				}
 			},
