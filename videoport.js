@@ -390,8 +390,32 @@ Vue.component(
 			scrub: Function
 		},
 		created: function () {
-			this.padLeft = (48 * 3) + 16;
-			this.padRight = 48 + 16;
+			let bar = this;
+			bar.padLeft = (48 * 3) + 16;
+			bar.padRight = 48 + 16;
+			bar.handleMouseDown = function(event){
+				bar.offsetTimeByMouseEvent(event);
+				bar.isDragging = true;
+			};
+			bar.handleMouseMove = function(event){
+				if(bar.isDragging){
+					bar.offsetTimeByMouseEvent(event);
+				}
+			};
+			bar.handleMouseUp = function(event){
+				if(bar.isDragging) {
+					bar.offsetTimeByMouseEvent(event);
+					bar.isDragging = false;
+				}
+			};
+		},
+		mounted: function () {
+			document.body.addEventListener('mousemove', this.handleMouseMove, true);
+			document.body.addEventListener('mouseup', this.handleMouseUp, true);
+		},
+		beforeDestroy: function () {
+			document.body.removeEventListener('mousemove', this.handleMouseMove, true);
+			document.body.removeEventListener('mouseup', this.handleMouseUp, true);
 		},
 		computed: {
 			lineWidth: function () {
@@ -402,26 +426,9 @@ Vue.component(
 			lineFrac: function (n) {
 				return this.padLeft + (this.lineWidth * n);
 			},
-			handleMouseDown: function(event){
-				this.offsetTimeByMouseEvent(event);
-				this.isDragging = true;
-			},
-			handleMouseMove: function(event){
-				if(this.isDragging){
-					this.offsetTimeByMouseEvent(event);
-				}
-			},
-			handleMouseUp: function(event){
-				if(this.isDragging) {
-					this.offsetTimeByMouseEvent(event);
-					this.isDragging = false;
-				}
-			},
-			handleMouseLeave: function(event){
-				this.isDragging = false;
-			},
 			offsetTimeByMouseEvent: function (event) {
-				let offset = this.mapPointToPlayOffset(event.offsetX);
+				let controllerRect = this.$el.getBoundingClientRect();
+				let offset = this.mapPointToPlayOffset(event.screenX - controllerRect.left);
 				event.preventDefault();
 				this.scrub(offset);
 			},
@@ -441,9 +448,6 @@ Vue.component(
 			<svg class="video-controller-bar" :viewBox="'0 0 ' + width + ' 48'">
 				<g
 					@mousedown="handleMouseDown"
-					@mousemove="handleMouseMove"
-					@mouseup="handleMouseUp"
-					@mouseleave="handleMouseLeave"
 					@touhstart="handleTouchStart"
 					@touchmove="handleTouchMove"
 					@touchend="handleTouchEnd"
