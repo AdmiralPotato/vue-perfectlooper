@@ -412,8 +412,10 @@ Vue.component(
 				}
 			},
 			handleMouseUp: function(event){
-				this.offsetTimeByMouseEvent(event);
-				this.isDragging = false;
+				if(this.isDragging) {
+					this.offsetTimeByMouseEvent(event);
+					this.isDragging = false;
+				}
 			},
 			handleMouseLeave: function(event){
 				this.isDragging = false;
