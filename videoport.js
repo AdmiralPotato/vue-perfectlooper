@@ -64,10 +64,12 @@ Vue.component(
 				let newHeight = canvas.clientHeight * ratio;
 				let isCanvasInvalid = !newWidth || !newHeight;
 				let justResized = v.width !== newWidth || v.height !== newHeight;
+				let isFullscreen = document.fullscreenElement === v.$el;
+				let fullscreenChanged = v.isFullscreen !== isFullscreen;
 				v.cssWidth = canvas.clientWidth;
 				v.width = newWidth;
 				v.height = newHeight;
-				v.isFullscreen = document.fullscreenElement === v.$el;
+				v.isFullscreen = isFullscreen;
 				if(isCanvasInvalid || justResized){
 					requestAnimationFrame(v.resizeWindowEventHandler);
 				}
@@ -79,7 +81,13 @@ Vue.component(
 								v.playToggle();
 							});
 						}
-						v.videoport.sizeWindow(newWidth, newHeight);
+						if(fullscreenChanged){
+							requestAnimationFrame(function(){
+								v.videoport.sizeWindow(newWidth, newHeight);
+							});
+						} else {
+							v.videoport.sizeWindow(newWidth, newHeight);
+						}
 					});
 				}
 			};
