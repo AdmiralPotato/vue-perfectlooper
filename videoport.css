@@ -12,6 +12,11 @@
 	appearance: none;
 	outline-color: #9f0;
 }
+.videoport.ios,
+.videoport.ios *{
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-touch-callout: none;
+}
 .videoport{
 	display: block;
 	position: relative;
