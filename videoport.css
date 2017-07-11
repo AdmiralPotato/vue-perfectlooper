@@ -158,6 +158,7 @@
 	width: 2.75rem;
 	margin: 0.125rem;
 	bottom: 0;
+	cursor: pointer;
 }
 .video-controller .step-prev{left: 0;}
 .video-controller .playToggle{left: 3rem;}
@@ -180,6 +181,10 @@
 }
 .video-controller .stroke.loading{
 	stroke-width: 4px;
+}
+.video-controller .progressLines,
+.video-controller .playhead{
+	cursor: pointer;
 }
 .video-controller .stroke.total,
 .video-controller .stroke.loaded{

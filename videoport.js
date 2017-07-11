@@ -167,6 +167,15 @@ Vue.component(
 					v.videoport.step(direction);
 				}
 			},
+			scrub: function (playOffset) {
+				let v = this;
+				if(v.loaded === 1){
+					v.playing = false;
+					v.videoport.setPlay(false);
+					v.videoport.setTime(playOffset - 0.000000001); //prevents from wrapping by mod 1 on drag
+					v.videoport.setFrameByTime();
+				}
+			},
 			fullscreenToggle: function(){
 				let v = this;
 				let canFullScreen = v.$el.requestFullscreen !== undefined;
@@ -265,8 +274,9 @@ Vue.component(
 						:ready="ready"
 						:playOffset="playOffset"
 						:playToggle="playToggle"
-						:fullscreenToggle="fullscreenToggle"
 						:step="step"
+						:scrub="scrub"
+						:fullscreenToggle="fullscreenToggle"
 						/>
 				</div>
 			</div>
@@ -306,41 +316,21 @@ Vue.component(
 			width: Number,
 			playOffset: Number,
 			playToggle: Function,
-			fullscreenToggle: Function,
-			step: Function
-		},
-		created: function () {
-			this.padLeft = (48 * 3) + 16;
-			this.padRight = 48 + 16;
-		},
-		computed: {
-			lineWidth: function () {
-				return this.width - (this.padLeft + this.padRight);
-			}
-		},
-		methods: {
-			lineFrac: function (n) {
-				return this.padLeft + (this.lineWidth * n);
-			}
+			step: Function,
+			scrub: Function,
+			fullscreenToggle: Function
 		},
 		template: `
 			<div class="video-controller">
 				<video-controller-defs />
 				<div v-if="started">
-					<svg :viewBox="'0 0 ' + width + ' 48'">
-						<g>
-							<rect class="background" :width="width" height="48"/>
-							<g class="progressLines">
-								<line class="stroke total"  :x1="padLeft"  y1="24" :x2="lineFrac(1)" y2="24"/>
-								<line class="stroke loaded" :x1="padLeft"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
-								<line class="stroke scaled" :x1="padLeft"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
-							</g>
-							<g class="playhead" :transform="'translate('+lineFrac(playOffset)+', 0)'">
-								<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
-								<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
-							</g>
-						</g>
-					</svg>
+					<video-controller-bar
+						:loaded="loaded"
+						:scaled="scaled"
+						:width="width"
+						:playOffset="playOffset"
+						:scrub="scrub"
+						/>
 					<video-controller-button
 						label="Step 1 frame backward"
 						class="step-prev"
@@ -383,6 +373,90 @@ Vue.component(
 					<use xlink:href="#icon-fullscreen-exit" key="on"  v-if="isFullscreen"/>
 				</video-controller-button>
 			</div>
+		`
+	}
+);
+
+Vue.component(
+	'video-controller-bar',
+	{
+		mixins: [touchHandlingMixin],
+		props: {
+			loaded: Number,
+			scaled: Number,
+			width: Number,
+			playOffset: Number,
+			scrub: Function
+		},
+		created: function () {
+			this.padLeft = (48 * 3) + 16;
+			this.padRight = 48 + 16;
+		},
+		computed: {
+			lineWidth: function () {
+				return this.width - (this.padLeft + this.padRight);
+			}
+		},
+		methods: {
+			lineFrac: function (n) {
+				return this.padLeft + (this.lineWidth * n);
+			},
+			handleMouseDown: function(event){
+				this.offsetTimeByMouseEvent(event);
+				this.isDragging = true;
+			},
+			handleMouseMove: function(event){
+				if(this.isDragging){
+					this.offsetTimeByMouseEvent(event);
+				}
+			},
+			handleMouseUp: function(event){
+				this.offsetTimeByMouseEvent(event);
+				this.isDragging = false;
+			},
+			handleMouseLeave: function(event){
+				this.isDragging = false;
+			},
+			offsetTimeByMouseEvent: function (event) {
+				let offset = this.mapPointToPlayOffset(event.offsetX);
+				event.preventDefault();
+				this.scrub(offset);
+			},
+			dragStart: function(point, event){this.offsetTimeByPoint(point, event);},
+			dragMove: function(point, event){this.offsetTimeByPoint(point, event);},
+			dragEnd: function(point, event){this.offsetTimeByPoint(point, event);},
+			offsetTimeByPoint: function (point, event) {
+				let offset = this.mapPointToPlayOffset(point.x);
+				event.preventDefault();
+				this.scrub(offset);
+			},
+			mapPointToPlayOffset: function (x) {
+				return Math.max(0, Math.min(1, (x - this.padLeft) / this.lineWidth));
+			}
+		},
+		template: `
+			<svg class="video-controller-bar" :viewBox="'0 0 ' + width + ' 48'">
+				<g
+					@mousedown="handleMouseDown"
+					@mousemove="handleMouseMove"
+					@mouseup="handleMouseUp"
+					@mouseleave="handleMouseLeave"
+					@touhstart="handleTouchStart"
+					@touchmove="handleTouchMove"
+					@touchend="handleTouchEnd"
+					>
+					<rect class="background" :width="width" height="48"/>
+					<g class="progressLines">
+						<line class="stroke total"  :x1="padLeft"  y1="24" :x2="lineFrac(1)" y2="24"/>
+						<line class="stroke loaded" :x1="padLeft"  y1="24" :x2="lineFrac(loaded)" y2="24"/>
+						<line class="stroke scaled" :x1="padLeft"  y1="24" :x2="lineFrac(scaled)" y2="24"/>
+					</g>
+					<g class="playhead" :transform="'translate('+lineFrac(playOffset)+', 0)'">
+						<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
+						<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
+					</g>
+				</g>
+			</svg>
 		`
 	}
 );
@@ -524,8 +598,10 @@ Videoport.prototype = {
 		p.lastTimeSample = time;
 	},
 	offsetTime: function (delta) {
-		let p = this;
-		p.playOffset = p.rangeBind(p.playOffset + delta, 1);
+		this.setTime(this.playOffset + delta);
+	},
+	setTime: function (playOffset) {
+		this.playOffset = this.rangeBind(playOffset, 1);
 	},
 	rangeBind: function (value, max) {
 		return Math.sign(value) === -1 ? max + (value % max) : value % max;
@@ -548,7 +624,7 @@ Videoport.prototype = {
 		p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(frameIndex);
 		p.context.drawImage(p.lastDisplayedImage, 0, 0);
 		p.prevFrame = frameIndex;
-		p.vue.playOffset = frameIndex / p.frameCount;
+		p.vue.playOffset = frameIndex / (p.frameCount - 1);
 	},
 	getScaledCanvasByFrameIndex: function (frameIndex) {
 		let p = this;
