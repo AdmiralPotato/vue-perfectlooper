@@ -76,13 +76,14 @@
 	margin: auto;
 	border-radius: 100%;
 }
-
-.video-play-icon .fill{
-	fill: #9f0;
-	stroke: none;
+.videoport svg{
+	color: #9f0;
+}
+.videoport button:active svg,
+.overlay:active .video-play-icon{
+	color: #ff0;
 }
 .video-play-icon .stroke{
-	fill: none;
 	stroke: rgba(0,0,0,0.5);
 	stroke-width: 2px;
 	vector-effect: non-scaling-stroke;
@@ -134,17 +135,10 @@
 .video-controller .fill{
 	fill: #9f0;
 }
-.video-controller *:active .fill {
-	fill: #ff0;
-}
 .video-controller .stroke{
 	fill: none;
 	stroke-linecap: round;
 	stroke-miterlimit: 10;
-	stroke: #9f0;
-}
-.video-controller *:active .stroke {
-	stroke: #ff0;
 }
 .video-controller .stroke.screen-line{
 	stroke-width: 3px;
@@ -162,6 +156,7 @@
 	stroke: #999;
 }
 .video-controller .stroke.scaled{
+	stroke: #9f0;
 	stroke-width: 4px;
 }
 .video-controller .playhead .back{
