@@ -1,12 +1,12 @@
-#vue-perfectlooper
+# vue-perfectlooper
 
 A perfectly looping image sequence player with fullscreen capabilities, built with mobile performance and keyboard accessibility in mind.
 
-Demo: http://admiralpotato.github.io/vue-perfectlooper/
+Demo: https://admiralpotato.github.io/vue-perfectlooper/
 
 _Notice: This project's primary objective is playing back animations at the highest possible visual quality, likely in fullscreen mode. Providing frames with a resolution of 1920x1080 and no visible compression artifacts is strongly recommended. To date, the player has only been designed for, and tested with animations of a 16x9 aspect ratio._
 
-####Viewer facing features:
+#### Viewer facing features:
 - Very low CPU usage while playing
 - Timeline scrubbing
 - Frame advance & reverse
@@ -16,16 +16,16 @@ _Notice: This project's primary objective is playing back animations at the high
 	- there's even been effort put into making this sorta kinda work on iOS
 		- iOS Safari interactivity DangerZone™ avoidance!
 
-####Developer friendly features:
+#### Developer friendly features:
 - It's responsive; adapts to any element you put it in
 - It's a one file module; even contains its own CSS
 - Customizable frame path options
 
 ----
 
-##Install and Usage
+## Install and Usage
 
-###Compiled single component `.vue` file flavor:
+### Compiled single component `.vue` file flavor:
 ```
 npm install --save git+https://git@github.com/https://github.com/AdmiralPotato/vue-perfectlooper.git
 ```
@@ -53,7 +53,7 @@ npm install --save git+https://git@github.com/https://github.com/AdmiralPotato/v
 </script>
 ```
 
-###Vanilla Javascript
+### Vanilla Javascript
 
 In your HTML:
 ```html
@@ -79,14 +79,14 @@ In your HTML:
 </script>
 ```
 
-##Providing frames to the player
+## Providing frames to the player
 All configurations require the following parameters:
 - `id`: this is the primary key by which the source images are cached in-memory to prevent unnecessary HTTP traffic in the case that the player is spawned and destroyed more than once in a session after initial load; also used as the analytics identifier in the scenario that the [vue-analytics](https://www.npmjs.com/package/vue-analytics) plugin has been installed.
 - `poster`: a path to the preview image which is displayed before the user chooses to play the animation.
 
 There are currently several different formats which may be used to provide frames to the player:
 
-###With the default structured file name sequence
+### With the default structured file name sequence
 All properties specified here are **required** for this configuration.
 ```json
 {
@@ -102,7 +102,7 @@ http://cdn.example.com/loops/electric_flower-preview.jpg
 http://cdn.example.com/loops/electric_flower/(0001.jpg ~ 0048.jpg)
 ```
 
-###With a custom structured file name sequence
+### With a custom structured file name sequence
 There are additional configuration parameters that can be specified for a structured file name sequence. Note the addition of the following properties: `sequenceTemplate`, `startIndex`, `prefix`, `suffix`
 ```json
 {
@@ -122,7 +122,7 @@ https://cdn.example.com/loops/infernal_recursion.jpg
 https://cdn.example.com/loops/infernal_recursion-(00 ~ 23).png
 ```
 
-###With non-sequential image addresses
+### With non-sequential image addresses
 In this example, there are no expectations of asset organization, as each frame path is completely specified explicitly; As a side effect of this, the number of frames does not need to be specified in this configuration.
 ```json
 {
