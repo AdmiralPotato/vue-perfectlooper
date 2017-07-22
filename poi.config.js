@@ -1,5 +1,5 @@
 module.exports = {
-	entry: 'vue-perfectlooper.vue',
+	entry: 'src/vue-perfectlooper.vue',
 	filename: {
 		js: 'vue-perfectlooper.js'
 	},

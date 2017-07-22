@@ -4,8 +4,8 @@
   "description": "A perfectly looping image sequence player with fullscreen capabilities, built with mobile performance and keyboard accessibility in mind.",
   "main": "dist/vue-perfectlooper.js",
   "scripts": {
-    "build": "poi build vue-perfectlooper.vue",
-    "build-long": "poi build vue-perfectlooper.vue --no-extractCSS --format umd --module-name VuePerfectlooper --filename.js vue-perfectlooper.js --no-html --no-sourceMap --no-vue.esModule"
+    "build": "poi build",
+    "build-long": "poi build src/vue-perfectlooper.vue --no-extractCSS --format umd --module-name VuePerfectlooper --filename.js vue-perfectlooper.js --no-html --no-sourceMap --no-vue.esModule"
   },
   "repository": {
     "type": "git",
