@@ -1,0 +1,32 @@
+{
+  "name": "vue-perfectlooper",
+  "version": "0.0.1",
+  "description": "A perfectly looping image sequence player with fullscreen capabilities, built with mobile performance and keyboard accessibility in mind.",
+  "main": "dist/vue-perfectlooper.js",
+  "scripts": {
+    "build": "poi build vue-perfectlooper.vue",
+    "build-long": "poi build vue-perfectlooper.vue --no-extractCSS --format umd --module-name VuePerfectlooper --filename.js vue-perfectlooper.js --no-html --no-sourceMap --no-vue.esModule"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdmiralPotato/vue-perfectlooper.git"
+  },
+  "keywords": [
+    "animation",
+    "perfect loop",
+    "image sequence",
+    "player"
+  ],
+  "author": "Admiral Potato <admiral@nuclearpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdmiralPotato/vue-perfectlooper/issues"
+  },
+  "homepage": "https://admiralpotato.github.io/vue-perfectlooper/",
+  "devDependencies": {
+    "poi": "^9.1.4"
+  },
+  "dependencies": {
+    "vue": "^2.3.3"
+  }
+}

@@ -1,0 +1,37 @@
+body{
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	font-size: 16px;
+	color: #ccc;
+	background-color: #000;
+}
+a{
+	color: #9f0;
+}
+h1, h2, p{
+	margin: 0;
+	padding: 1rem;
+}
+.container{
+	position: relative;
+	margin: 0 auto;
+}
+
+.perfectlooper:after{
+	display: block;
+	content: ' ';
+	padding: 1rem 0;
+}
+
+@media (min-width: 720px) {
+	.container{
+		width: 720px;
+		margin: 0 auto;
+	}
+}
+@media (min-width: 960px) {
+	.container {
+		width: 960px;
+	}
+}

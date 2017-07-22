@@ -1,11 +1,9 @@
 "use strict";
 //reference & source: https://github.com/AdmiralPotato/vue-swipe-cards/blob/master/vue-swipe-cards.js
 
-let touchHandlingMixin = {
+let mixinTouch = {
 	created: function(){
 		let t = this;
-		//internal properties that should not be observables,
-		//and need not be redefined each time the render method is run
 		t.startPoint = null;
 		t.handleTouchStart = t.createTouchHandler('Start');
 		t.handleTouchMove = t.createTouchHandler('Move');
@@ -57,3 +55,5 @@ let touchHandlingMixin = {
 		},
 	}
 };
+
+export default mixinTouch;

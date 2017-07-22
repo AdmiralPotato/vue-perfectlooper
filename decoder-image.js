@@ -8,13 +8,12 @@ let DecoderImage = function (decodedFrameBuffer) {
 };
 
 DecoderImage.prototype = {
-	startLoad: function (url) {
+	maxFailures: 10,
+	startLoad: function (pathList) {
 		let decoder = this;
-		decoder.src = url;
 		decoder.decodedFrameBuffer.handleDecoderLoadStart();
-		for (let i = 0; i < decoder.frameCount; i++) {
-			let frameIndex = i;
-			let src = decoder.getImagePath(frameIndex);
+		pathList.forEach(function (src, frameIndex) {
+			let failCount = 0;
 			let getImage = function () {
 				let image = new Image();
 				image.addEventListener('load', function(){
@@ -24,15 +23,15 @@ DecoderImage.prototype = {
 					});
 				});
 				image.addEventListener('error', function(){
-					setTimeout(getImage, 100);
+					if(failCount++ < decoder.maxFailures){
+						setTimeout(getImage, 100);
+					}
 				});
 				image.src = src;
 			};
 			getImage();
-		}
-	},
-	getImagePath: function(frameIndex){
-		let str = (frameIndex + 1).toString();
-		return this.src + '/' + ('0000'+str).substring(str.length) + '.jpg';
+		});
 	}
 };
+
+export default DecoderImage;

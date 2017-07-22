@@ -1,5 +1,17 @@
-.videoport,
-.videoport *{
+.perfectlooper,
+.perfectlooper *{
+	padding: 0;
+	border: 0;
+	vertical-align: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	font-weight: inherit;
+	font-style: inherit;
+	font-family: inherit;
+	text-align: inherit;
+	text-decoration: inherit;
+	color: inherit;
+	background-color: transparent;
 	box-sizing: border-box;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -12,53 +24,63 @@
 	appearance: none;
 	outline-color: #9f0;
 }
-.videoport.ios,
-.videoport.ios *{
+.perfectlooper.ios,
+.perfectlooper.ios *{
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	-webkit-touch-callout: none;
 }
-.videoport{
+.perfectlooper{
 	display: block;
 	position: relative;
+	background-color: #000;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 400;
+	font-style: normal;
+	vertical-align: top;
+	font-family: 'Exo 2', sans-serif;
+	text-align: left;
+	text-decoration: none;
+	color: #ccc;
 }
-.videoport.ios{
+.perfectlooper.ios{
 	overflow: hidden;
 	touch-action: manipulation;
 }
-.videoport canvas,
-.videoport img,
-.videoport .overlay{
+.perfectlooper canvas,
+.perfectlooper img,
+.perfectlooper .overlay{
 	display: block;
 	position: absolute;
 	width: 100%;
 	height: 100%;
 }
-.videoport.fullscreen{
+.perfectlooper.fullscreen{
 	max-width: 177.77777777777777vmin; /* enforces aspect when superwide... chrome only? TODO: multi-browser fixes */
 	height: 100%;
 	width: 100%;
 }
-.videoport.hideCursor{
+.perfectlooper.hideCursor{
 	cursor: none;
 }
-.videoport canvas,
-.videoport .overlay,
-.video-controller{
+.perfectlooper canvas,
+.perfectlooper .overlay,
+.perfectlooper-control{
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
 }
-.videoport .aspectEnforcer{
+.perfectlooper .aspectEnforcer{
 	position: relative;
 	height: 0;
 	padding-bottom: 56.25%;
 	width: 100%;
 }
-.videoport.fullscreen .aspectEnforcer{
+.perfectlooper.fullscreen .aspectEnforcer{
 	-webkit-transform: translate3d(0, -50%, 0);
 	transform: translate3d(0, -50%, 0);
 	top: 50%;
 }
-.videoport .statusMessage{
+.perfectlooper .statusMessage{
 	position: absolute;
 	bottom: 3rem;
 	left: 0;
@@ -66,18 +88,18 @@
 	background-color: rgba(0,0,0,0.5);
 	border-radius: 0 1rem 0 0;
 }
-.videoport.ios .statusMessage {
+.perfectlooper.ios .statusMessage {
 	transition: all .5s;
 }
-.videoport.iosDangerZone .statusMessage{
+.perfectlooper.iosDangerZone .statusMessage{
 	bottom: 6rem;
 }
-.videoport .statusMessage div{
+.perfectlooper .statusMessage div{
 	height: 1.5rem;
 	line-height: 1.5rem;
 	font-size: 1rem;
 }
-.videoport .overlay .video-play-icon{
+.perfectlooper .overlay .overlay-play-icon{
 	display: block;
 	position: absolute;
 	z-index: 1;
@@ -91,30 +113,31 @@
 	margin: auto;
 	border-radius: 100%;
 }
-.videoport svg{
+.perfectlooper svg{
+	display: block;
 	color: #9f0;
 }
-.videoport button:active svg,
-.overlay:active .video-play-icon{
+.perfectlooper button:active svg,
+.overlay:active .overlay-play-icon{
 	color: #ff0;
 }
-.video-play-icon .stroke{
+.overlay-play-icon .stroke{
 	stroke: rgba(0,0,0,0.5);
 	stroke-width: 2px;
 	vector-effect: non-scaling-stroke;
 }
-.video-play-icon .fade{
+.overlay-play-icon .fade{
 	opacity: 0.5;
 }
 
-.videoport_fade-enter-active, .videoport_fade-leave-active {
+.perfectlooper_fade-enter-active, .perfectlooper_fade-leave-active {
 	transition: opacity .5s;
 }
-.videoport_fade-enter, .videoport_fade-leave-to {
+.perfectlooper_fade-enter, .perfectlooper_fade-leave-to {
 	opacity: 0;
 }
 
-.video-controller{
+.perfectlooper-control{
 	position: absolute;
 	z-index: 10;
 	bottom: 0;
@@ -122,16 +145,16 @@
 	opacity: 1;
 	transition: all .5s;
 }
-.videoport.fullscreen .video-controller{
+.perfectlooper.fullscreen .perfectlooper-control{
 	box-shadow: 0 4px 0 0 rgba(0,0,0,0.75);
 }
-.video-controller.hidden {
+.perfectlooper-control.hidden {
 	opacity: 0;
 }
-.videoport.iosDangerZone .video-controller{
+.perfectlooper.iosDangerZone .perfectlooper-control{
 	bottom: 3rem;
 }
-.videoport.ios .video-controller:after{
+.perfectlooper.ios .perfectlooper-control:after{
 	position: absolute;
 	display: block;
 	bottom: -3rem;
@@ -145,14 +168,14 @@
 	opacity: 0;
 	transition: all .5s;
 }
-.videoport.ios.iosDangerZone .video-controller:after{
+.perfectlooper.ios.iosDangerZone .perfectlooper-control:after{
 	opacity: 1;
 }
-.video-controller .background{
+.perfectlooper-control .background{
 	fill: #000;
 	opacity: 0.75;
 }
-.video-controller button{
+.perfectlooper-control button{
 	position: absolute;
 	height: 2.75rem;
 	width: 2.75rem;
@@ -160,51 +183,51 @@
 	bottom: 0;
 	cursor: pointer;
 }
-.video-controller .step-prev{left: 0;}
-.video-controller .playToggle{left: 3rem;}
-.video-controller .step-next{left: 6rem;}
-.video-controller .fullscreenToggle{right: 0;}
-.video-controller .fullscreenBackground{
+.perfectlooper-control .step-prev{left: 0;}
+.perfectlooper-control .playToggle{left: 3rem;}
+.perfectlooper-control .step-next{left: 6rem;}
+.perfectlooper-control .fullscreenToggle{right: 0;}
+.perfectlooper-control .fullscreenBackground{
 	fill: #000;
 	opacity: 0.25;
 }
-.video-controller .fill{
+.perfectlooper-control .fill{
 	fill: #9f0;
 }
-.video-controller .stroke{
+.perfectlooper-control .stroke{
 	fill: none;
 	stroke-linecap: round;
 	stroke-miterlimit: 10;
 }
-.video-controller .stroke.screen-line{
+.perfectlooper-control .stroke.screen-line{
 	stroke-width: 3px;
 }
-.video-controller .stroke.loading{
+.perfectlooper-control .stroke.loading{
 	stroke-width: 4px;
 }
-.video-controller .progressLines,
-.video-controller .playhead{
+.perfectlooper-control .progressLines,
+.perfectlooper-control .playhead{
 	cursor: pointer;
 }
-.video-controller .stroke.total,
-.video-controller .stroke.loaded{
+.perfectlooper-control .stroke.total,
+.perfectlooper-control .stroke.loaded{
 	stroke: #666;
 	stroke-width: 8px;
 	opacity: 0.5;
 }
-.video-controller .stroke.loaded{
+.perfectlooper-control .stroke.loaded{
 	stroke: #999;
 }
-.video-controller .stroke.scaled{
+.perfectlooper-control .stroke.scaled{
 	stroke: #9f0;
 	stroke-width: 4px;
 }
-.video-controller .playhead .back{
+.perfectlooper-control .playhead .back{
 	stroke: #666;
 	stroke-width: 16px;
 	opacity: 0.6;
 }
-.video-controller .playhead .front{
+.perfectlooper-control .playhead .front{
 	stroke: #ff0;
 	stroke-width: 4px;
 }
@@ -227,7 +250,7 @@
 	}
 }
 
-.video-controller .rotating {
+.perfectlooper-control .rotating {
 	-webkit-animation: rotating 2s linear infinite;
 	animation: rotating 2s linear infinite;
 }
