@@ -65,7 +65,7 @@
 </template>
 
 <script>
-	import CanvasLooper from './videoport.js';
+	import CanvasLooper from './canvas-looper.js';
 	import PerfectlooperControl from './perfectlooper-control';
 
 	export default {
@@ -352,4 +352,4 @@
 	};
 </script>
 
-<style src="./videoport.css"></style>
+<style src="./perfectlooper.css"></style>
