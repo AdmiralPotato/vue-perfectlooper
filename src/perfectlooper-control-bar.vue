@@ -69,7 +69,7 @@
 			},
 			offsetTimeByMouseEvent: function (event) {
 				let controllerRect = this.$el.getBoundingClientRect();
-				let offset = this.mapPointToPlayOffset(event.screenX - controllerRect.left);
+				let offset = this.mapPointToPlayOffset(event.clientX - controllerRect.left);
 				event.preventDefault();
 				this.scrub(offset);
 			},
