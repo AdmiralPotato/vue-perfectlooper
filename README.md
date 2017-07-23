@@ -27,7 +27,7 @@ _Notice: This project's primary objective is playing back animations at the high
 
 ### Compiled single component `.vue` file flavor:
 ```
-npm install --save git+https://git@github.com/https://github.com/AdmiralPotato/vue-perfectlooper.git
+npm install --save vue-perfectlooper
 ```
 `myLoop.vue`:
 ```vue
@@ -61,7 +61,7 @@ In your HTML:
 	<vue-perfectlooper v-bind="loop"></vue-perfectlooper>
 </div>
 <script src="https://unpkg.com/vue"></script>
-<script src="https://rawgit.com/AdmiralPotato/vue-perfectlooper/master/dist/vue-perfectlooper.js"></script>
+<script src="https://unpkg.com/vue-perfectlooper"></script>
 <script>
 	Vue.component('vue-perfectlooper', VuePerfectlooper);
 	var amazonCDN = 'https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/';
