@@ -1,6 +1,6 @@
 {
   "name": "vue-perfectlooper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A perfectly looping image sequence player with fullscreen capabilities, built with mobile performance and keyboard accessibility in mind.",
   "main": "dist/vue-perfectlooper.js",
   "files": [

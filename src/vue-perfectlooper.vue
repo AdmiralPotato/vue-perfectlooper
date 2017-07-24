@@ -151,7 +151,6 @@
 		},
 		mounted: function() {
 			let v = this;
-			v.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			v.canvasLooper = new CanvasLooper(this.id, this.pathList, v, v.$refs.canvas);
 			v.resizeWindowEventHandler();
 
@@ -218,6 +217,7 @@
 			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.addEventListener('resize', v.resizeWindowEventHandler);
 			document.body.addEventListener('focus', v.fullscreenFocusChangeHandler, true);
+			v.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			if(v.isIOS){
 				v.isMounted = true;
 				v.scrollWarningWatcher = function () {
