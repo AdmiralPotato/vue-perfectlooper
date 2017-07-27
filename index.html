@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<link rel="icon" href="favicon.ico" />
 	<link rel="stylesheet" href="./demo.css" />
 	<title>vue-perfectlooper demo</title>
 </head>
@@ -13,10 +14,13 @@
 	<p>Documentation can be found at <a href="https://github.com/AdmiralPotato/vue-perfectlooper">https://github.com/AdmiralPotato/vue-perfectlooper</a></p>
 
 	<h2>With the default structured file name sequence</h2>
-	<vue-perfectlooper v-bind="defaultStructuredSequence"></vue-perfectlooper>
+	<vue-perfectlooper v-bind="orderedPathSequence"></vue-perfectlooper>
 
 	<h2>With non-sequential image addresses</h2>
-	<vue-perfectlooper v-bind="nonStructuredSequence"></vue-perfectlooper>
+	<vue-perfectlooper v-bind="explicitPathSequence"></vue-perfectlooper>
+
+	<h2>With an Imgur Album ID</h2>
+	<vue-perfectlooper v-bind="imgurAlbumId"></vue-perfectlooper>
 </div>
 
 <script src="https://unpkg.com/vue@^2.3.3/dist/vue.js"></script>
@@ -26,13 +30,13 @@
 	new Vue({
 		el: '#app',
 		data: {
-			defaultStructuredSequence: {
+			orderedPathSequence: {
 				"id": "crusaderarts_red_room_tribute-24",
 				"poster": "https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/crusaderarts_red_room_tribute-24-preview.jpg",
 				"src": "https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/crusaderarts_red_room_tribute-24-1920x1080/",
 				"frames": 24
 			},
-			nonStructuredSequence: {
+			explicitPathSequence: {
 				"id": "ghost_wins_at_candy_corn",
 				"poster": "https://i.imgur.com/GraKGsu.jpg",
 				"src": [
@@ -61,6 +65,10 @@
 					"https://i.imgur.com/gqB3Vnz.jpg",
 					"https://i.imgur.com/11Wvp6T.jpg"
 				]
+			},
+			imgurAlbumId: {
+				"id": "hyper_mograph_networking-48",
+				"srcImgurAlbumId": "HMstF"
 			}
 		}
 	});

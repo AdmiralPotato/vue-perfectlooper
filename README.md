@@ -82,6 +82,7 @@ In your HTML:
 ## Providing frames to the player
 All configurations require the following parameters:
 - `id`: this is the primary key by which the source images are cached in-memory to prevent unnecessary HTTP traffic in the case that the player is spawned and destroyed more than once in a session after initial load; also used as the analytics identifier in the scenario that the [vue-analytics](https://www.npmjs.com/package/vue-analytics) plugin has been installed.
+
 - `poster`: a path to the preview image which is displayed before the user chooses to play the animation.
 
 There are currently several different formats which may be used to provide frames to the player:
@@ -154,5 +155,32 @@ In this example, there are no expectations of asset organization, as each frame 
 		"https://i.imgur.com/gqB3Vnz.jpg",
 		"https://i.imgur.com/11Wvp6T.jpg"
 	]
+}
+```
+
+### With an Imgur Album ID
+In this example, the only two required attributes are `id` and `srcImgurAlbumId`. The `poster` attribute is not required, as the Imgur Album's `cover` image can be used. If the `poster` attribute is passed, it will be displayed before the AJAX request for the album's frame list returns.
+
+It is recommended when hosting image sequences at Imgur, that you upload only PNG sequences; Imgur will both host the original PNGs, as well as automatically generate JPGs at multiple resolutions that may be used for quality presets in a future version of the player. By default, the player uses Imgur's highest quality generated JPGs for playback, which are almost completely without visible compression artifacts. Uploading PNGs also comes with the benefit that you can configure the player to load and play the original PNG sequence, in the case that Imgur's highest quality JPGs did not meet your quality requirements.
+
+#### Imgur Album ID "gotchas"
+- Choosing to use the Imgur Album ID method causes the player to fire an AJAX request to `https://imgur-api-readonly.glitch.me/` and wait for a response before it will become interactive - so there may be a 0.25sec ~ 5sec delay before the `cover` and frame paths load.
+- It can be tricky to correctly upload PNG sequences **in their correct order** to an Imgur album, so you may need to rearrange your frames in the album after they are all uploaded. The frames are played back in the order they are listed in the Imgur album. Always test that your animation plays back correctly before viewing it in fullscreen or sharing it with others, to avoid optically triggered seizures.
+
+#### Imgur Album ID minimal
+```json
+{
+	"id": "hyper_mograph_networking-48",
+	"srcImgurAlbumId": "HMstF"
+}
+```
+
+#### Imgur Album ID with poster display before ajax load, and forced load of original PNGs
+```json
+{
+	"id": "hyper_mograph_networking-48",
+	"poster": "https://i.imgur.com/o4Jj2u3.jpg",
+	"srcImgurAlbumId": "HMstF",
+	"suffix": ".png"
 }
 ```

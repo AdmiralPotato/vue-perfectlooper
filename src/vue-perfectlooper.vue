@@ -30,19 +30,11 @@
 				role="button"
 			>
 				<transition-group name="perfectlooper_fade">
-					<img key="a" v-if="!loaded" :src="poster" />
+					<img key="a" v-if="!loaded && posterPath" :src="posterPath" />
 					<div key="b" v-if="!ready && started" class="statusMessage">
 						<div>{{statusMessage}}</div>
 					</div>
-					<svg class="overlay-play-icon" viewBox="0 0 128 128" key="c" v-if="!started">
-						<defs>
-							<path id="play-icon" d="M112,64A48,48,0,1,1,64,16,48,48,0,0,1,112,64ZM48,43.21539V84.78461a4,4,0,0,0,6,3.4641L90,67.4641a4,4,0,0,0,0-6.9282L54,39.75129A4,4,0,0,0,48,43.21539Z" />
-						</defs>
-						<g class="fade">
-							<use xlink:href="#play-icon" class="stroke" />
-							<use xlink:href="#play-icon" fill="currentColor" />
-						</g>
-					</svg>
+					<perfectlooper-play-icon key="c" v-if="!started" />
 				</transition-group>
 			</div>
 			<perfectlooper-control
@@ -66,10 +58,12 @@
 
 <script>
 	import CanvasLooper from './canvas-looper.js';
+	import SequencePaths from './sequence-paths';
+	import PerfectlooperPlayIcon from './perfectlooper-play-icon';
 	import PerfectlooperControl from './perfectlooper-control';
 
 	export default {
-		components: {PerfectlooperControl},
+		components: {PerfectlooperPlayIcon, PerfectlooperControl},
 		props: {
 			id: {
 				type: String,
@@ -103,6 +97,10 @@
 			suffix: {
 				type: String,
 				default: '.jpg'
+			},
+			srcImgurAlbumId: {
+				type: String,
+				required: false
 			}
 		},
 		data: function() {
@@ -110,6 +108,9 @@
 				width: 0,
 				height: 0,
 				cssWidth: 0,
+				cssHeight: 0,
+				pathsLoaded: false,
+				posterPath: '',
 				started: false,
 				playing: false,
 				isFullscreen: false,
@@ -124,40 +125,35 @@
 			}
 		},
 		created: function(){
-			if(typeof(this.src) === 'string'){
-				let frames = parseInt(this.frames, 10);
-				let startIndex =  parseInt(this.startIndex, 10);
-				if(frames > 0){
-					let src = this.src[this.src.length -1] !== '/' ? this.src + '/' : this.src;
-					this.pathList = [];
-					for (let i = 0; i < frames; i++) {
-						let str = (i + startIndex).toString();
-						this.pathList.push(src + this.prefix + (this.sequenceTemplate + str).substring(str.length) + this.suffix);
+			let v = this;
+			SequencePaths.get(
+				v,
+				function (pathList, poster) {
+					if(!pathList){
+						throw new Error('vue-perfectlooper: No valid combinations of paths provided. Please supply one of the following combinations:\n\t{src: String, frames: Number}\n\t{src: Array of Strings}\n\t{srcImgurAlbumId: String}');
 					}
-				} else {
-					throw new Error(
-						`vue-perfectlooper: If you specify the 'src' prop as a String, you -must- provide a greater than zero 'frames' prop.
-						Inputs given; src: ${this.src} - frames: ${this.frames}`);
+					if(!poster){
+						throw new Error('vue-perfectlooper: No valid combinations of poster options provided. Please add a valid poster image path:\n\t{poster: String}');
+					}
+					v.pathList = pathList;
+					v.posterPath = poster;
+					v.pathsLoaded = true;
+					v.makeLooper();
+				},
+				function(poster){
+					v.posterPath = poster;
 				}
-			} else if(this.src instanceof Array){
-				this.pathList = this.src;
-			}
-			if(!this.pathList){
-				throw new Error('vue-perfectlooper: No valid combinations of paths provided. Please supply one of the following combinations:\n\t{src: String, frames: Number}\n\t{src: Array of Strings}');
-			}
-			if(!this.poster){
-				throw new Error('vue-perfectlooper: No valid combinations of poster options provided. Please add a valid poster image path:\n\t{poster: String}');
-			}
+			);
 		},
 		mounted: function() {
 			let v = this;
-			v.canvasLooper = new CanvasLooper(this.id, this.pathList, v, v.$refs.canvas);
-			v.resizeWindowEventHandler();
+			v.isMounted = true;
+			v.makeLooper();
 
 			let canFullScreen = v.$el.requestFullscreen !== undefined;
 			if(!canFullScreen){
 				let fullscreenPolyfill = document.createElement('script');
-				fullscreenPolyfill.id = "mqGenieScript";
+				fullscreenPolyfill.id = "fullscreenPolyfillScript";
 				if(!document.getElementById(fullscreenPolyfill.id)){
 					fullscreenPolyfill.src = 'https://unpkg.com/fullscreen-api-polyfill';
 					document.body.appendChild(fullscreenPolyfill);
@@ -176,6 +172,7 @@
 				let isFullscreen = document.fullscreenElement === v.$el;
 				let fullscreenChanged = v.isFullscreen !== isFullscreen;
 				v.cssWidth = canvas.clientWidth;
+				v.cssHeight = canvas.clientHeight;
 				v.width = newWidth;
 				v.height = newHeight;
 				v.isFullscreen = isFullscreen;
@@ -192,10 +189,14 @@
 						}
 						if(fullscreenChanged){
 							requestAnimationFrame(function(){
-								v.canvasLooper.sizeWindow(newWidth, newHeight);
+								if(v.canvasLooper){
+									v.canvasLooper.sizeWindow(newWidth, newHeight);
+								}
 							});
 						} else {
-							v.canvasLooper.sizeWindow(newWidth, newHeight);
+							if(v.canvasLooper){
+								v.canvasLooper.sizeWindow(newWidth, newHeight);
+							}
 						}
 					});
 				}
@@ -219,7 +220,6 @@
 			document.body.addEventListener('focus', v.fullscreenFocusChangeHandler, true);
 			v.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			if(v.isIOS){
-				v.isMounted = true;
 				v.scrollWarningWatcher = function () {
 					if(v.isMounted){
 						requestAnimationFrame(v.scrollWarningWatcher);
@@ -236,7 +236,9 @@
 		},
 		beforeDestroy: function () {
 			let v = this;
-			v.canvasLooper.die();
+			if(v.canvasLooper){
+				v.canvasLooper.die();
+			}
 			document.removeEventListener('resize', v.resizeWindowEventHandler);
 			document.removeEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.removeEventListener('resize', v.resizeWindowEventHandler);
@@ -244,6 +246,13 @@
 			if(v.isIOS){v.isMounted = false;}
 		},
 		methods: {
+			makeLooper: function(){
+				let v = this;
+				if(v.isMounted && v.pathsLoaded){
+					v.canvasLooper = new CanvasLooper(v.id, v.pathList, v, v.$refs.canvas);
+					v.resizeWindowEventHandler();
+				}
+			},
 			looperStatusUpdate: function(looperStatus){
 				let v = this;
 				for(let propertyName in looperStatus){
@@ -275,7 +284,9 @@
 				let v = this;
 				v.started = true;
 				v.playing = !v.playing;
-				v.canvasLooper.setPlay(v.playing);
+				if(v.canvasLooper){
+					v.canvasLooper.setPlay(v.playing);
+				}
 				v.looperEvent({
 					eventAction: `${v.playing ? 'play' : 'pause'}-${v.isFullscreen ? 'fullscreen' : 'windowed'}`
 				});
@@ -285,8 +296,8 @@
 				if(!v.started){
 					v.playToggle();
 				}
-				if(v.loaded === 1){
-					v.playing = false;
+				v.playing = false;
+				if(v.loaded === 1 && v.canvasLooper){
 					v.canvasLooper.setPlay(false);
 					v.canvasLooper.step(direction);
 				}
@@ -296,9 +307,11 @@
 				if(v.loaded === 1){
 					let preventOffsetWrapping = Math.max(0, playOffset - 0.000000001);
 					v.playing = false;
-					v.canvasLooper.setPlay(false);
-					v.canvasLooper.setTime(preventOffsetWrapping);
-					v.canvasLooper.setFrameByTime();
+					if(v.canvasLooper){
+						v.canvasLooper.setPlay(false);
+						v.canvasLooper.setTime(preventOffsetWrapping);
+						v.canvasLooper.setFrameByTime();
+					}
 				}
 			},
 			fullscreenToggle: function(){

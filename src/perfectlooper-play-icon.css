@@ -1,0 +1,20 @@
+.perfectlooper-play-icon{
+	display: block;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 50%;
+	min-height: 6rem;
+	width: auto;
+	margin: auto;
+}
+.perfectlooper-play-icon .munsell-rainbow {
+	height: 128px;
+	width: 128px;
+	background-color: #9f0;
+	background-size: cover;
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAgpJREFUeNo0Uj1v1UAQnL3b89lOyAtR3pMgEkgpoKOBmpL/QMeP4ndQUFJBE9FBhUQBTRSJ6D0FYuOPd/bdsesI62TJ65nZ2Z2jzfvXp/73o2p7Xm2fVLvH3K8zDhLKjFXCQYDpQA3QInfAAG6nFREKMx3Y/anrNjzOlDJAAMs7goLi9IzADB7jUQxWEM7EFQ8b15/yIJ+WYBNMAInwog1hRnBOhyG7mywAVCasi/bMjieUTQLPC7pdCHuVx0yMXIv6HHk3MiEfu/68aB+YgbPK43Y5YmYiTAZ7Kz5L5ALZx+yvh+IL0blvn9774TJIoDdAL/IGg0PPGJgVDR0B8DmVl53/sIvPq+2z0Jgr5GuDvwVaj9ahcxi1g4U+WVlCy+W35ujdVXj19VN14fKuRldgZDGjlmYjBLNAaWERUoV08vHzm4u3L19sv5vFh9UJIikuMaJZ0AZJiozgMHi+PPoZjs9Q1fjFan+0CCT6mFk5yeiJIiStHRpfd2jK4s/tQ8ElNDNKq+iwEKaFINrzHUEt1APaAg2OD7EWMQkia5K8ELSJVbRITKJo7WDqPXqfW+v6eF9KsnULiZ8k+kVYzMgk2kH+Gj+Sn2SW3DrTx9phRRqyTKmXaSEk878DYU/lCBe10Lncj+xRW6mqDeWwrktnuNuB5A8fwElbDhIAUciFk1umTaIs/p8AAwB/xAkhRHHGzAAAAABJRU5ErkJggg==');
+}
