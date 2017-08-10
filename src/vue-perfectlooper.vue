@@ -57,7 +57,8 @@
 </template>
 
 <script>
-	import CanvasLooper from './canvas-looper.js';
+	import FullscreenApiPolyfill from 'fullscreen-api-polyfill';
+	import CanvasLooper from './canvas-looper';
 	import SequencePaths from './sequence-paths';
 	import PerfectlooperPlayIcon from './perfectlooper-play-icon';
 	import PerfectlooperControl from './perfectlooper-control';
@@ -149,16 +150,6 @@
 			let v = this;
 			v.isMounted = true;
 			v.makeLooper();
-
-			let canFullScreen = v.$el.requestFullscreen !== undefined;
-			if(!canFullScreen){
-				let fullscreenPolyfill = document.createElement('script');
-				fullscreenPolyfill.id = "fullscreenPolyfillScript";
-				if(!document.getElementById(fullscreenPolyfill.id)){
-					fullscreenPolyfill.src = 'https://unpkg.com/fullscreen-api-polyfill';
-					document.body.appendChild(fullscreenPolyfill);
-				}
-			}
 		},
 		beforeMount: function () {
 			let v = this;

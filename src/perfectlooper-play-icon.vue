@@ -12,8 +12,8 @@
 				<path d="M64,16a48,48,0,1,0,48,48A48,48,0,0,0,64,16Zm0,92a44,44,0,1,1,44-44A44.04979,44.04979,0,0,1,64,108ZM92,57.07227,56,36.2876a8,8,0,0,0-12,6.92773V84.78418a7.98345,7.98345,0,0,0,12,6.92871L91.999,70.92871A7.99955,7.99955,0,0,0,92,57.07227ZM90,67.46411,54,88.24872a4,4,0,0,1-6-3.46411V43.21539a4,4,0,0,1,6-3.46411L90,60.53589A4,4,0,0,1,90,67.46411Z"/>
 			</clipPath>
 		</defs>
-		<g :clip-path="'url(#background-mask-'+unique+')'">
-			<foreignObject width="128" height="128" :filter="'url(#blur-'+unique+')'" opacity="0.5">
+		<g :clip-path="'url(#background-mask-'+unique+')'" opacity="0.5">
+			<foreignObject width="128" height="128" :filter="'url(#blur-'+unique+')'">
 				<div class="munsell-rainbow"></div>
 			</foreignObject>
 		</g>
