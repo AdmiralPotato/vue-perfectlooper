@@ -5,6 +5,26 @@ let DecoderImage = function (decodedFrameBuffer) {
 	decoder.decodedFrameBuffer = decodedFrameBuffer;
 	decoder.frameCount = decoder.decodedFrameBuffer.frameCount;
 	decoder.framesLoaded = 0;
+	decoder.images = [];
+	decoder.loadHandler = function(loadEvent){
+		let image = loadEvent.target;
+		image.loaded = true;
+		decoder.framesLoaded += 1;
+		requestAnimationFrame(function () {
+			decoder.decodedFrameBuffer.handleDecoderFrame(
+				image,
+				image.frameIndex
+			);
+		});
+	};
+	decoder.errorHandler = function(errorEvent){
+		let image = errorEvent.target;
+		if(image.loadAttemtps < decoder.maxFailures){
+			setTimeout(function(){
+				image.retry(image.loadAttemtps + 1);
+			}, 100);
+		}
+	};
 };
 
 DecoderImage.prototype = {
@@ -13,23 +33,35 @@ DecoderImage.prototype = {
 		let decoder = this;
 		decoder.decodedFrameBuffer.handleDecoderLoadStart();
 		pathList.forEach(function (src, frameIndex) {
-			let failCount = 0;
-			let getImage = function () {
-				let image = new Image();
-				image.addEventListener('load', function(){
-					decoder.framesLoaded += 1;
-					requestAnimationFrame(function () {
-						decoder.decodedFrameBuffer.handleDecoderFrame(image, frameIndex);
-					});
-				});
-				image.addEventListener('error', function(){
-					if(failCount++ < decoder.maxFailures){
-						setTimeout(getImage, 100);
-					}
-				});
-				image.src = src;
-			};
-			getImage();
+			let existingImage = decoder.images[frameIndex];
+			let needsRestart = existingImage && !existingImage.loaded && existingImage.canceled;
+			if(!existingImage){
+				let getImage = function (loadAttempts) {
+					let image = new Image();
+					image.frameIndex = frameIndex;
+					image.loaded = false;
+					image.retry = getImage;
+					image.loadAttemtps = loadAttempts;
+					decoder.images[frameIndex] = image;
+					image.addEventListener('load', decoder.loadHandler);
+					image.addEventListener('error', decoder.errorHandler);
+					image.src = src;
+				};
+				getImage(0);
+			} else if(needsRestart) {
+				existingImage.retry(0);
+			}
+		});
+	},
+	stopLoad: function () {
+		let decoder = this;
+		decoder.images.forEach(function (image) {
+			if(!image.loaded){
+				image.canceled = true;
+				image.removeEventListener('load', decoder.loadHandler);
+				image.removeEventListener('error', decoder.errorHandler);
+				image.src = '';
+			}
 		});
 	}
 };

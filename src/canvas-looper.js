@@ -46,14 +46,16 @@ CanvasLooper.prototype = {
 	setPlay: function(shouldPlay){
 		let p = this;
 		p.shouldPlay = shouldPlay;
-		p.sourceBuffer.load();
-		p.updateUI();
 		if(shouldPlay){
 			requestAnimationFrame(function (time) {
 				p.lastTimeSample = time;
 				p.renderLoop(time);
 			});
+			p.sourceBuffer.startLoad();
+		} else {
+			p.sourceBuffer.stopLoad();
 		}
+		p.updateUI();
 	},
 	play: function (time) {
 		let p = this;
@@ -208,7 +210,7 @@ let DecodedFrameBuffer = function(id, pathList){
 	let b = this;
 	b.pathList = pathList;
 	b.frameCount = pathList.length;
-	b.started = false;
+	b.isLoading = false;
 	b.totalSize = 0;
 	b.loaded = 0;
 	b.ready = false;
@@ -235,14 +237,28 @@ DecodedFrameBuffer.prototype = {
 			p.updateUI(looperEventData);
 		});
 	},
-	load: function () {
+	startLoad: function () {
 		let b = this;
-		if(!b.started){
+		if(!b.isLoading && b.loaded !== 1){
 			b.status = 'Loading';
-			b.started = true;
+			b.isLoading = true;
 			b.decoder.startLoad(b.pathList);
 			let looperEventData = {
-				eventAction: 'load-start'
+				eventAction: 'load-start',
+				eventValue: b.framesLoaded
+			};
+			this.updateCanvasLoopers(looperEventData);
+		}
+	},
+	stopLoad: function () {
+		let b = this;
+		if(b.loaded !== 1){
+			b.status = 'Loading paused';
+			b.isLoading = false;
+			b.decoder.stopLoad();
+			let looperEventData = {
+				eventAction: 'load-stop',
+				eventValue: b.framesLoaded
 			};
 			this.updateCanvasLoopers(looperEventData);
 		}
