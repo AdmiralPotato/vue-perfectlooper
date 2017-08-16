@@ -91,6 +91,7 @@ CanvasLooper.prototype = {
 		p.context.drawImage(p.lastDisplayedImage, 0, 0);
 		p.prevFrame = frameIndex;
 		p.ui.looperStatusUpdate({
+			currentFrameIndex: frameIndex,
 			playOffset: frameIndex / (p.frameCount - 1)
 		});
 	},

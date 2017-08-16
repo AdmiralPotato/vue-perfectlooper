@@ -1,5 +1,5 @@
 <template>
-	<svg class="perfectlooper-control-bar" :viewBox="'0 0 ' + width + ' 48'">
+	<svg :viewBox="'0 -32 ' + width + ' 80'">
 		<g
 			@mousedown="handleMouseDown"
 			@touhstart="handleTouchStart"
@@ -16,11 +16,23 @@
 				<line class="stroke back"  x1="0" y1="22" x2="0" y2="26" />
 				<line class="stroke front" x1="0" y1="14" x2="0" y2="34" />
 			</g>
+			<g
+				class="currentFrameDisplay"
+				:class="{hidden: !showCurrentFrameDisplay}"
+				:transform="'translate('+lineFrac(playOffset)+', -18)'">
+				<g opacity="0.75">
+					<rect width="40" height="24" x="-20" y="-12" rx="12" ry="12" />
+					<rect width="12" height="12" transform="rotate(45)"/>
+				</g>
+				<text class="fill noSelect" x="0" y="1.5" font-size="16" text-anchor="middle" alignment-baseline="middle">{{currentFrameDisplay}}</text>
+			</g>
 		</g>
 	</svg>
 </template>
 <script>
 	import mixinTouch from './vue-mixin-touch';
+	import shared from './shared';
+
 	export default {
 		mixins: [mixinTouch],
 		props: {
@@ -28,6 +40,10 @@
 			scaled: Number,
 			width: Number,
 			playOffset: Number,
+			startIndex: Number,
+			currentFrameIndex: Number,
+			currentFrameTemplate: String,
+			lastUserAction: String,
 			scrub: Function
 		},
 		created: function () {
@@ -61,6 +77,13 @@
 		computed: {
 			lineWidth: function () {
 				return this.width - (this.padLeft + this.padRight);
+			},
+			showCurrentFrameDisplay: function(){
+				return ['step', 'scrub'].indexOf(this.lastUserAction) !== -1;
+			},
+			currentFrameDisplay: function(){
+				let displayFrame = this.currentFrameIndex + this.startIndex;
+				return this.currentFrameTemplate ? shared.templatePad(this.currentFrameTemplate, displayFrame) : displayFrame;
 			}
 		},
 		methods: {

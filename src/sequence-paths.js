@@ -1,3 +1,5 @@
+import shared from './shared';
+
 let SequencePaths = {
 	get(props, callback, posterOnlyCallback){
 		let method = this.methods.failure;
@@ -21,8 +23,8 @@ let SequencePaths = {
 				let src = props.src[props.src.length -1] !== '/' ? props.src + '/' : props.src;
 				let pathList = [];
 				for (let i = 0; i < frames; i++) {
-					let str = (i + startIndex).toString();
-					pathList.push(src + props.prefix + (props.sequenceTemplate + str).substring(str.length) + props.suffix);
+					let paddedFrame = shared.templatePad(props.sequenceTemplate, i + startIndex);
+					pathList.push(src + props.prefix + paddedFrame + props.suffix);
 				}
 				callback(pathList, props.poster);
 			} else {

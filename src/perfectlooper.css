@@ -69,6 +69,9 @@
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
 }
+.perfectlooper .hidden{
+	opacity: 0;
+}
 .perfectlooper .aspectEnforcer{
 	position: relative;
 	height: 0;
@@ -82,11 +85,11 @@
 }
 .perfectlooper .statusMessage{
 	position: absolute;
-	bottom: 3rem;
+	top: 0;
 	left: 0;
 	padding: 0.5rem 1rem;
 	background-color: rgba(0,0,0,0.5);
-	border-radius: 0 1rem 0 0;
+	border-radius: 0  0 1rem 0;
 }
 .perfectlooper.ios .statusMessage {
 	transition: all .5s;
@@ -124,9 +127,6 @@
 }
 .perfectlooper.fullscreen .perfectlooper-control{
 	box-shadow: 0 4px 0 0 rgba(0,0,0,0.75);
-}
-.perfectlooper-control.hidden {
-	opacity: 0;
 }
 .perfectlooper.iosDangerZone .perfectlooper-control{
 	bottom: 3rem;
@@ -207,6 +207,14 @@
 .perfectlooper-control .playhead .front{
 	stroke: #ff0;
 	stroke-width: 4px;
+}
+.perfectlooper-control .currentFrameDisplay{
+	fill: #000;
+	transition: opacity .25s;
+}
+.perfectlooper-control .currentFrameDisplay text{
+	fill: #ccc;
+	cursor: pointer;
 }
 
 @-webkit-keyframes rotating {

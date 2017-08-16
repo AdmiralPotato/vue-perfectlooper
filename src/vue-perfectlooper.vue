@@ -47,6 +47,10 @@
 				:scaled="scaled"
 				:ready="ready"
 				:playOffset="playOffset"
+				:startIndex="startIndex"
+				:currentFrameIndex="currentFrameIndex"
+				:currentFrameTemplate="currentFrameTemplate"
+				:lastUserAction="lastUserAction"
 				:playToggle="playToggle"
 				:step="step"
 				:scrub="scrub"
@@ -91,6 +95,10 @@
 				type: String,
 				default: '0000'
 			},
+			currentFrameTemplate: {
+				type: String,
+				default: '00'
+			},
 			prefix: {
 				type: String,
 				default: ''
@@ -111,6 +119,8 @@
 				cssWidth: 0,
 				cssHeight: 0,
 				pathsLoaded: false,
+				currentFrameIndex: 0,
+				lastUserAction: '',
 				posterPath: '',
 				started: false,
 				playing: false,
@@ -275,22 +285,24 @@
 				let v = this;
 				v.started = true;
 				v.playing = !v.playing;
+				v.lastUserAction = `${v.playing ? 'play' : 'pause'}-${v.isFullscreen ? 'fullscreen' : 'windowed'}`;
 				if(v.canvasLooper){
 					v.canvasLooper.setPlay(v.playing);
 				}
 				v.looperEvent({
-					eventAction: `${v.playing ? 'play' : 'pause'}-${v.isFullscreen ? 'fullscreen' : 'windowed'}`
+					eventAction: v.lastUserAction
 				});
 			},
 			step: function (direction) {
 				let v = this;
-				if(!v.started){
-					v.playToggle();
-				}
-				v.playing = false;
 				if(v.loaded === 1 && v.canvasLooper){
+					if(!v.started){
+						v.playToggle();
+					}
+					v.playing = false;
 					v.canvasLooper.setPlay(false);
 					v.canvasLooper.step(direction);
+					v.lastUserAction = 'step';
 				}
 			},
 			scrub: function (playOffset) {
@@ -303,6 +315,7 @@
 						v.canvasLooper.setTime(preventOffsetWrapping);
 						v.canvasLooper.setFrameByTime();
 					}
+					v.lastUserAction = 'scrub';
 				}
 			},
 			fullscreenToggle: function(){
@@ -324,8 +337,9 @@
 					v.$el.scrollIntoView();
 					action = 'scrollIntoView';
 				}
+				v.lastUserAction = `fullscreen-${action}`;
 				v.looperEvent({
-					eventAction: `fullscreen-${action}`
+					eventAction: v.lastUserAction
 				});
 			},
 			focusHandler: function (event) {

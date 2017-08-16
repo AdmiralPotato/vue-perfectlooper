@@ -45,6 +45,10 @@
 				:scaled="scaled"
 				:width="width"
 				:playOffset="playOffset"
+				:startIndex="startIndex"
+				:currentFrameIndex="currentFrameIndex"
+				:currentFrameTemplate="currentFrameTemplate"
+				:lastUserAction="lastUserAction"
 				:scrub="scrub"
 			/>
 			<perfectlooper-control-button
@@ -108,6 +112,10 @@
 			scaled: Number,
 			width: Number,
 			playOffset: Number,
+			startIndex: Number,
+			currentFrameIndex: Number,
+			currentFrameTemplate: String,
+			lastUserAction: String,
 			playToggle: Function,
 			step: Function,
 			scrub: Function,
