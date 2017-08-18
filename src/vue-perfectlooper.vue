@@ -2,16 +2,19 @@
 	<div
 		class="perfectlooper"
 		:class="{
+			keynav: keynav,
 			fullscreen: isFullscreen,
 			hideCursor: playing && activityHalted,
 			ios: isIOS,
 			iosDangerZone: isIOSWarnNeeded
 		}"
+		@mousedown="disableFocusOutlines"
 		@mousemove="activity"
 		@touchmove="activity"
-		@touchstart="activity"
+		@touchstart="activity();disableFocusOutlines()"
 		@focus.capture="focusHandler"
 		@blur.capture="blurHandler"
+		@keydown.capture="enableFocusOutlines"
 		@keydown.capture.left="leftHandler"
 		@keydown.capture.right="rightHandler"
 		@keydown.capture.space="spaceHandler"
@@ -114,6 +117,7 @@
 		},
 		data: function() {
 			return {
+				keynav: false,
 				width: 0,
 				height: 0,
 				cssWidth: 0,
@@ -215,10 +219,14 @@
 					}
 				}
 			};
+			v.preFocusKeydownListener = function (keydownEvent) {
+				v.enableFocusOutlines(keydownEvent);
+			};
 			document.addEventListener('resize', v.resizeWindowEventHandler);
 			document.addEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.addEventListener('resize', v.resizeWindowEventHandler);
 			document.body.addEventListener('focus', v.fullscreenFocusChangeHandler, true);
+			document.body.addEventListener('keydown', v.preFocusKeydownListener, true);
 			v.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			if(v.isIOS){
 				v.scrollWarningWatcher = function () {
@@ -244,6 +252,7 @@
 			document.removeEventListener('fullscreenchange', v.resizeWindowEventHandler);
 			window.removeEventListener('resize', v.resizeWindowEventHandler);
 			document.body.removeEventListener('focus', v.fullscreenFocusChangeHandler, true);
+			document.body.removeEventListener('keydown', v.preFocusKeydownListener, true);
 			if(v.isIOS){v.isMounted = false;}
 		},
 		methods: {
@@ -268,6 +277,14 @@
 					looperEventData.eventCategory = 'Video';
 					looperEventData.eventLabel = v.id;
 					this.$ga.event(looperEventData);
+				}
+			},
+			disableFocusOutlines: function () {
+				this.keynav = false;
+			},
+			enableFocusOutlines: function (event) {
+				if([9, 13].indexOf(event.keyCode) !== -1){
+					this.keynav = true;
 				}
 			},
 			activity: function(){

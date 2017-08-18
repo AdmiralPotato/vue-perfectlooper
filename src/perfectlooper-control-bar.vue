@@ -24,7 +24,7 @@
 					<rect width="40" height="24" x="-20" y="-12" rx="12" ry="12" />
 					<rect width="12" height="12" transform="rotate(45)"/>
 				</g>
-				<text class="fill noSelect" x="0" y="1.5" font-size="16" text-anchor="middle" alignment-baseline="middle">{{currentFrameDisplay}}</text>
+				<text class="fill noSelect" x="0" y="1.5" font-size="16" text-anchor="middle" dominant-baseline="middle">{{currentFrameDisplay}}</text>
 			</g>
 		</g>
 	</svg>

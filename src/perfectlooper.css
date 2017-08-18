@@ -2,6 +2,7 @@
 .perfectlooper *{
 	padding: 0;
 	border: 0;
+	outline: none;
 	vertical-align: inherit;
 	font-size: inherit;
 	line-height: inherit;
@@ -55,10 +56,25 @@
 	width: 100%;
 	height: 100%;
 }
+.perfectlooper *::-moz-focus-inner {
+	border: 0;
+}
+.perfectlooper.keynav *:focus{
+	outline-width: 2px;
+	outline-style: solid;
+}
+.perfectlooper.keynav .fullscreenToggle.notStarted:focus{
+	outline: none;
+	border-radius: 6px;
+	box-shadow: inset 0 0 0 2px #9f0;
+}
 .perfectlooper.fullscreen{
 	max-width: 177.77777777777777vmin; /* enforces aspect when superwide... chrome only? TODO: multi-browser fixes */
 	height: 100%;
 	width: 100%;
+}
+.perfectlooper.fullscreen.keynav .overlay{
+	outline: none;
 }
 .perfectlooper.hideCursor{
 	cursor: none;
@@ -94,9 +110,6 @@
 .perfectlooper.ios .statusMessage {
 	transition: all .5s;
 }
-.perfectlooper.iosDangerZone .statusMessage{
-	bottom: 6rem;
-}
 .perfectlooper .statusMessage div{
 	height: 1.5rem;
 	line-height: 1.5rem;
@@ -105,6 +118,9 @@
 .perfectlooper svg{
 	display: block;
 	color: #9f0;
+}
+.perfectlooper button:disabled svg{
+	color: #666;
 }
 .perfectlooper button:active svg{
 	color: #ff0;

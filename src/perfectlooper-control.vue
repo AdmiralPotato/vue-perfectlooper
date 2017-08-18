@@ -54,6 +54,7 @@
 			<perfectlooper-control-button
 				label="Step 1 frame backward"
 				class="step-prev"
+				:disabled="loaded !== 1"
 				@click.native="step(-1)">
 				<g transform="translate(24, 24)">
 					<g transform="rotate(180)">
@@ -80,6 +81,7 @@
 			<perfectlooper-control-button
 				label="Step 1 frame forward"
 				class="step-next"
+				:disabled="loaded !== 1"
 				@click.native="step(1)">
 				<use xlink:href="#icon-advance"/>
 			</perfectlooper-control-button>
@@ -87,8 +89,9 @@
 		<perfectlooper-control-button
 			label="Toggle Fullscreen"
 			class="fullscreenToggle lastFocus"
+			:class="{notStarted: !started}"
 			@click.native="fullscreenToggle">
-			<rect v-if="!started" class="fullscreenBackground" x="8" y="8" width="32" height="32" rx="4" ry="4"/>
+			<rect v-if="!started" class="fullscreenBackground" x="4" y="4" width="40" height="40" rx="4" ry="4"/>
 			<use xlink:href="#icon-fullscreen"      key="off" v-if="!isFullscreen"/>
 			<use xlink:href="#icon-fullscreen-exit" key="on"  v-if="isFullscreen"/>
 		</perfectlooper-control-button>
