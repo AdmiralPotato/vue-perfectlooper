@@ -64,7 +64,6 @@
 </template>
 
 <script>
-	import FullscreenApiPolyfill from 'fullscreen-api-polyfill';
 	import CanvasLooper from './canvas-looper';
 	import SequencePaths from './sequence-paths';
 	import PerfectlooperPlayIcon from './perfectlooper-play-icon';
@@ -161,6 +160,7 @@
 			);
 		},
 		mounted: function() {
+			require('fullscreen-api-polyfill');
 			let v = this;
 			v.isMounted = true;
 			v.makeLooper();
