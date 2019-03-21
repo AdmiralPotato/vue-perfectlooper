@@ -1,6 +1,6 @@
 import DecoderImage from './decoder-image.js';
 
-let CanvasLooper = function(id, pathList, ui, canvas){
+let CanvasLooper = function (id, pathList, ui, canvas) {
 	let p = this;
 	p.ui = ui;
 	p.canvas = canvas;
@@ -18,7 +18,7 @@ let CanvasLooper = function(id, pathList, ui, canvas){
 	p.frameCount = pathList.length;
 	p.duration = p.frameCount / p.fps;
 	p.sourceBuffer.addCanvasLooper(p);
-	p.renderLoop = function (time) {
+	p.renderLoop = (time) => {
 		if(p.shouldPlay){
 			requestAnimationFrame(p.renderLoop);
 			if(p.ready){
@@ -30,10 +30,10 @@ let CanvasLooper = function(id, pathList, ui, canvas){
 
 CanvasLooper.prototype = {
 	fps: 24,
-	die: function(){
+	die () {
 		let p = this;
 		p.sourceBuffer.removeCanvasLooper(this);
-		p.scaledCanvasList.forEach(function (canvas) {
+		p.scaledCanvasList.forEach((canvas) => {
 			canvas.width = 0;
 			canvas.height = 0;
 		});
@@ -43,11 +43,11 @@ CanvasLooper.prototype = {
 			eventAction: 'unload'
 		});
 	},
-	setPlay: function(shouldPlay){
+	setPlay (shouldPlay) {
 		let p = this;
 		p.shouldPlay = shouldPlay;
 		if(shouldPlay){
-			requestAnimationFrame(function (time) {
+			requestAnimationFrame((time) => {
 				p.lastTimeSample = time;
 				p.renderLoop(time);
 			});
@@ -57,35 +57,35 @@ CanvasLooper.prototype = {
 		}
 		p.updateUI();
 	},
-	play: function (time) {
+	play (time) {
 		let p = this;
 		p.offsetTime(((time - (p.lastTimeSample || 0)) / 1000) / p.duration);
 		p.setFrameByTime();
 		p.lastTimeSample = time;
 	},
-	offsetTime: function (delta) {
+	offsetTime (delta) {
 		this.setTime(this.playOffset + delta);
 	},
-	setTime: function (playOffset) {
+	setTime (playOffset) {
 		this.playOffset = this.rangeBind(playOffset, 1);
 	},
-	rangeBind: function (value, max) {
+	rangeBind (value, max) {
 		return Math.sign(value) === -1 ? max + (value % max) : value % max;
 	},
-	step: function (direction) {
+	step (direction) {
 		let p = this;
 		let targetFrame = p.rangeBind(p.prevFrame + direction,  p.frameCount);
 		p.offsetTime((1 / p.frameCount) * direction);
 		p.setFrameByIndex(targetFrame);
 	},
-	setFrameByTime: function(){
+	setFrameByTime () {
 		let p = this;
 		let targetFrame = Math.floor(p.playOffset * p.frameCount);
 		if(targetFrame !== p.prevFrame){
 			p.setFrameByIndex(targetFrame);
 		}
 	},
-	setFrameByIndex: function (frameIndex) {
+	setFrameByIndex (frameIndex) {
 		let p = this;
 		p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(frameIndex);
 		p.context.drawImage(p.lastDisplayedImage, 0, 0);
@@ -95,7 +95,7 @@ CanvasLooper.prototype = {
 			playOffset: frameIndex / (p.frameCount - 1)
 		});
 	},
-	getScaledCanvasByFrameIndex: function (frameIndex) {
+	getScaledCanvasByFrameIndex (frameIndex) {
 		let p = this;
 		let list = p.scaledCanvasList;
 		let canvas = list[frameIndex] || document.createElement('canvas');
@@ -118,7 +118,7 @@ CanvasLooper.prototype = {
 		}
 		return canvas;
 	},
-	sizeWindow: function (newWidth, newHeight) {
+	sizeWindow (newWidth, newHeight) {
 		let p = this;
 		p.width = newWidth;
 		p.height = newHeight;
@@ -127,7 +127,7 @@ CanvasLooper.prototype = {
 		p.ready = false;
 		p.updateUI();
 	},
-	scaleAllFramesAndReady: function () {
+	scaleAllFramesAndReady () {
 		let p = this;
 		let frame = p.scaledFrameCount++;
 		if(!frame){
@@ -138,7 +138,7 @@ CanvasLooper.prototype = {
 		}
 		p.context.drawImage(p.getScaledCanvasByFrameIndex(frame), 0, 0);
 		p.scaled = p.scaledFrameCount / p.frameCount;
-		setTimeout(function () {
+		setTimeout(() => {
 			let looperEventData;
 			if(p.scaledFrameCount === p.frameCount){
 				p.ready = true;
@@ -150,7 +150,7 @@ CanvasLooper.prototype = {
 			p.updateUI(looperEventData);
 		}, 0);
 	},
-	updateUI: function(looperEventData){
+	updateUI (looperEventData) {
 		let p = this;
 		let b = p.sourceBuffer;
 		let status = b.status;
@@ -182,7 +182,7 @@ CanvasLooper.prototype = {
 			ready: p.ready
 		});
 	},
-	whichFrameShouldBeDisplayedOnUpdate: function(){
+	whichFrameShouldBeDisplayedOnUpdate () {
 		let p = this;
 		let b = p.sourceBuffer;
 		let displayFrame = b.lastStoredFrameIndex;
@@ -197,7 +197,7 @@ CanvasLooper.prototype = {
 	}
 };
 
-let arrayRemove = function(array, item){
+let arrayRemove = (array, item) => {
 	let index = array.indexOf(item);
 	if(index !== -1){
 		array.splice(index, 1);
@@ -207,7 +207,7 @@ let arrayRemove = function(array, item){
 
 let decodedFrameBufferMap = {};
 
-let DecodedFrameBuffer = function(id, pathList){
+let DecodedFrameBuffer = function (id, pathList) {
 	let b = this;
 	b.pathList = pathList;
 	b.frameCount = pathList.length;
@@ -225,20 +225,20 @@ let DecodedFrameBuffer = function(id, pathList){
 };
 
 DecodedFrameBuffer.prototype = {
-	addCanvasLooper: function(p){
+	addCanvasLooper (p) {
 		this.perfectlooperList.push(p);
 		this.updateCanvasLoopers();
 	},
-	removeCanvasLooper: function(p){
+	removeCanvasLooper (p) {
 		arrayRemove(this.perfectlooperList, p);
 	},
-	updateCanvasLoopers: function (looperEventData) {
+	updateCanvasLoopers (looperEventData) {
 		let b = this;
-		b.perfectlooperList.forEach(function(p){
+		b.perfectlooperList.forEach((p) => {
 			p.updateUI(looperEventData);
 		});
 	},
-	startLoad: function () {
+	startLoad () {
 		let b = this;
 		if(!b.isLoading && b.loaded !== 1){
 			b.status = 'Loading';
@@ -251,7 +251,7 @@ DecodedFrameBuffer.prototype = {
 			this.updateCanvasLoopers(looperEventData);
 		}
 	},
-	stopLoad: function () {
+	stopLoad () {
 		let b = this;
 		if(b.loaded !== 1){
 			b.status = 'Loading paused';
@@ -264,11 +264,11 @@ DecodedFrameBuffer.prototype = {
 			this.updateCanvasLoopers(looperEventData);
 		}
 	},
-	handleDecoderLoadStart: function(){
+	handleDecoderLoadStart () {
 		this.status = 'Loading started';
 		this.updateCanvasLoopers();
 	},
-	handleDecoderFrame: function(frameCanvas, index){
+	handleDecoderFrame (frameCanvas, index) {
 		let b = this;
 		let looperEventData;
 		b.framesLoaded += 1;

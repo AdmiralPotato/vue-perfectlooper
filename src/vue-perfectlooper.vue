@@ -114,7 +114,7 @@
 				required: false
 			}
 		},
-		data: function() {
+		data () {
 			return {
 				keynav: false,
 				width: 0,
@@ -138,11 +138,11 @@
 				isIOSWarnNeeded: false
 			}
 		},
-		created: function(){
+		created () {
 			let v = this;
 			SequencePaths.get(
 				v,
-				function (pathList, poster) {
+				(pathList, poster) => {
 					if(!pathList){
 						throw new Error('vue-perfectlooper: No valid combinations of paths provided. Please supply one of the following combinations:\n\t{src: String, frames: Number}\n\t{src: Array of Strings}\n\t{srcImgurAlbumId: String}');
 					}
@@ -154,20 +154,20 @@
 					v.pathsLoaded = true;
 					v.makeLooper();
 				},
-				function(poster){
+				(poster) => {
 					v.posterPath = poster;
 				}
 			);
 		},
-		mounted: function() {
+		mounted () {
 			require('fullscreen-api-polyfill');
 			let v = this;
 			v.isMounted = true;
 			v.makeLooper();
 		},
-		beforeMount: function () {
+		beforeMount () {
 			let v = this;
-			v.resizeWindowEventHandler = function () {
+			v.resizeWindowEventHandler = () => {
 				let ratio = window['devicePixelRatio'] || 1;
 				let canvas = v.$refs.canvas;
 				let newWidth = canvas.clientWidth * ratio;
@@ -185,15 +185,15 @@
 					requestAnimationFrame(v.resizeWindowEventHandler);
 				}
 				if(!isCanvasInvalid && justResized){
-					requestAnimationFrame(function(){
+					requestAnimationFrame(() => {
 						if(v.playing){
 							v.playToggle();
-							requestAnimationFrame(function(){
+							requestAnimationFrame(() => {
 								v.playToggle();
 							});
 						}
 						if(fullscreenChanged){
-							requestAnimationFrame(function(){
+							requestAnimationFrame(() => {
 								if(v.canvasLooper){
 									v.canvasLooper.sizeWindow(newWidth, newHeight);
 								}
@@ -206,7 +206,7 @@
 					});
 				}
 			};
-			v.fullscreenFocusChangeHandler = function (event) {
+			v.fullscreenFocusChangeHandler = (event) => {
 				let relativePosition = v.$el.compareDocumentPosition(event.target);
 				let contains = (relativePosition & Node.DOCUMENT_POSITION_CONTAINED_BY) > 0;
 				if(v.isFullscreen && !contains){
@@ -219,7 +219,7 @@
 					}
 				}
 			};
-			v.preFocusKeydownListener = function (keydownEvent) {
+			v.preFocusKeydownListener = (keydownEvent) => {
 				v.enableFocusOutlines(keydownEvent);
 			};
 			document.addEventListener('resize', v.resizeWindowEventHandler);
@@ -229,7 +229,7 @@
 			document.body.addEventListener('keydown', v.preFocusKeydownListener, true);
 			v.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 			if(v.isIOS){
-				v.scrollWarningWatcher = function () {
+				v.scrollWarningWatcher = () => {
 					if(v.isMounted){
 						requestAnimationFrame(v.scrollWarningWatcher);
 						let boundingRect = v.$el.getBoundingClientRect();
@@ -243,7 +243,7 @@
 				requestAnimationFrame(v.scrollWarningWatcher);
 			}
 		},
-		beforeDestroy: function () {
+		beforeDestroy () {
 			let v = this;
 			if(v.canvasLooper){
 				v.canvasLooper.die();
@@ -256,14 +256,14 @@
 			if(v.isIOS){v.isMounted = false;}
 		},
 		methods: {
-			makeLooper: function(){
+			makeLooper () {
 				let v = this;
 				if(v.isMounted && v.pathsLoaded){
 					v.canvasLooper = new CanvasLooper(v.id, v.pathList, v, v.$refs.canvas);
 					v.resizeWindowEventHandler();
 				}
 			},
-			looperStatusUpdate: function(looperStatus){
+			looperStatusUpdate (looperStatus) {
 				let v = this;
 				for(let propertyName in looperStatus){
 					if(looperStatus.hasOwnProperty(propertyName)){
@@ -271,7 +271,7 @@
 					}
 				}
 			},
-			looperEvent: function(looperEventData){
+			looperEvent (looperEventData) {
 				let v = this;
 				if(this.$ga){
 					looperEventData.eventCategory = 'Video';
@@ -279,26 +279,26 @@
 					this.$ga.event(looperEventData);
 				}
 			},
-			disableFocusOutlines: function () {
+			disableFocusOutlines () {
 				this.keynav = false;
 			},
-			enableFocusOutlines: function (event) {
+			enableFocusOutlines (event) {
 				if([9, 13].indexOf(event.keyCode) !== -1){
 					this.keynav = true;
 				}
 			},
-			activity: function(){
+			activity () {
 				let v = this;
 				v.activityHalted = false;
 				if(v.activityTimeoutId){
 					clearTimeout(v.activityTimeoutId);
 				}
-				v.activityTimeoutId = setTimeout(function(){
+				v.activityTimeoutId = setTimeout(() => {
 					v.activityHalted = true;
 					v.activityTimeoutId = null;
 				}, 2000);
 			},
-			playToggle: function(event){
+			playToggle (event) {
 				let v = this;
 				v.started = true;
 				v.playing = !v.playing;
@@ -310,7 +310,7 @@
 					eventAction: v.lastUserAction
 				});
 			},
-			step: function (direction) {
+			step (direction) {
 				let v = this;
 				if(v.loaded === 1 && v.canvasLooper){
 					if(!v.started){
@@ -322,7 +322,7 @@
 					v.lastUserAction = 'step';
 				}
 			},
-			scrub: function (playOffset) {
+			scrub (playOffset) {
 				let v = this;
 				if(v.loaded === 1){
 					let preventOffsetWrapping = Math.max(0, playOffset - 0.000000001);
@@ -335,7 +335,7 @@
 					v.lastUserAction = 'scrub';
 				}
 			},
-			fullscreenToggle: function(){
+			fullscreenToggle () {
 				let v = this;
 				let canFullScreen = v.$el.requestFullscreen !== undefined;
 				v.activity();
@@ -359,24 +359,24 @@
 					eventAction: v.lastUserAction
 				});
 			},
-			focusHandler: function (event) {
+			focusHandler (event) {
 				event.stopPropagation();
 				this.activity();
 				this.focusElement = event.target;
 			},
-			blurHandler: function (event) {
+			blurHandler (event) {
 				event.stopPropagation();
 				this.focusElement = undefined;
 			},
-			leftHandler: function (event) {
+			leftHandler (event) {
 				event.preventDefault();
 				this.step(-1);
 			},
-			rightHandler: function (event) {
+			rightHandler (event) {
 				event.preventDefault();
 				this.step(1);
 			},
-			spaceHandler: function (event) {
+			spaceHandler (event) {
 				let shouldHandle = !(this.focusElement && this.focusElement.tagName === 'BUTTON');
 				if(shouldHandle){
 					event.preventDefault();

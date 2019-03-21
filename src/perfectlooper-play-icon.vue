@@ -29,7 +29,7 @@
 <script>
 	let mountCount = 0;
 	export default {
-		data: function(){
+		data () {
 			return {
 				//this is an odd situation that calls for unique SVG IDs for each instance of this component;
 				//If one of these is changes visibility on the page while the others are showing,

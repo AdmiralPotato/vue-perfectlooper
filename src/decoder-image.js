@@ -6,21 +6,21 @@ let DecoderImage = function (decodedFrameBuffer) {
 	decoder.frameCount = decoder.decodedFrameBuffer.frameCount;
 	decoder.framesLoaded = 0;
 	decoder.images = [];
-	decoder.loadHandler = function(loadEvent){
+	decoder.loadHandler = (loadEvent) => {
 		let image = loadEvent.target;
 		image.loaded = true;
 		decoder.framesLoaded += 1;
-		requestAnimationFrame(function () {
+		requestAnimationFrame(() => {
 			decoder.decodedFrameBuffer.handleDecoderFrame(
 				image,
 				image.frameIndex
 			);
 		});
 	};
-	decoder.errorHandler = function(errorEvent){
+	decoder.errorHandler = (errorEvent) => {
 		let image = errorEvent.target;
 		if(image.loadAttemtps < decoder.maxFailures){
-			setTimeout(function(){
+			setTimeout(() => {
 				image.retry(image.loadAttemtps + 1);
 			}, 100);
 		}
@@ -29,14 +29,14 @@ let DecoderImage = function (decodedFrameBuffer) {
 
 DecoderImage.prototype = {
 	maxFailures: 10,
-	startLoad: function (pathList) {
+	startLoad (pathList) {
 		let decoder = this;
 		decoder.decodedFrameBuffer.handleDecoderLoadStart();
-		pathList.forEach(function (src, frameIndex) {
+		pathList.forEach((src, frameIndex) => {
 			let existingImage = decoder.images[frameIndex];
 			let needsRestart = existingImage && !existingImage.loaded && existingImage.canceled;
 			if(!existingImage){
-				let getImage = function (loadAttempts) {
+				let getImage = (loadAttempts) => {
 					let image = new Image();
 					image.frameIndex = frameIndex;
 					image.loaded = false;
@@ -53,9 +53,9 @@ DecoderImage.prototype = {
 			}
 		});
 	},
-	stopLoad: function () {
+	stopLoad () {
 		let decoder = this;
-		decoder.images.forEach(function (image) {
+		decoder.images.forEach((image) => {
 			if(!image.loaded){
 				image.canceled = true;
 				image.removeEventListener('load', decoder.loadHandler);

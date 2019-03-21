@@ -2,7 +2,7 @@
 //reference & source: https://github.com/AdmiralPotato/vue-swipe-cards/blob/master/vue-swipe-cards.js
 
 let mixinTouch = {
-	created: function(){
+	created () {
 		let t = this;
 		t.startPoint = null;
 		t.handleTouchStart = t.createTouchHandler('Start');
@@ -10,7 +10,7 @@ let mixinTouch = {
 		t.handleTouchEnd = t.createTouchHandler('End');
 	},
 	methods: {
-		getPointByTouch: function(touchEvent){
+		getPointByTouch (touchEvent) {
 			let t = this;
 			let touches = touchEvent.changedTouches;
 			let result = null;
@@ -40,9 +40,9 @@ let mixinTouch = {
 			}
 			return point;
 		},
-		createTouchHandler(eventName){
+		createTouchHandler (eventName) {
 			let t = this;
-			return function(touchEvent){
+			return (touchEvent) => {
 				//console.log(touchEvent);
 				let point = t.getPointByTouch(touchEvent);
 				if (point) {

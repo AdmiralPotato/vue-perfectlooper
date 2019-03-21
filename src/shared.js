@@ -1,5 +1,5 @@
 export default{
-	templatePad: function(template, n){
+	templatePad: (template, n) => {
 		let str = typeof n === 'string' ? n : (n).toString();
 		return (template + str).substring(str.length);
 	}

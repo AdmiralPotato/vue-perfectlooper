@@ -46,65 +46,65 @@
 			lastUserAction: String,
 			scrub: Function
 		},
-		created: function () {
+		created () {
 			let bar = this;
 			bar.padLeft = (48 * 3) + 16;
 			bar.padRight = 48 + 16;
-			bar.handleMouseDown = function(event){
+			bar.handleMouseDown = (event) => {
 				bar.offsetTimeByMouseEvent(event);
 				bar.isDragging = true;
 			};
-			bar.handleMouseMove = function(event){
+			bar.handleMouseMove = (event) => {
 				if(bar.isDragging){
 					bar.offsetTimeByMouseEvent(event);
 				}
 			};
-			bar.handleMouseUp = function(event){
+			bar.handleMouseUp = (event) => {
 				if(bar.isDragging) {
 					bar.offsetTimeByMouseEvent(event);
 					bar.isDragging = false;
 				}
 			};
 		},
-		mounted: function () {
+		mounted () {
 			document.body.addEventListener('mousemove', this.handleMouseMove, true);
 			document.body.addEventListener('mouseup', this.handleMouseUp, true);
 		},
-		beforeDestroy: function () {
+		beforeDestroy () {
 			document.body.removeEventListener('mousemove', this.handleMouseMove, true);
 			document.body.removeEventListener('mouseup', this.handleMouseUp, true);
 		},
 		computed: {
-			lineWidth: function () {
+			lineWidth () {
 				return this.width - (this.padLeft + this.padRight);
 			},
-			showCurrentFrameDisplay: function(){
+			showCurrentFrameDisplay () {
 				return ['step', 'scrub'].indexOf(this.lastUserAction) !== -1;
 			},
-			currentFrameDisplay: function(){
+			currentFrameDisplay () {
 				let displayFrame = this.currentFrameIndex + this.startIndex;
 				return this.currentFrameTemplate ? shared.templatePad(this.currentFrameTemplate, displayFrame) : displayFrame;
 			}
 		},
 		methods: {
-			lineFrac: function (n) {
+			lineFrac (n) {
 				return this.padLeft + (this.lineWidth * n);
 			},
-			offsetTimeByMouseEvent: function (event) {
+			offsetTimeByMouseEvent (event) {
 				let controllerRect = this.$el.getBoundingClientRect();
 				let offset = this.mapPointToPlayOffset(event.clientX - controllerRect.left);
 				event.preventDefault();
 				this.scrub(offset);
 			},
-			dragStart: function(point, event){this.offsetTimeByPoint(point, event);},
-			dragMove: function(point, event){this.offsetTimeByPoint(point, event);},
-			dragEnd: function(point, event){this.offsetTimeByPoint(point, event);},
-			offsetTimeByPoint: function (point, event) {
+			dragStart (point, event) {this.offsetTimeByPoint(point, event);},
+			dragMove (point, event) {this.offsetTimeByPoint(point, event);},
+			dragEnd (point, event) {this.offsetTimeByPoint(point, event);},
+			offsetTimeByPoint (point, event) {
 				let offset = this.mapPointToPlayOffset(point.x);
 				event.preventDefault();
 				this.scrub(offset);
 			},
-			mapPointToPlayOffset: function (x) {
+			mapPointToPlayOffset (x) {
 				return Math.max(0, Math.min(1, (x - this.padLeft) / this.lineWidth));
 			}
 		}
