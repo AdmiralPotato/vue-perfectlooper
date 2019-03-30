@@ -184,3 +184,7 @@ It is recommended when hosting image sequences at Imgur, that you upload only PN
 	"suffix": ".png"
 }
 ```
+
+## Other Options
+You may configure the player with these additional options:
+- `fps`: Sets the framerate of image sequence playback. Default is 24.

@@ -84,6 +84,10 @@
 				type: [String, Array],
 				required: false
 			},
+			fps: {
+				type: Number,
+				default: 24
+			},
 			frames: {
 				type: [Number, String],
 				required: false
@@ -259,7 +263,7 @@
 			makeLooper () {
 				let v = this;
 				if(v.isMounted && v.pathsLoaded){
-					v.canvasLooper = new CanvasLooper(v.id, v.pathList, v, v.$refs.canvas);
+					v.canvasLooper = new CanvasLooper(v.id, v.pathList, v, v.$refs.canvas, v.fps);
 					v.resizeWindowEventHandler();
 				}
 			},

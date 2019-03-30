@@ -1,8 +1,9 @@
 import DecoderImage from './decoder-image.js';
 
-let CanvasLooper = function (id, pathList, ui, canvas) {
+let CanvasLooper = function (id, pathList, ui, canvas, fps) {
 	let p = this;
 	p.ui = ui;
+	p.fps = fps || 24
 	p.canvas = canvas;
 	p.context = canvas.getContext('2d');
 	p.shouldPlay = false;
@@ -29,7 +30,6 @@ let CanvasLooper = function (id, pathList, ui, canvas) {
 };
 
 CanvasLooper.prototype = {
-	fps: 24,
 	die () {
 		let p = this;
 		p.sourceBuffer.removeCanvasLooper(this);
