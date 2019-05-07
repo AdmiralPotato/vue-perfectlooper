@@ -169,7 +169,11 @@ CanvasLooper.prototype = {
 		if(displayFrame !== null){
 			p.lastDisplayedImage = p.getScaledCanvasByFrameIndex(displayFrame);
 		}
-		if(p.lastDisplayedImage){
+		if(
+			p.lastDisplayedImage &&
+			p.lastDisplayedImage.width &&
+			p.lastDisplayedImage.height
+		){
 			p.context.drawImage(p.lastDisplayedImage, 0, 0);
 		}
 		if(looperEventData){
