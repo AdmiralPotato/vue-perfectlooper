@@ -192,12 +192,6 @@
 	stroke-linecap: round;
 	stroke-miterlimit: 10;
 }
-.perfectlooper-control .stroke.screen-line{
-	stroke-width: 3px;
-}
-.perfectlooper-control .stroke.loading{
-	stroke-width: 4px;
-}
 .perfectlooper-control .progressLines,
 .perfectlooper-control .playhead{
 	cursor: pointer;
