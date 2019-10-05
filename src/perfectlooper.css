@@ -105,9 +105,11 @@
 	max-width: 100%;
 	margin: auto;
 }
+.perfectlooper .aspectEnforcer .perfectlooper-play-icon {
+	max-height: 100%;
+	max-width: 100%;
+}
 .perfectlooper .aspectEnforcer img{
-	width: auto;
-	height: auto;
 	max-height: 100%;
 	max-width: 100%;
 	top: 0;

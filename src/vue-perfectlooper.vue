@@ -100,6 +100,10 @@
 				type: String,
 				required: false
 			},
+			aspect: {
+				type: Number,
+				required: false
+			},
 			src: {
 				type: [String, Array],
 				required: false
@@ -147,7 +151,7 @@
 				windowHeight: 0,
 				cssWidth: 0,
 				cssHeight: 0,
-				aspect: 9 / 16,
+				naturalAspect: 0,
 				pathsLoaded: false,
 				currentFrameIndex: 0,
 				lastUserAction: '',
@@ -167,17 +171,23 @@
 		},
 		computed: {
 			aspectEnforcerContainerStyle () {
-				const aspect = this.aspect;
+				const naturalAspect = this.naturalAspect;
+				const aspect = this.aspect || naturalAspect;
 				const isFullscreen = this.isFullscreen;
 				const windowHeight = this.windowHeight;
-				return isFullscreen ? {
+				return aspect ? isFullscreen ? {
 					maxHeight: windowHeight + 'px',
 					maxWidth: Math.ceil(windowHeight / aspect) + 'px',
-				} : {}
+				} : {
+				} : {
+					display: 'none'
+				}
 			},
 			aspectEnforcerStyle () {
+				const naturalAspect = this.naturalAspect;
+				const aspect = this.aspect || naturalAspect;
 				return {
-					paddingBottom: (this.aspect * 100) + '%'
+					paddingBottom: (aspect * 100) + '%'
 				}
 			},
 		},
@@ -406,7 +416,7 @@
 				});
 			},
 			imageLoadAspectHandler (event) {
-				this.aspect = event.target.naturalHeight / event.target.naturalWidth
+				this.naturalAspect = event.target.naturalHeight / event.target.naturalWidth;
 				this.$nextTick(
 					this.resizeWindowEventHandler
 				)

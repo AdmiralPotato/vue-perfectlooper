@@ -188,3 +188,4 @@ It is recommended when hosting image sequences at Imgur, that you upload only PN
 ## Other Options
 You may configure the player with these additional options:
 - `fps`: Sets the framerate of image sequence playback. Default is 24.
+- `aspect`: Explicitly set the aspect ratio of the player, overriding and ignoring the aspect ratio of the poster image and animation images. This will also cause the player to display at the desired size even before the poster image has loaded. This value can be calculated as `height / width`. Default value is automatically calculated as soon as the poster image is loaded, at which point the player will be displayed.

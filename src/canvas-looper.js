@@ -155,6 +155,12 @@ CanvasLooper.prototype = {
 		let b = p.sourceBuffer;
 		let status = b.status;
 		let displayFrame = p.whichFrameShouldBeDisplayedOnUpdate();
+		if (b.aspect) {
+			p.ui.naturalAspect = b.aspect;
+			p.ui.$nextTick(
+				p.ui.resizeWindowEventHandler
+			)
+		}
 		if(b.ready && !p.ready){
 			if(p.scaledFrameCount){
 				status = `Scaled ${p.scaledFrameCount}/${b.frameCount} frames`;
@@ -279,7 +285,10 @@ DecodedFrameBuffer.prototype = {
 		b.imageList[index] = frameCanvas;
 		b.loaded = b.framesLoaded / b.frameCount;
 		b.lastStoredFrameIndex = index;
+		b.width = frameCanvas.naturalWidth || frameCanvas.width;
+		b.height = frameCanvas.naturalHeight || frameCanvas.height;
 		b.status = `Loaded ${b.framesLoaded} / ${b.frameCount} frames`;
+		b.aspect = b.height / b.width;
 		if(b.loaded === 1){
 			b.status = `All frames Loaded`;
 			b.ready = true;
