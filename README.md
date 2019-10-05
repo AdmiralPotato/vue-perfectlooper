@@ -4,9 +4,9 @@ A perfectly looping image sequence player with fullscreen capabilities, built wi
 
 Demo: https://admiralpotato.github.io/vue-perfectlooper/
 
-_Notice: This project's primary objective is playing back animations at the highest possible visual quality, likely in fullscreen mode. Providing frames with a resolution of 1920x1080 and no visible compression artifacts is strongly recommended. To date, the player has only been designed for, and tested with animations of a 16x9 aspect ratio._
+This project's primary objective is to allow seamless playback of short, perfectly looping animations in the browser, at the highest possible visual quality, optionally in fullscreen mode. Providing frames at the full resolution of your intended output device with no visible compression artifacts is strongly recommended.
 
-#### Viewer facing features:
+#### Viewer friendly features:
 - Very low CPU usage while playing
 - Timeline scrubbing
 - Frame advance & reverse
@@ -25,7 +25,7 @@ _Notice: This project's primary objective is playing back animations at the high
 
 ## Install and Usage
 
-### Compiled single component `.vue` file flavor:
+### Compiled `.vue` file flavor:
 ```
 npm install --save vue-perfectlooper
 ```

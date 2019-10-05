@@ -11,7 +11,7 @@
 		@mousedown="disableFocusOutlines"
 		@mousemove="activity"
 		@touchmove="activity"
-		@touchstart="activity();disableFocusOutlines()"
+		@touchstart="touchstartHandler"
 		@focus.capture="focusHandler"
 		@blur.capture="blurHandler"
 		@keydown.capture="enableFocusOutlines"
@@ -19,46 +19,66 @@
 		@keydown.capture.right="rightHandler"
 		@keydown.capture.space="spaceHandler"
 	>
-		<div class="aspectEnforcer">
-			<canvas
-				ref="canvas"
-				:width="width"
-				:height="height"
-			/>
+		<div
+			class="aspectEnforcerContainer"
+			:style="aspectEnforcerContainerStyle"
+		>
 			<div
-				class="overlay firstFocus"
-				@click="playToggle"
-				@keyup.enter="playToggle"
-				tabindex="0"
-				role="button"
+				class="aspectEnforcer"
+				:style="aspectEnforcerStyle"
 			>
-				<transition-group name="perfectlooper_fade">
-					<img key="a" v-if="!loaded && posterPath" :src="posterPath" />
-					<div key="b" v-if="!ready && started" class="statusMessage">
-						<div>{{statusMessage}}</div>
-					</div>
-					<perfectlooper-play-icon key="c" v-if="!started" />
-				</transition-group>
+				<canvas
+					ref="canvas"
+					:width="width"
+					:height="height"
+				/>
+				<div
+					class="overlay firstFocus"
+					@click="playToggle"
+					@keyup.enter="playToggle"
+					tabindex="0"
+					role="button"
+				>
+					<transition-group name="perfectlooper_fade">
+						<img
+							key="a"
+							v-if="!loaded && posterPath"
+							:src="posterPath"
+							@load="imageLoadAspectHandler"
+						/>
+						<div
+							key="b"
+							v-if="!ready && started"
+							class="statusMessage"
+						>
+							<div>{{statusMessage}}</div>
+						</div>
+						<perfectlooper-play-icon
+							key="c"
+							v-if="!started"
+						/>
+					</transition-group>
+				</div>
+				<perfectlooper-control
+					:class="{hidden: !(!ready || !playing || !activityHalted)}"
+					:width="cssWidth"
+					:started="started"
+					:playing="playing"
+					:isFullscreen="isFullscreen"
+					:loaded="loaded"
+					:scaled="scaled"
+					:ready="ready"
+					:playOffset="playOffset"
+					:startIndex="startIndex"
+					:currentFrameIndex="currentFrameIndex"
+					:currentFrameTemplate="currentFrameTemplate"
+					:lastUserAction="lastUserAction"
+					:playToggle="playToggle"
+					:step="step"
+					:scrub="scrub"
+					:fullscreenToggle="fullscreenToggle"
+				/>
 			</div>
-			<perfectlooper-control
-				:class="{hidden: !(!ready || !playing || !activityHalted)}"
-				:width="cssWidth"
-				:started="started"
-				:playing="playing"
-				:isFullscreen="isFullscreen"
-				:loaded="loaded"
-				:scaled="scaled"
-				:ready="ready"
-				:playOffset="playOffset"
-				:startIndex="startIndex"
-				:currentFrameIndex="currentFrameIndex"
-				:currentFrameTemplate="currentFrameTemplate"
-				:lastUserAction="lastUserAction"
-				:playToggle="playToggle"
-				:step="step"
-				:scrub="scrub"
-				:fullscreenToggle="fullscreenToggle"
-			/>
 		</div>
 	</div>
 </template>
@@ -123,8 +143,11 @@
 				keynav: false,
 				width: 0,
 				height: 0,
+				windowWidth: 0,
+				windowHeight: 0,
 				cssWidth: 0,
 				cssHeight: 0,
+				aspect: 9 / 16,
 				pathsLoaded: false,
 				currentFrameIndex: 0,
 				lastUserAction: '',
@@ -141,6 +164,22 @@
 				isIOS: false,
 				isIOSWarnNeeded: false
 			}
+		},
+		computed: {
+			aspectEnforcerContainerStyle () {
+				const aspect = this.aspect;
+				const isFullscreen = this.isFullscreen;
+				const windowHeight = this.windowHeight;
+				return isFullscreen ? {
+					maxHeight: windowHeight + 'px',
+					maxWidth: Math.ceil(windowHeight / aspect) + 'px',
+				} : {}
+			},
+			aspectEnforcerStyle () {
+				return {
+					paddingBottom: (this.aspect * 100) + '%'
+				}
+			},
 		},
 		created () {
 			let v = this;
@@ -184,30 +223,29 @@
 				v.cssHeight = canvas.clientHeight;
 				v.width = newWidth;
 				v.height = newHeight;
+				v.windowWidth = window.innerWidth;
+				v.windowHeight = window.innerHeight;
 				v.isFullscreen = isFullscreen;
-				if(isCanvasInvalid || justResized){
-					requestAnimationFrame(v.resizeWindowEventHandler);
-				}
 				if(!isCanvasInvalid && justResized){
-					requestAnimationFrame(() => {
-						if(v.playing){
+					if(v.playing){
+						v.playToggle();
+						requestAnimationFrame(() => {
 							v.playToggle();
-							requestAnimationFrame(() => {
-								v.playToggle();
-							});
-						}
-						if(fullscreenChanged){
-							requestAnimationFrame(() => {
-								if(v.canvasLooper){
-									v.canvasLooper.sizeWindow(newWidth, newHeight);
-								}
-							});
-						} else {
-							if(v.canvasLooper){
-								v.canvasLooper.sizeWindow(newWidth, newHeight);
-							}
+						});
+					}
+					requestAnimationFrame(() => {
+						if (v.canvasLooper) {
+							console.log('resize, canvasLooper present')
+							v.canvasLooper.sizeWindow(newWidth, newHeight);
 						}
 					});
+				}
+				if(
+					isCanvasInvalid ||
+					justResized ||
+					fullscreenChanged
+				){
+					requestAnimationFrame(v.resizeWindowEventHandler);
 				}
 			};
 			v.fullscreenFocusChangeHandler = (event) => {
@@ -302,6 +340,10 @@
 					v.activityTimeoutId = null;
 				}, 2000);
 			},
+			touchstartHandler (event) {
+				this.activity();
+				this.disableFocusOutlines();
+			},
 			playToggle (event) {
 				let v = this;
 				v.started = true;
@@ -362,6 +404,12 @@
 				v.looperEvent({
 					eventAction: v.lastUserAction
 				});
+			},
+			imageLoadAspectHandler (event) {
+				this.aspect = event.target.naturalHeight / event.target.naturalWidth
+				this.$nextTick(
+					this.resizeWindowEventHandler
+				)
 			},
 			focusHandler (event) {
 				event.stopPropagation();

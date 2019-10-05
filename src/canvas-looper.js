@@ -3,7 +3,7 @@ import DecoderImage from './decoder-image.js';
 let CanvasLooper = function (id, pathList, ui, canvas, fps) {
 	let p = this;
 	p.ui = ui;
-	p.fps = fps || 24
+	p.fps = fps || 24;
 	p.canvas = canvas;
 	p.context = canvas.getContext('2d');
 	p.shouldPlay = false;

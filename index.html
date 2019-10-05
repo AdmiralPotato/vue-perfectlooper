@@ -21,6 +21,9 @@
 
 	<h2>With an Imgur Album ID</h2>
 	<vue-perfectlooper v-bind="imgurAlbumId"></vue-perfectlooper>
+
+	<h2>With a tall, rather than wide animation</h2>
+	<vue-perfectlooper v-bind="aspectRatioTest"></vue-perfectlooper>
 </div>
 
 <script src="https://unpkg.com/vue@^2.3.3/dist/vue.js"></script>
@@ -69,6 +72,12 @@
 			imgurAlbumId: {
 				"id": "hyper_mograph_networking-48",
 				"srcImgurAlbumId": "HMstF"
+			},
+			aspectRatioTest: {
+				"id": "qbert_club_aspect_test-60",
+				"src": "https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/qbert_club_aspect_test-60-960x1080/",
+				"poster": "https://aws-website-videonuclearpixelcom-tgl8t.s3.amazonaws.com/content/qbert_club_aspect_test-60-preview.jpg",
+				"frames": 60
 			}
 		}
 	});
