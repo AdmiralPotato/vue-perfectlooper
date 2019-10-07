@@ -12,8 +12,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "poi build",
-    "build-long": "poi build src/vue-perfectlooper.vue --no-extractCSS --format umd --module-name VuePerfectlooper --filename.js vue-perfectlooper.js --no-html --no-sourceMap --no-vue.esModule"
+    "build": "vue-cli-service build --target lib --formats umd-min --name VuePerfectlooper --filename vue-perfectlooper ./src/vue-perfectlooper.vue && npx rename dist/vue-perfectlooper.umd.min.js vue-perfectlooper.js"
   },
   "repository": {
     "type": "git",
@@ -32,8 +31,10 @@
   },
   "homepage": "https://admiralpotato.github.io/vue-perfectlooper/",
   "devDependencies": {
+    "@vue/cli-service": "^3.11.0",
     "fullscreen-api-polyfill": "^1.1.2",
-    "poi": "^9.1.4"
+    "rename-cli": "^6.0.0",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
     "vue": "^2.3.3"
