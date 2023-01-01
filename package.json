@@ -31,7 +31,7 @@
   },
   "homepage": "https://admiralpotato.github.io/vue-perfectlooper/",
   "devDependencies": {
-    "@vue/cli-service": "^3.11.0",
+    "@vue/cli-service": "^5.0.8",
     "fullscreen-api-polyfill": "^1.1.2",
     "rename-cli": "^6.0.0",
     "vue-template-compiler": "^2.6.10"
